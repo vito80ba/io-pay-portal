@@ -12,12 +12,6 @@ import { NonEmptyString } from "italia-ts-commons/lib/strings";
 // global app configuration
 export type IConfig = t.TypeOf<typeof IConfig>;
 export const IConfig = t.interface({
-  COSMOSDB_KEY: NonEmptyString,
-  COSMOSDB_NAME: NonEmptyString,
-  COSMOSDB_URI: NonEmptyString,
-
-  AzureWebJobsStorage: NonEmptyString,
-  QueueStorageConnection: NonEmptyString,
 
   isProduction: t.boolean
 });

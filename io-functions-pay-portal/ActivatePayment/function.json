@@ -1,13 +1,13 @@
 {
   "bindings": [
     {
-      "authLevel": "function",
+      "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "route": "some/path/{someParam}",
+      "route": "api/v1/payment-activations",
       "methods": [
-        "get"
+        "post"
       ]
     },
     {
@@ -16,5 +16,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/HttpTriggerFunction/index.js"
+  "scriptFile": "../dist/ActivatePayment/index.js"
 }

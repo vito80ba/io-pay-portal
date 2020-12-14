@@ -1,49 +1,133 @@
 swagger: "2.0"
 info:
-  version: 1.1.0
-  title: IO Function API
+  version: 1.0.0
+  title: IO pay portal API
   contact:
     name: IO team
     url: https://forum.italia.it/c/progetto-io
-  x-logo:
-    url: https://io.italia.it/assets/img/io-logo-blue.svg
   description: >
-    Documentation of the IO Function API here.
-host: api.cd.italia.it
-basePath: "/template"
+    Documentation of the IO Pay Portal Function API here.
+host: localhost
+basePath: "/api/v1"
 schemes:
   - https
 paths:
-  "/echo/{input}":
+  "/payment-requests/{rptId}":
+    x-swagger-router-controller: PagoPAProxyController
     parameters:
-      - name: input
+      - name: rptId
         in: path
-        type: string
         required: true
-        description: test input.
+        description: Unique identifier for payments.
+        type: string
+      - name: test
+        in: query
+        description: Use test environment of PagoPAClient
+        type: boolean
+        required: false
     get:
-      operationId: echo
-      summary: Echo API
-      description: Some API description here.
+      operationId: getPaymentInfo
+      summary: Get Payment Info
+      description: Retrieve information about a payment
       responses:
         "200":
-          description: Found.
+          description: Payment information retrieved
           schema:
-            "$ref": "#/definitions/Input"
+            "$ref": "#/definitions/PaymentRequestsGetResponse"
           examples:
             application/json:
-              id: "10000AAAA"
-              output: "hello world !"
+              importoSingoloVersamento: 200,
+              codiceContestoPagamento: "ABC123"
+        "400":
+          description: Bad request
+          schema:
+            $ref: "#/definitions/ProblemJson"
         "401":
-          description: Unauthorized
+          description: Bearer token null or expired.
+        "500":
+          description: PagoPA services are not available or request is rejected
+          schema:
+            $ref: "#/definitions/PaymentProblemJson"
+  "/payment-activations":
+    x-swagger-router-controller: PagoPAProxyController
+    parameters:
+      - name: test
+        in: query
+        description: Use test environment of PagoPAClient
+        type: boolean
+        required: false
+    post:
+      operationId: activatePayment
+      summary: Activate Payment
+      description: Require a lock (activation) for a payment
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/PaymentActivationsPostRequest"
+          required: true
+          x-examples:
+            application/json:
+              rptId: "12345678901012123456789012345"
+              importoSingoloVersamento: 200
+              codiceContestoPagamento: "ABC123"
+      responses:
+        "200":
+          description: Payment activation process started
+          schema:
+            "$ref": "#/definitions/PaymentActivationsPostResponse"
+          examples:
+            application/json:
+              importoSingoloVersamento: 200
+        "400":
+          description: Bad request
+          schema:
+            $ref: "#/definitions/ProblemJson"
+        "401":
+          description: Bearer token null or expired.
+        "500":
+          description: PagoPA services are not available or request is rejected
+          schema:
+            $ref: "#/definitions/PaymentProblemJson"
+  "/payment-activations/{codiceContestoPagamento}":
+    x-swagger-router-controller: PagoPAProxyController
+    parameters:
+      - name: codiceContestoPagamento
+        in: path
+        required: true
+        description: Transaction Id used to identify the communication flow.
+        type: string
+      - name: test
+        in: query
+        description: Use test environment of PagoPAClient
+        type: boolean
+        required: false
+    get:
+      operationId: getActivationStatus
+      summary: Get Activation status
+      description: Check the activation status to retrieve the paymentId
+      responses:
+        '200':
+          description: Payment information
+          schema:
+            $ref: "#/definitions/PaymentActivationsGetResponse"
+          examples:
+            application/json:
+              idPagamento: "123455"
+        "400":
+          description: Invalid input
+          schema:
+            $ref: "#/definitions/ProblemJson"
+        "401":
+          description: Bearer token null or expired.
         "404":
-          description: Not found.
-      parameters: []
+          description: Activation status not found
+          schema:
+            $ref: "#/definitions/ProblemJson"
+        "500":
+          description: Unavailable service
+          schema:
+            $ref: "#/definitions/ProblemJson"
 definitions:
-  Input:
-    type: object
-    properties:
-      id:
-        type: string
-      output:
-        type: string
+    ProblemJson:
+      $ref: "https://raw.githubusercontent.com/pagopa/io-functions-commons/v10.7.0/openapi/definitions.yaml#/ProblemJson"

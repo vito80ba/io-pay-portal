@@ -11,6 +11,7 @@
     "watch": "tsc -w",
     "extensions:install": "func extensions install",
     "start": "dotenv -e .env func start --javascript",
+    "docker" : "yarn build && docker-compose up",
     "predev": "npm-run-all generate build",
     "dev": "npm-run-all --parallel start watch",
     "test": "jest",

@@ -18,7 +18,7 @@ import { readableReport } from "italia-ts-commons/lib/reporters";
 import fetch from "node-fetch";
 import { getConfig, IConfig } from "./config";
 
-type ProblemSource = "AzureCosmosDB" | "AzureStorage" | "Config" | "Url";
+type ProblemSource = "Config" | "Url";
 export type HealthProblem<S extends ProblemSource> = string & { __source: S };
 export type HealthCheck<
   S extends ProblemSource = ProblemSource,
@@ -62,3 +62,14 @@ export const checkUrlHealth = (url: string): HealthCheck<"Url", true> =>
   tryCatch(() => fetch(url, { method: "HEAD" }), toHealthProblems("Url")).map(
     _ => true
   );
+
+/**
+ * Execute all the health checks for the application
+ *
+ * @returns either true or an array of error messages
+ */
+export const checkApplicationHealth = (): HealthCheck<ProblemSource, true> =>
+  taskEither
+    .of<ReadonlyArray<HealthProblem<ProblemSource>>, void>(void 0)
+    .chain(_ => checkConfigHealth())
+    .map(_ => true);
