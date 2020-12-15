@@ -1,12 +1,3 @@
-import {
-  common as azurestorageCommon,
-  createBlobService,
-  createFileService,
-  createQueueService,
-  createTableService
-} from "azure-storage";
-import { sequenceT } from "fp-ts/lib/Apply";
-import { array } from "fp-ts/lib/Array";
 import { toError } from "fp-ts/lib/Either";
 import {
   fromEither,
