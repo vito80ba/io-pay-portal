@@ -5,7 +5,7 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "route": "/api/v1/payment-activations/{codiceContestoPagamento}",
+      "route": "api/v1/payment-activations/{codiceContestoPagamento}",
       "methods": [
         "get"
       ]
