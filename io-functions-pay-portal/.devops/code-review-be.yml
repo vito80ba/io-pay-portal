@@ -53,8 +53,7 @@ stages:
           displayName: 'Lint'
       - job: validate_api_specification     
         steps:
-        - script: |
-            npx oval validate -p io-functions-pay-portal/openapi/index.yaml
+        - script: npx oval validate -p io-functions-pay-portal/openapi/index.yaml
           displayName: 'Validate API specification'
       - job: danger
         condition: 
@@ -78,12 +77,14 @@ stages:
         steps:
         - template: azure-templates/setup-project.yml
         
-        - script: |
-            yarn generate
+        - script: yarn generate
+          workingDirectory: io-functions-pay-portal
           displayName: 'Generate definitions'
-        - script: |
-            yarn test:coverage
+
+        - script: yarn test:coverage
+          workingDirectory: io-functions-pay-portal
           displayName: 'Unit tests exec'
-        - bash: |
-            bash <(curl -s https://codecov.io/bash)
+
+        - bash: bash <(curl -s https://codecov.io/bash)
+          workingDirectory: io-functions-pay-portal
           displayName: 'Code coverage'
