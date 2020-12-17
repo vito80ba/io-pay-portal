@@ -37,7 +37,6 @@ stages:
           vmImage: 'windows-2019'         
         steps:
         - template: azure-templates/setup-project.yml
-          displayName: 'Move to backend directory'
         - script: yarn build
           workingDirectory: io-functions-pay-portal
           displayName: 'Build'
