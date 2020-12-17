@@ -37,11 +37,9 @@ stages:
           vmImage: 'windows-2019'         
         steps:
         - template: azure-templates/setup-project.yml
-        - script: |
-            cd io-functions-pay-portal
           displayName: 'Move to backend directory'
-        - script: |
-            yarn build
+        - script: yarn build
+          workingDirectory: io-functions-pay-portal
           displayName: 'Build'
   
   - stage: Static_analysis
@@ -51,8 +49,8 @@ stages:
       - job: lint     
         steps:
         - template: azure-templates/setup-project.yml
-        - script: |
-            yarn lint
+        - script: yarn lint
+          workingDirectory: io-functions-pay-portal
           displayName: 'Lint'
       - job: validate_api_specification     
         steps:

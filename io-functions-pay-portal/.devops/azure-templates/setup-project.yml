@@ -25,10 +25,6 @@ steps:
     version: $(NODE_VERSION)
   displayName: 'Set up Node.js'
 
-- script: |
-    cd io-functions-pay-portal
-  displayName: 'Move to backend directory'
-
-- script: | 
-    yarn install --frozen-lockfile --no-progress --non-interactive --network-concurrency 1
+- script: yarn install --frozen-lockfile --no-progress --non-interactive --network-concurrency 1
+  workingDirectory: io-functions-pay-portal
   displayName: 'Install node modules'
