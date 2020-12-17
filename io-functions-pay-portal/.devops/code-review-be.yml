@@ -37,8 +37,8 @@ stages:
           vmImage: 'windows-2019'         
         steps:
         - template: azure-templates/setup-project.yml
-        - script: yarn build
-          workingDirectory: io-functions-pay-portal
+        - script: cd io-functions-pay-portal  && yarn build
+          # workingDirectory: io-functions-pay-portal
           displayName: 'Build'
   
   - stage: Static_analysis
