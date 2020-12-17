@@ -16,7 +16,8 @@ trigger:
   branches:
     include:
     - master
-    - main 
+    - main
+    - 175899260-integration-test
   paths:
     include:
     - io-functions-pay-portal
@@ -37,6 +38,9 @@ stages:
         steps:
         - template: azure-templates/setup-project.yml
         - script: |
+            cd io-functions-pay-portal
+          displayName: 'Move to backend directory'
+        - script: |
             yarn build
           displayName: 'Build'
   
@@ -53,7 +57,7 @@ stages:
       - job: validate_api_specification     
         steps:
         - script: |
-            npx oval validate -p openapi/index.yaml
+            npx oval validate -p io-functions-pay-portal/openapi/index.yaml
           displayName: 'Validate API specification'
       - job: danger
         condition: 
