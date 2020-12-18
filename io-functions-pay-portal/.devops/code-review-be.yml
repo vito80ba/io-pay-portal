@@ -30,9 +30,7 @@ stages:
   - stage: Build
     dependsOn: []
     jobs:
-      - job: make_build
-        pool:
-          vmImage: 'windows-2019'         
+      - job: make_build  
         steps:
         - template: azure-templates/setup-project.yml
         - script: yarn build
