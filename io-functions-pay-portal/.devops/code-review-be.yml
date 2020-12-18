@@ -17,7 +17,6 @@ trigger:
     include:
     - master
     - main
-    - 175899260-integration-test
   paths:
     include:
     - io-functions-pay-portal
