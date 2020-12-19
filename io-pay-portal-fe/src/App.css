@@ -1,8 +1,9 @@
 .App {
   text-align: center;
-  margin-left: 30%;
-  margin-right: 30%;
+  margin-left: 20%;
+  margin-right: 20%;
   margin-top: 10%;
+  height: 350px;
   box-shadow: 0px 0px 22px rgb(82, 82, 82);
   border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -12,7 +13,7 @@
 }
 
 .validation {
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 1rem auto;
   color: #06c;
 }
@@ -48,10 +49,6 @@ button {
 button:hover {
   color: #06c;
   background: white;
-}
-
-fieldset {
-  border: none;
 }
 
 input {

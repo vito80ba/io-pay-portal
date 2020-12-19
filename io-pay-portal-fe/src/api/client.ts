@@ -8,7 +8,7 @@ import { Millisecond } from "italia-ts-commons/lib/units";
 import nodeFetch from "node-fetch";
 import { createClient } from "../../generated/client";
 
-export const apiBaseUrl = "http://localhost:80";
+export const apiBaseUrl = "http://localhost:1234";
 
 // 5 seconds timeout by default
 const DEFAULT_REQUEST_TIMEOUT_MS = 10000;

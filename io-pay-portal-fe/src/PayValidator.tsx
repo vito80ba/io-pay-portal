@@ -1,34 +1,39 @@
 import React from "react";
-import DisplayValidationResponse from "./DisplayValidation";
+import { TaskEither } from "fp-ts/lib/TaskEither";
+import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import { apiClient } from "./api/client";
 import { withApiRequestWrapper } from "./api/util";
 import { ErrorResponses } from "./api/responses";
-import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
-
-import { TaskEither } from "fp-ts/lib/TaskEither";
 
 const getPaymentInfoTask = (
-  payment: string
+  rptIdInput: string
 ): TaskEither<ErrorResponses, PaymentRequestsGetResponse> =>
-  withApiRequestWrapper<any>(
+  withApiRequestWrapper<PaymentRequestsGetResponse>(
     (): any =>
       apiClient.getPaymentInfo({
-        rptId: payment,
+        rptId: rptIdInput,
       }),
     200
   );
 
 const PayValidator: React.FC = () => {
-  const [payment, setPayment] = React.useState<string>("");
-  const [paymentStatus, setPaymentStatus] = React.useState<string>("");
+  const [rptIdInput, setRptIdInput] = React.useState<string>("");
+  const [paymentStatus, setPaymentStatus] = React.useState<boolean>();
+  const [
+    paymentRequestsGetResponse,
+    setPaymentRequestsGetResponse,
+  ] = React.useState<PaymentRequestsGetResponse>();
 
-  const validatePayment = async (e: React.FormEvent<HTMLFormElement>) => {
+  const validatePayment = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    getPaymentInfoTask(payment)
+
+    getPaymentInfoTask(rptIdInput)
       .fold(
-        (_) => setPaymentStatus("Pagamento non valido"),
-        (myPayment) =>
-          setPaymentStatus(myPayment.importoSingoloVersamento.toString())
+        (_) => setPaymentStatus(false),
+        (response) => {
+          setPaymentStatus(true);
+          setPaymentRequestsGetResponse(response);
+        }
       )
       .run();
   };
@@ -36,23 +41,26 @@ const PayValidator: React.FC = () => {
   return (
     <div>
       <form onSubmit={validatePayment}>
-        <legend></legend>
-        <fieldset>
+        <div>
           <label>Codice Pagamento: </label>
           <input
             type="text"
-            value={payment}
+            value={rptIdInput}
             required
-            onChange={(e) => setPayment(e.target.value)}
+            onChange={(e) => setRptIdInput(e.target.value)}
           />
           <button>Verifica</button>
-        </fieldset>
+        </div>
       </form>
-      {paymentStatus && (
-        <DisplayValidationResponse
-          status={paymentStatus}
-        />
-      )}
+      <div>
+        <p className="validation">
+          {paymentStatus === true && paymentRequestsGetResponse
+            ? JSON.stringify(paymentRequestsGetResponse)
+            : paymentStatus === false
+            ? "Codice pagamento non valido!"
+            : null}
+        </p>
+      </div>
     </div>
   );
 };

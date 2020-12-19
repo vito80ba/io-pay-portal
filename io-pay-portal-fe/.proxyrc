@@ -1,8 +1,0 @@
-{
-  "/base": {
-    "target": "http://localhost:80",
-    "pathRewrite": {
-      "^/base": ""
-    }
-  }
-}
