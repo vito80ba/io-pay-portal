@@ -21,7 +21,7 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get("/api/v1/payment-activations", HttpCtrl());
+app.post("/api/v1/payment-activations", HttpCtrl());
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 

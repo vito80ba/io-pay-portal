@@ -20,11 +20,6 @@ paths:
         required: true
         description: Unique identifier for payments.
         type: string
-      - name: test
-        in: query
-        description: Use test environment of PagoPAClient
-        type: boolean
-        required: false
     get:
       operationId: getPaymentInfo
       summary: Get Payment Info

@@ -1,8 +1,6 @@
 import * as express from "express";
 import * as t from "io-ts";
 
-import { Context } from "@azure/functions";
-
 import { ContextMiddleware } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import { RequiredParamMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_param";
 import {
@@ -15,23 +13,18 @@ import {
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
 
-type IHttpHandler = (
-  context: Context,
-  param: string
-) => Promise<
-  | IResponseSuccessJson<{
-      message: string;
-    }>
-  | IResponseErrorNotFound
+import { PaymentRequestsGetResponse } from "../generated/definitions/PaymentRequestsGetResponse";
+
+type IHttpHandler = () => Promise<
+  IResponseSuccessJson<PaymentRequestsGetResponse> | IResponseErrorNotFound
 >;
 
 export function HttpHandler(): IHttpHandler {
-  return async (ctx, param) => {
+  return async () => {
     return ResponseSuccessJson({
-      headers: ctx.req?.headers,
-      message: `Hello ${param} !`,
-      user: "userAttrs"
-    });
+      codiceContestoPagamento: "testcode",
+      importoSingoloVersamento: 101
+    } as PaymentRequestsGetResponse);
   };
 }
 
@@ -40,7 +33,7 @@ export function HttpCtrl(): express.RequestHandler {
 
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
-    RequiredParamMiddleware("someParam", t.string)
+    RequiredParamMiddleware("rptId", t.string)
   );
 
   return wrapRequestHandler(middlewaresWrap(handler));

@@ -22,7 +22,7 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get("/api/v1/payment-requests/{rptId}", HttpCtrl());
+app.get("/api/v1/payment-requests/:rptId", HttpCtrl());
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 

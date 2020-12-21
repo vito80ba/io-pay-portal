@@ -1,9 +1,7 @@
 import * as express from "express";
-import * as t from "io-ts";
 
-import { Context } from "@azure/functions";
 import { ContextMiddleware } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
-import { RequiredParamMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_param";
+import { RequiredBodyPayloadMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_body_payload";
 import {
   withRequestMiddlewares,
   wrapRequestHandler
@@ -13,24 +11,18 @@ import {
   IResponseSuccessJson,
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
+import { PaymentActivationsPostRequest } from "../generated/definitions/PaymentActivationsPostRequest";
+import { PaymentActivationsPostResponse } from "../generated/definitions/PaymentActivationsPostResponse";
 
-type IHttpHandler = (
-  context: Context,
-  param: string
-) => Promise<
-  | IResponseSuccessJson<{
-      message: string;
-    }>
-  | IResponseErrorNotFound
+type IHttpHandler = () => Promise<
+  IResponseSuccessJson<PaymentActivationsPostResponse> | IResponseErrorNotFound
 >;
 
 export function HttpHandler(): IHttpHandler {
-  return async (ctx, param) => {
+  return async () => {
     return ResponseSuccessJson({
-      headers: ctx.req?.headers,
-      message: `Hello ${param} !`,
-      user: "userAttrs"
-    });
+      importoSingoloVersamento: 10
+    } as PaymentActivationsPostResponse);
   };
 }
 
@@ -39,7 +31,7 @@ export function HttpCtrl(): express.RequestHandler {
 
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
-    RequiredParamMiddleware("someParam", t.string)
+    RequiredBodyPayloadMiddleware(PaymentActivationsPostRequest)
   );
 
   return wrapRequestHandler(middlewaresWrap(handler));
