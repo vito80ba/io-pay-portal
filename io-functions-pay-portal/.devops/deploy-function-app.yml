@@ -95,7 +95,6 @@ stages:
 
           # Install functions extensions
           - task: DotNetCoreCLI@2
-            
             inputs:
               command: "build"
               arguments: "-o bin"  
@@ -103,10 +102,10 @@ stages:
 
           # Copy application to  
           - task: CopyFiles@2
-            workingDirectory: io-functions-pay-portal
             inputs:
               SourceFolder: '$(System.DefaultWorkingDirectory)'
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
+              workingDirectory: io-functions-pay-portal
               Contents: |
                 **/*
                 !.git/**/*
