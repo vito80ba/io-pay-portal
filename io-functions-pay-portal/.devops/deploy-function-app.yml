@@ -98,14 +98,13 @@ stages:
             inputs:
               command: "build"
               arguments: "-o bin"  
-              workingDirectory: io-functions-pay-portal 
+              workingDirectory: "io-functions-pay-portal" 
 
           # Copy application to  
           - task: CopyFiles@2
             inputs:
-              SourceFolder: '$(System.DefaultWorkingDirectory)'
+              SourceFolder: '$(System.DefaultWorkingDirectory)/io-functions-pay-portal'
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
-              workingDirectory: io-functions-pay-portal
               Contents: |
                 **/*
                 !.git/**/*
