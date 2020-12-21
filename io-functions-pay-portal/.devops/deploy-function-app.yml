@@ -95,12 +95,14 @@ stages:
 
           # Install functions extensions
           - task: DotNetCoreCLI@2
+            workingDirectory: io-functions-pay-portal
             inputs:
               command: "build"
               arguments: "-o bin"   
 
           # Copy application to  
           - task: CopyFiles@2
+            workingDirectory: io-functions-pay-portal
             inputs:
               SourceFolder: '$(System.DefaultWorkingDirectory)'
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
@@ -121,17 +123,17 @@ stages:
                 !tsconfig.json
             displayName: 'Copy deploy files'
             
-          - task: AzureFunctionApp@1  
-            inputs:
-              azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
-              resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
-              appType: 'functionApp'
-              appName: '$(PRODUCTION_APP_NAME)'
-              package: '$(Build.ArtifactStagingDirectory)/'
-              deploymentMethod: 'auto'
-              deployToSlotOrASE: true
-              slotName: 'staging'
-            displayName: Deploy to staging slot
+          # - task: AzureFunctionApp@1  
+          #   inputs:
+          #     azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
+          #     resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
+          #     appType: 'functionApp'
+          #     appName: '$(PRODUCTION_APP_NAME)'
+          #     package: '$(Build.ArtifactStagingDirectory)/'
+          #     deploymentMethod: 'auto'
+          #     deployToSlotOrASE: true
+          #     slotName: 'staging'
+          #   displayName: Deploy to staging slot
 
   # Check that the staging instance is healthy
   # - stage: Healthcheck
