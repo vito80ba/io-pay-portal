@@ -95,10 +95,11 @@ stages:
 
           # Install functions extensions
           - task: DotNetCoreCLI@2
-            workingDirectory: io-functions-pay-portal
+            
             inputs:
               command: "build"
-              arguments: "-o bin"   
+              arguments: "-o bin"  
+              workingDirectory: io-functions-pay-portal 
 
           # Copy application to  
           - task: CopyFiles@2
