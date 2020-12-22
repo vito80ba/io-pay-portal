@@ -152,18 +152,18 @@ stages:
               containerInstanceSubnet: 'azure-devops' 
 
   # Promote the staging instance to production
-  # - stage: Deploy_production
-  #   dependsOn:
-  #     - Healthcheck
-  #     - Deploy_staging
-  #   jobs:
-  #     - job: 'do_deploy'       
-  #       steps:  
-  #         - task: AzureAppServiceManage@0   
-  #           inputs:
-  #             azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
-  #             resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
-  #             webAppName: '$(PRODUCTION_APP_NAME)'
-  #             sourceSlot: staging
-  #             swapWithProduction: true
-  #           displayName: Swap with production slot
+  - stage: Deploy_production
+    dependsOn:
+      - Healthcheck
+      - Deploy_staging
+    jobs:
+      - job: 'do_deploy'       
+        steps:  
+          - task: AzureAppServiceManage@0   
+            inputs:
+              azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
+              resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
+              webAppName: '$(PRODUCTION_APP_NAME)'
+              sourceSlot: staging
+              swapWithProduction: true
+            displayName: Swap with production slot
