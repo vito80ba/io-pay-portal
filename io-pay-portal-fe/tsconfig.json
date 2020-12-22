@@ -10,7 +10,6 @@
     "jsx": "react",
     "noEmit": true,
     "importHelpers": true,
-    "isolatedModules": true,
     "strict": true,
     "noImplicitAny": true,
     "strictFunctionTypes": true,
