@@ -2,15 +2,7 @@ import { default as $ } from "jquery";
 import { fromNullable } from "fp-ts/lib/Option";
 import { getPaymentInfoTask } from "./api/services";
 import "bootstrap/dist/css/bootstrap.css";
-
-export const PayDetail: ReadonlyArray<string> = [
-  "importoSingoloVersamento",
-  "codiceContestoPagamento",
-  "ibanAccredito",
-  "causaleVersamento",
-  "enteBeneficiario",
-  "spezzoniCausaleVersamento",
-];
+import { showPaymentInfo } from "./helper";
 
 /**
  * Init
@@ -18,32 +10,18 @@ export const PayDetail: ReadonlyArray<string> = [
 $("#stateCard").hide();
 
 /**
- * Verify payment
+ * Verify and show payment info
  * */
-$("#verify").on("click", (evt): void => {
-  evt.preventDefault();
-  const rtdId: string = fromNullable($("#rtdId").val()?.toString()).getOrElse(
-    ""
-  );
-  /*eslint-disable */
-  getPaymentInfoTask(rtdId)
-    .fold(
-      () => null,
-      (paymentInfo) => {
-        $("#stateCard").show();
-        $("#initCard").hide();
-        $("#payStateHeader").text("Informazioni pagamento " + rtdId);
-        $("#payState")
-          .text("")
-          .append(
-            PayDetail.reduce(
-              (stateKeys, key) =>
-                (stateKeys += `<li class="list-group-item">
-                  ${key} : <strong>${Object(paymentInfo)[key]}</strong></li>`),
-              ""
-            )
-          );
-      }
-    )
-    .run();
-});
+$("#verify").on(
+  "click",
+  async (evt): Promise<void> => {
+    evt.preventDefault();
+    const rtdId: string = fromNullable($("#rtdId").val()?.toString()).getOrElse(
+      ""
+    );
+
+    await getPaymentInfoTask(rtdId)
+      .map((paymentInfo) => showPaymentInfo(rtdId, paymentInfo))
+      .run();
+  }
+);
