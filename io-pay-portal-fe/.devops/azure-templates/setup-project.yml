@@ -26,5 +26,5 @@ steps:
   displayName: 'Set up Node.js'
 
 - script: yarn install --frozen-lockfile --no-progress --non-interactive --network-concurrency 1
-  workingDirectory: io-functions-pay-portal
+  workingDirectory: io-pay-portal-fe
   displayName: 'Install node modules'
