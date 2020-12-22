@@ -12,7 +12,7 @@ import {
   ResponseErrorGeneric,
   ResponseErrorInternal,
   ResponseErrorNotFound,
-  ResponseErrorTooManyRequests,
+  ResponseErrorTooManyRequests
 } from "italia-ts-commons/lib/responses";
 
 export const unhandledResponseStatus = (status: number) =>
@@ -39,8 +39,8 @@ export function ResponseErrorUnauthorized(
     ...ResponseErrorGeneric(HttpStatusCodeEnum.HTTP_STATUS_401, title, detail),
     ...{
       detail: `${title}: ${detail}`,
-      kind: "IResponseErrorUnauthorized",
-    },
+      kind: "IResponseErrorUnauthorized"
+    }
   };
 }
 

@@ -1,5 +1,5 @@
 import { left } from "fp-ts/lib/Either";
-import { withApiRequestWrapper } from "../util";
+import { withApiRequestWrapper } from "../services";
 
 describe("withApiRequestWrapper", () => {
   it("should return a ", async () => {

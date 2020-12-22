@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Portale dei Pagamenti</title>
+    <script src="env-config.js"></script>
+ </head>
+  <body>
+    <div class="d-flex align-items-center light-blue-gradient" style="height: 100vh;">
+      <div class="container" >
+        <div class="d-flex justify-content-center">
+          <div class="col-md-6" id="initCard">
+            <div class="card rounded-0 shadow">
+              <div class="card-body">
+                  <h3>Portale dei Pagamenti</h3>
+                  <form>
+                      <div class="form-group">
+                        <label for="rtdId">Codice avviso pagamento: </label>
+                        <input type="text" class="form-control" id="rtdId">
+                      </div>
+                      <button type="submit" id="verify" class="btn btn-primary">Verifica</button>
+                  </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" id="stateCard">
+            <div class="card rounded-0 shadow">
+              <div class="card-body">
+                <h3 id="payStateHeader"></h3>
+                <ul id="payState" class="list-group"></ul>
+                  <form>
+                    <button type="submit" id="back" class="btn btn-primary">Indietro</button>
+                    <button type="submit" id="continue" class="btn btn-primary">Continua</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div> 
+    </div>  
+    <script type="text/javascript" src="./index.ts"></script>
+  </body>
+</html>

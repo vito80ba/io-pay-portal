@@ -2,13 +2,13 @@ import { agent } from "italia-ts-commons";
 import {
   AbortableFetch,
   setFetchTimeout,
-  toFetch,
+  toFetch
 } from "italia-ts-commons/lib/fetch";
 import { Millisecond } from "italia-ts-commons/lib/units";
 import nodeFetch from "node-fetch";
 import { createClient } from "../../generated/client";
 
-import { getConfig } from "../util/config";
+export const apiBaseUrl = "http://localhost:1234";
 
 // 5 seconds timeout by default
 const DEFAULT_REQUEST_TIMEOUT_MS = 10000;
@@ -22,8 +22,8 @@ const fetchWithTimeout = toFetch(
 const fetchApi: typeof fetchWithTimeout = (nodeFetch as any) as typeof fetchWithTimeout;
 
 export const apiClient = createClient({
-  baseUrl: getConfig("IO_PAY_PORTAL_FUNCTION"),
-  fetchApi,
+  baseUrl: apiBaseUrl,
+  fetchApi
 });
 
 export type APIClient = typeof apiClient;

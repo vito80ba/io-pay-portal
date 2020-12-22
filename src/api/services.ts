@@ -6,6 +6,8 @@ import {
 } from "fp-ts/lib/TaskEither";
 import * as t from "io-ts";
 import { IResponseType } from "italia-ts-commons/lib/requests";
+import { PaymentRequestsGetResponse } from "../../generated/PaymentRequestsGetResponse";
+import { apiClient } from "./client";
 import {
   ErrorResponses,
   toDefaultResponseErrorInternal,
@@ -31,4 +33,15 @@ export const withApiRequestWrapper = <T>(
             ? fromLeft(toErrorServerResponse(responseType))
             : taskEither.of(responseType.value)
       )
+  );
+
+export const getPaymentInfoTask = (
+  rptIdInput: string
+): TaskEither<ErrorResponses, PaymentRequestsGetResponse> =>
+  withApiRequestWrapper<PaymentRequestsGetResponse>(
+    (): any =>
+      apiClient.getPaymentInfo({
+        rptId: rptIdInput,
+      }),
+    200
   );

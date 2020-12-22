@@ -9,7 +9,7 @@ app.use(createProxyMiddleware('/api', {
   target: 'http://localhost:80'
 }));
 
-const bundler = new Bundler('index.html');
+const bundler = new Bundler('src/index.html');
 app.use(bundler.middleware());
 
 app.listen(Number(1234));
