@@ -93,7 +93,7 @@ stages:
           
           - template: azure-templates/make-build.yml
 
-          - publish: $(System.DefaultWorkingDirectory)/dist
+          - publish: $(System.DefaultWorkingDirectory)/io-functions-pay-portal/dist
             artifact: Bundle
             
 
