@@ -2,7 +2,7 @@ import { default as $ } from "jquery";
 import { fromNullable } from "fp-ts/lib/Option";
 import { getPaymentInfoTask } from "./api/services";
 import "bootstrap/dist/css/bootstrap.css";
-import { showPaymentInfo } from "./helper";
+import { showPaymentInfo, showPaymentInfoError } from "./helper";
 
 /**
  * Init
@@ -21,7 +21,10 @@ $("#verify").on(
     );
 
     await getPaymentInfoTask(rtdId)
-      .map((paymentInfo) => showPaymentInfo(rtdId, paymentInfo))
+      .fold(
+        () => showPaymentInfoError(),
+        (paymentInfo) => showPaymentInfo(rtdId, paymentInfo)
+      )
       .run();
   }
 );

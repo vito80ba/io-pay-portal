@@ -29,3 +29,7 @@ export const showPaymentInfo = (
       )
     );
 };
+
+export const showPaymentInfoError = () => {
+  $("#error").text("Errore Validazione Pagamento");
+};
