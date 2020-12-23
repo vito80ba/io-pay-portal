@@ -103,7 +103,7 @@ stages:
           # Copy application to  
           - task: CopyFiles@2
             inputs:
-              SourceFolder: '$(System.DefaultWorkingDirectory)/io-functions-pay-portal'
+              SourceFolder: '$(System.DefaultWorkingDirectory)\io-functions-pay-portal' # NOTE: backslash is needed on windows machine
               TargetFolder: '$(Build.ArtifactStagingDirectory)'
               Contents: |
                 **/*
