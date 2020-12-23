@@ -41,23 +41,23 @@ stages:
   # - is on branch master 
   # - is a tag in the form v{version}-RELEASE
   - stage: Release
-    condition:
-      and(
-        succeeded(),
-        or(
-          eq(variables['Build.SourceBranch'], 'refs/heads/master'),
-          and(
-            startsWith(variables['Build.SourceBranch'], 'refs/tags'),
-            endsWith(variables['Build.SourceBranch'], '-RELEASE')
-          )
-        )
-      )
+  #  condition:
+  #    and(
+  #      succeeded(),
+  #      or(
+  #        eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+  #        and(
+  #          startsWith(variables['Build.SourceBranch'], 'refs/tags'),
+  #          endsWith(variables['Build.SourceBranch'], '-RELEASE')
+  #        )
+  #      )
+  #    )
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
       - job: make_release
         steps:
-        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - template: templates/node-github-release/template.yaml@pagopaCommons 
             parameters:
               semver: '${{ parameters.RELEASE_SEMVER }}'
