@@ -23,6 +23,7 @@ const fetchApi: typeof fetchWithTimeout = (nodeFetch as any) as typeof fetchWith
 
 export const apiClient = createClient({
   baseUrl: getConfig("IO_PAY_PORTAL_FUNCTION"),
+  basePath: "/payportal",
   fetchApi,
 });
 
