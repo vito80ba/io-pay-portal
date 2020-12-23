@@ -1,0 +1,11 @@
+# Azure DevOps pipeline template used to build bundle.
+  
+steps:
+- bash: |
+    echo 'IO_PAY_PORTAL_FUNCTION: $IO_PAY_PORTAL_FUNCTION'
+    chmod +x env.sh && source env.sh
+    yarn build
+  workingDirectory: io-pay-portal-fe
+  env:
+    IO_DEVELOPER_PORTAL_PORT: $(IO_PAY_PORTAL_FUNCTION)
+  displayName: 'Build files'

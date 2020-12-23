@@ -77,4 +77,16 @@ Then, point your browser to
 
 to reach the frontend.   
 
+## Azure Pipeline
 
+The CI/CD pipelines are defined in the _.devops_ folder. It is required to set the following variables on Azure DevOps:
+
+- GIT_EMAIL
+- GIT_USERNAME
+- GITHUB_CONNECTION
+- IO_PAY_PORTAL_FUNCTION
+- PRODUCTION_AZURE_SUBSCRIPTION
+- STAGING_AZURE_SUBSCRIPTION
+- PRODUCTION_RESOURCE_GROUP_NAME
+- PRODUCTION_CDN_ENDPOINT
+- PRODUCTION_CDN_PROFILE_NAME
