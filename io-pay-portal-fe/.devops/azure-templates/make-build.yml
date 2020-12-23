@@ -9,3 +9,4 @@ steps:
   env:
     IO_DEVELOPER_PORTAL_PORT: $(IO_PAY_PORTAL_FUNCTION)
   displayName: 'Build files'
+  
