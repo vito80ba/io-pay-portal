@@ -36,12 +36,12 @@ export const withApiRequestWrapper = <T>(
   );
 
 export const getPaymentInfoTask = (
-  rptIdInput: string
+  rptId: string
 ): TaskEither<ErrorResponses, PaymentRequestsGetResponse> =>
   withApiRequestWrapper<PaymentRequestsGetResponse>(
     (): any =>
       apiClient.getPaymentInfo({
-        rptId: rptIdInput,
+        rptId,
       }),
     200
   );
