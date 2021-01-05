@@ -7,17 +7,20 @@
 
 import * as t from "io-ts";
 import { readableReport } from "italia-ts-commons/lib/reporters";
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
 
 // global app configuration
 export type IConfig = t.TypeOf<typeof IConfig>;
 export const IConfig = t.interface({
-  isProduction: t.boolean
+  IO_PAGOPA_PROXY_PROD_BASE_URL : NonEmptyString,
+  IO_PAGOPA_PROXY_TEST_BASE_URL : NonEmptyString,
+  PAGOPA_BASE_PATH : NonEmptyString,
+  IO_PAGOPA_PROXY_API_TOKEN : NonEmptyString
 });
 
 // No need to re-evaluate this object for each call
 const errorOrConfig: t.Validation<IConfig> = IConfig.decode({
-  ...process.env,
-  isProduction: process.env.NODE_ENV === "production"
+  ...process.env
 });
 
 /**

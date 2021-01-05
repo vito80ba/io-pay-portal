@@ -40,7 +40,7 @@ open http://localhost/some/path/test
 
 If all right, you'll see something like that 🚀
 
-```
+```bash
 functions_1  | Functions:
 functions_1  | 
 functions_1  |  ActivatePayment: [POST] http://localhost:7071/api/v1/payment-activations
