@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="worker-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="worker-src 'self'">
+    <meta http-equiv="X-Webkit-CSP" content="worker-src 'self'">
+    <title>Portale dei Pagamenti</title>
+    <script src="env-config.js"></script>
+  </head>
+  <body>
+    <div class="d-flex align-items-center light-blue-gradient" style="height: 100vh;">
+      <div class="container" >
+        <div class="d-flex justify-content-center">
+          <div class="col-md-6" id="initCard">
+            <div class="card rounded-0 shadow">
+              <div class="card-body">
+                  <h3>Portale dei Pagamenti</h3>
+                  <form>
+                      <div class="form-group">
+                        <label for="rtdId">Codice avviso pagamento: </label>
+                        <input type="text" class="form-control" id="rtdId">
+                      </div>
+                      <button type="submit" id="verify" class="btn btn-primary">Verifica</button>
+                      <div class="spinner-border" id="loading"></div>
+                  </form>
+                  <p id="error"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6" id="stateCard">
+            <div class="card rounded-0 shadow">
+              <div class="card-body">
+                <h3 id="payStateHeader"></h3>
+                <ul id="payState" class="list-group"></ul>
+                  <form>
+                    <button type="submit" id="back" class="btn btn-primary">Indietro</button>
+                    <button type="submit" id="active" class="btn btn-primary">Continua</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div> 
+    </div>  
+    <script type="text/javascript" src="./index.ts"></script>
+  </body>
+</html>
