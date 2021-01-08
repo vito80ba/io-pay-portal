@@ -10,13 +10,12 @@ import { createClient } from "../generated/pagopa-proxy/client";
 
 import { getConfigOrThrow } from "../utils/config";
 
-export const config = getConfigOrThrow();
+const config = getConfigOrThrow();
 
-export const prodBaseUrl = config.IO_PAGOPA_PROXY_PROD_BASE_URL;
-export const testBaseUrl = config.IO_PAGOPA_PROXY_PROD_BASE_URL;
-export const basePath = config.PAGOPA_BASE_PATH;
-export const proxyToken = config.IO_PAGOPA_PROXY_API_TOKEN;
-
+const prodBaseUrl = config.IO_PAGOPA_PROXY_PROD_BASE_URL;
+const testBaseUrl = config.IO_PAGOPA_PROXY_PROD_BASE_URL;
+const basePath = config.PAGOPA_BASE_PATH;
+const proxyToken = config.IO_PAGOPA_PROXY_API_TOKEN;
 
 // 5 seconds timeout by default
 const DEFAULT_REQUEST_TIMEOUT_MS = 10000;
@@ -30,11 +29,9 @@ const fetchWithTimeout = toFetch(
 const fetchApi: typeof fetchWithTimeout = (nodeFetch as any) as typeof fetchWithTimeout;
 
 export const apiClient = createClient({
+  basePath: "",
   baseUrl: prodBaseUrl,
-  // basePath : basePath,
-  basePath : "",
   fetchApi
 });
 
 export type IApiClient = typeof apiClient;
-

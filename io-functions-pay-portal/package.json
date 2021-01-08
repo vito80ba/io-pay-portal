@@ -8,10 +8,13 @@
   "scripts": {
     "prebuild": "shx rm -rf dist && yarn generate",
     "build": "tsc",
+    "clean": "npm-run-all -s clean:*",
+    "clean:dist": "rimraf dist",
+    "clean:generated": "rimraf generated",
     "watch": "tsc -w",
     "extensions:install": "func extensions install",
     "start": "dotenv -e .env func start --javascript",
-    "docker": "yarn clean && yarn build && docker-compose up -d",
+    "docker": "yarn clean && yarn generate && yarn build && docker-compose up",
     "predev": "npm-run-all generate build",
     "dev": "npm-run-all --parallel start watch",
     "test": "jest",
@@ -57,6 +60,7 @@
     "io-functions-commons": "^17.0.0",
     "io-functions-express": "^1.1.0",
     "io-ts": "1.8.5",
+    "italia-pagopa-commons": "^1.0.0",
     "italia-ts-commons": "^8.5.0",
     "winston": "^3.2.1"
   },

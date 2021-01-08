@@ -1,7 +1,7 @@
 /**
  * Config module
  *
- * Single point of access for the application confguration. Handles validation on required environment variables.
+ * Single point of access for the application configuration. Handles validation on required environment variables.
  * The configuration is evaluate eagerly at the first access to the module. The module exposes convenient methods to access such value.
  */
 
@@ -12,10 +12,10 @@ import { NonEmptyString } from "italia-ts-commons/lib/strings";
 // global app configuration
 export type IConfig = t.TypeOf<typeof IConfig>;
 export const IConfig = t.interface({
-  IO_PAGOPA_PROXY_PROD_BASE_URL : NonEmptyString,
-  IO_PAGOPA_PROXY_TEST_BASE_URL : NonEmptyString,
-  PAGOPA_BASE_PATH : NonEmptyString,
-  IO_PAGOPA_PROXY_API_TOKEN : NonEmptyString
+  IO_PAGOPA_PROXY_API_TOKEN: NonEmptyString,
+  IO_PAGOPA_PROXY_PROD_BASE_URL: NonEmptyString,
+  IO_PAGOPA_PROXY_TEST_BASE_URL: NonEmptyString,
+  PAGOPA_BASE_PATH: NonEmptyString
 });
 
 // No need to re-evaluate this object for each call

@@ -9,6 +9,7 @@ import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/c
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
 
 import { GetPaymentInfoCtrl } from "./handler";
+
 import { apiClient } from "../clients/pagopa";
 
 // tslint:disable-next-line: no-let
@@ -29,7 +30,6 @@ const azureFunctionHandler = createAzureFunctionHandler(app);
 
 // Binds the express app to an Azure Function handler
 function httpStart(context: Context): void {
-  console.log("start..........httpStart....GetPaymentInfoCtrl");
   logger = context.log;
   setAppContext(app, context);
   azureFunctionHandler(context);

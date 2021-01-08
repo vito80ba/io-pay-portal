@@ -1,7 +1,11 @@
 import * as express from "express";
-import * as t from "io-ts";
 
+import { Context } from "@azure/functions";
 import { ContextMiddleware } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
+
+import { identity } from "fp-ts/lib/function";
+import { IApiClient } from "../clients/pagopa";
+
 import { RequiredParamMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_param";
 import {
   withRequestMiddlewares,
@@ -13,59 +17,60 @@ import {
 } from "italia-ts-commons/lib/responses";
 
 import { PaymentRequestsGetResponse } from "../generated/definitions/PaymentRequestsGetResponse";
-import { IApiClient} from "../clients/pagopa";
 import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
 import { ErrorResponses } from "../utils/responses";
-import { identity } from "fp-ts/lib/function";
+
 import { TaskEither } from "fp-ts/lib/TaskEither";
-import { Context } from "@azure/functions";
+import { RptIdFromString } from "italia-pagopa-commons/lib/pagopa";
 
 type IGetPaymentInfoHandler = (
-    context: Context,
-    rptId : string
-) => Promise<
-  IResponseSuccessJson<PaymentRequestsGetResponse> | ErrorResponses
->;
+  context: Context,
+  rptId: RptIdFromString
+) => Promise<IResponseSuccessJson<PaymentRequestsGetResponse> | ErrorResponses>;
 
 const logPrefix = "GetPaymentInfoHandler";
 
 const getPaymentInfoTask = (
   logger: ILogger,
   apiClient: IApiClient,
-  rptId : string
+  rptId: RptIdFromString
 ): TaskEither<ErrorResponses, PaymentRequestsGetResponse> =>
-  withApiRequestWrapper(
-    logger,
+  withApiRequestWrapper<PaymentRequestsGetResponse>(
+    logger, // tslint:disable-next-line: no-any
     (): any =>
-      apiClient.getPaymentInfo({ rpt_id_from_string : rptId }) 
-      ,
+      apiClient.getPaymentInfo({
+        rpt_id_from_string: RptIdFromString.encode(rptId)
+      }),
     200
   );
 
-export function GetPaymentInfoHandler(pagoPaClient : IApiClient): IGetPaymentInfoHandler {
-  return (context, rptId) => 
-    getPaymentInfoTask(
+export function GetPaymentInfoHandler(
+  pagoPaClient: IApiClient
+): IGetPaymentInfoHandler {
+  return (context, rptId) => {
+    return getPaymentInfoTask(
       getLogger(context, logPrefix, "GetPaymentInfo"),
-      pagoPaClient, 
-      rptId)
-      .map(myPayment =>
-        ResponseSuccessJson(myPayment)
-      )
+      pagoPaClient,
+      rptId
+    )
+      .map(myPayment => ResponseSuccessJson(myPayment))
       .fold<IResponseSuccessJson<PaymentRequestsGetResponse> | ErrorResponses>(
-      identity,
-      identity
+        identity,
+        identity
       )
       .run();
+  };
 }
 
-export function GetPaymentInfoCtrl(pagoPaClient : IApiClient): express.RequestHandler {
+export function GetPaymentInfoCtrl(
+  pagoPaClient: IApiClient
+): express.RequestHandler {
   const handler = GetPaymentInfoHandler(pagoPaClient);
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
-    RequiredParamMiddleware("rptId", t.string)
+    RequiredParamMiddleware("rptId", RptIdFromString)
   );
-
 
   return wrapRequestHandler(middlewaresWrap(handler));
 }

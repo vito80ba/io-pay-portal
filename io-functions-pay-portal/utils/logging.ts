@@ -8,10 +8,11 @@ export const getLogger = (
   name: string
 ) => {
   return {
-    logErrors: (errs: Errors) =>
-      context.log.error(
+    logErrors: (errs: Errors) => {
+      return context.log.error(
         `${logPrefix}|${name}|ERROR=${errorsToReadableMessages(errs)}`
-      ),
+      );
+    },
     logUnknown: (errs: unknown) =>
       context.log.error(
         `${logPrefix}|${name}|UNKNOWN_ERROR=${JSON.stringify(errs)}`
