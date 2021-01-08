@@ -5,9 +5,8 @@ import { debug } from "console";
 // should be HERE !!!!
 process.env = {
   IO_PAGOPA_PROXY_PROD_BASE_URL: "http://localhost:3001/",
-  IO_PAGOPA_PROXY_TEST_BASE_URL: "http://localhosttest:3002",
-  PAGOPA_BASE_PATH: "NonEmptyString",
-  IO_PAGOPA_PROXY_API_TOKEN: "api/v1"
+  IO_PAGOPA_PROXY_TEST_BASE_URL: "http://localhost:3001/",
+  PAGOPA_BASE_PATH: "NonEmptyString"
 };
 // debug("ENV", process.env);
 
