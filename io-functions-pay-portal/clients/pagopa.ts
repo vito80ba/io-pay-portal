@@ -13,9 +13,6 @@ import { getConfigOrThrow } from "../utils/config";
 const config = getConfigOrThrow();
 
 const prodBaseUrl = config.IO_PAGOPA_PROXY_PROD_BASE_URL;
-const testBaseUrl = config.IO_PAGOPA_PROXY_PROD_BASE_URL;
-const basePath = config.PAGOPA_BASE_PATH;
-const proxyToken = config.IO_PAGOPA_PROXY_API_TOKEN;
 
 // 5 seconds timeout by default
 const DEFAULT_REQUEST_TIMEOUT_MS = 10000;
