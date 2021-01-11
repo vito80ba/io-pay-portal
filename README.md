@@ -1,9 +1,24 @@
 # io-pay-portal
 
 - [io-pay-portal](#io-pay-portal)
+  - [Infrastructure](#infrastructure)
+    - [Public endpoint](#public-endpoint)
   - [Code coverage and CI/CD status](#code-coverage-and-cicd-status)
   - [Sequence diagram : _Partale Pagamenti_](#sequence-diagram--partale-pagamenti)
   - [Sequence diagram : _WISP light_](#sequence-diagram--wisp-light)
+
+## Infrastructure
+The infrastructure decided for the `io-pay-portal` project has been defined [here](https://github.com/pagopa/io-infrastructure-live-new/pull/363) 
+
+### Public endpoint
+
+- [io-pay-portal (fe)](https://io-p-cdnendpoint-iopayportal.azureedge.net/)
+- io-pay-portal (be)
+  - [verify](https://api.io.italia.it/api/payportal/v1/payment-requests/123456)
+  - [activate](https://api.io.italia.it/api/payportal/v1/BLABLABLABLA)
+  - [getPayment](https://api.io.italia.it/api/payportal/v1/BLABLABLABLA)
+
+
 ## Code coverage and CI/CD status
 [![codecov](https://codecov.io/gh/pagopa/io-pay-portal/branch/main/graph/badge.svg)](https://codecov.io/gh/pagopa/io-pay-portal)
 
