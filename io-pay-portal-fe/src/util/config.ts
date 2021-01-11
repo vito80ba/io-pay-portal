@@ -1,8 +1,11 @@
+import { Millisecond } from "italia-ts-commons/lib/units";
+
 export interface IConfig {
-  IO_PAY_PORTAL_FUNCTION: string;
+  IO_PAY_PORTAL_API_HOST: string;
+  IO_PAY_PORTAL_API_REQUEST_TIMEOUT: Millisecond;
 }
 
-export function getConfig(param: keyof IConfig): string {
+export function getConfig(param: keyof IConfig): string | Millisecond {
   /*eslint-disable */
   if (!("_env_" in window)) {
     throw new Error("Missing configuration");

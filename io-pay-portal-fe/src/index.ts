@@ -1,8 +1,11 @@
 import { default as $ } from "jquery";
 import { fromNullable } from "fp-ts/lib/Option";
-import { getPaymentInfoTask } from "./api/services";
 import "bootstrap/dist/css/bootstrap.css";
-import { showPaymentInfo, showPaymentInfoError } from "./helper";
+import {
+  getPaymentInfoTask,
+  showPaymentInfo,
+  showPaymentInfoError,
+} from "./helper";
 
 /**
  * Init
@@ -18,13 +21,16 @@ $("#verify").on(
   async (evt): Promise<void> => {
     evt.preventDefault();
     $("#loading").show();
-    const rtdId: string = fromNullable($("#rtdId").val()?.toString()).getOrElse(
-      ""
-    );
-    await getPaymentInfoTask(rtdId)
+    const paymentNoticeCode: string = fromNullable(
+      $("#paymentNoticeCode").val()?.toString()
+    ).getOrElse("");
+    const organizationId: string = fromNullable(
+      $("#organizationId").val()?.toString()
+    ).getOrElse("");
+    await getPaymentInfoTask(organizationId, paymentNoticeCode)
       .fold(
-        () => showPaymentInfoError(),
-        (paymentInfo) => showPaymentInfo(rtdId, paymentInfo)
+        (errorMessage) => showPaymentInfoError(errorMessage),
+        (paymentInfo) => showPaymentInfo(paymentNoticeCode, paymentInfo)
       )
       .run();
     $("#loading").hide();

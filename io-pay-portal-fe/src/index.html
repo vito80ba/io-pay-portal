@@ -20,8 +20,12 @@
                   <h3>Portale dei Pagamenti</h3>
                   <form>
                       <div class="form-group">
-                        <label for="rtdId">Codice avviso pagamento: </label>
-                        <input type="text" class="form-control" id="rtdId">
+                        <label for="organizationId"> Ente beneficiario: </label>
+                        <input type="text" class="form-control" id="organizationId">
+                      </div>                  
+                      <div class="form-group">
+                        <label for="paymentNoticeCode">Codice avviso: </label>
+                        <input type="text" class="form-control" id="paymentNoticeCode">
                       </div>
                       <button type="submit" id="verify" class="btn btn-primary">Verifica</button>
                       <div class="spinner-border" id="loading"></div>
