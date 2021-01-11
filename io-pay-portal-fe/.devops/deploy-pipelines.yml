@@ -2,7 +2,7 @@
 
 variables:
   NODE_VERSION: '12.19.1'
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)//.yarn
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/io-pay-portal-fe/.yarn
 
 parameters:
   - name: 'RELEASE_SEMVER'
