@@ -16,7 +16,7 @@ services:
       - "7071:7071"
       - "5858:5858"
     networks:
-      - io-fn
+      - io-mock_io-fn
     volumes:
       - .:/usr/src/app
     labels:
@@ -38,7 +38,7 @@ services:
   traefik:
     image: traefik:v2.0
     command: |-
-      --entrypoints.web.address=:80
+      --entrypoints.web.address=:81
       --providers.docker=true
       --providers.docker.network=io-fn
       --log.level=ERROR
@@ -47,12 +47,12 @@ services:
     ports:
       - ${API_GATEWAY_PORT}:${API_GATEWAY_PORT}
     networks:
-      - io-fn
+      - io-mock_io-fn
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
-  io-fn:
-    driver: bridge
-    driver_opts:
-      com.docker.network.driver.mtu: 1450
+  io-mock_io-fn:
+    external: true
+    # driver_opts:
+    #   com.docker.network.driver.mtu: 1450

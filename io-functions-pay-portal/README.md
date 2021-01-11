@@ -5,7 +5,6 @@
     - [Prerequisites](#prerequisites)
     - [Backend side](#backend-side)
     - [Frontend side](#frontend-side)
-  - [Deploy](#deploy)
 ## Local development
 
 ### Prerequisites
@@ -40,7 +39,7 @@ open http://localhost/some/path/test
 
 If all right, you'll see something like that 🚀
 
-```
+```bash
 functions_1  | Functions:
 functions_1  | 
 functions_1  |  ActivatePayment: [POST] http://localhost:7071/api/v1/payment-activations
@@ -55,6 +54,3 @@ functions_1  |  Info: [GET] http://localhost:7071/info
 
 
 ### Frontend side
-
-## Deploy
-TODO

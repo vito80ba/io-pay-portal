@@ -8,7 +8,9 @@ import { AzureContextTransport } from "io-functions-commons/dist/src/utils/loggi
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
 
-import { HttpCtrl } from "./handler";
+import { GetPaymentInfoCtrl } from "./handler";
+
+import { apiClient } from "../clients/pagopa";
 
 // tslint:disable-next-line: no-let
 let logger: Context["log"] | undefined;
@@ -22,7 +24,7 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get("/api/v1/payment-requests/:rptId", HttpCtrl());
+app.get("/api/v1/payment-requests/:rptId", GetPaymentInfoCtrl(apiClient));
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 
