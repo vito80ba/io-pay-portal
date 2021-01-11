@@ -2,14 +2,12 @@
 
 [![codecov](https://codecov.io/gh/pagopa/io-pay-portal/branch/main/graph/badge.svg)](https://codecov.io/gh/pagopa/io-pay-portal)
 
-_pagopa.io-pay-portal.fe.deploy_
-[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.df-purgehistory-policies?branchName=master)](https://dev.azure.com/pagopa-io/io-pay-portal/_build?definitionId=72&branchName=master)
+[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.io-pay-portal.fe.code-review?branchName=refs%2Fpull%2F5%2Fmerge)](https://dev.azure.com/pagopa-io/io-pay-portal/_build/latest?definitionId=69&branchName=refs%2Fpull%2F5%2Fmerge)
 
-_pagopa.io-pay-portal.be.deploy_
-[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.df-purgehistory-policies?branchName=master)](https://dev.azure.com/pagopa-io/io-pay-portal/_build?definitionId=67&branchName=master)
+[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.io-pay-portal?branchName=refs%2Fpull%2F5%2Fmerge)](https://dev.azure.com/pagopa-io/io-pay-portal/_build/latest?definitionId=65&branchName=refs%2Fpull%2F5%2Fmerge)
 
-_pagopa.io-pay-portal.fe.code-review_
-[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.df-purgehistory-policies?branchName=master)](https://dev.azure.com/pagopa-io/io-pay-portal/_build?definitionId=69&branchName=master)
+[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.io-pay-portal.fe.deploy?repoName=pagopa%2Fio-pay-portal&branchName=175844896-ui-pay-validation)](https://dev.azure.com/pagopa-io/io-pay-portal/_build/latest?definitionId=72&repoName=pagopa%2Fio-pay-portal&branchName=175844896-ui-pay-validation)
 
-_pagopa.io-pay-portal_
-[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.df-purgehistory-policies?branchName=master)](https://dev.azure.com/pagopa-io/io-pay-portal/_build?definitionId=65&branchName=master)
+[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.io-pay-portal.be.deploy?repoName=pagopa%2Fio-pay-portal&branchName=175844896-be-fn-verify)](https://dev.azure.com/pagopa-io/io-pay-portal/_build/latest?definitionId=67&repoName=pagopa%2Fio-pay-portal&branchName=175844896-be-fn-verify)
+
+
