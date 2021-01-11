@@ -59,7 +59,6 @@ stages:
         steps:
         - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/175844896-fix-pipelines-be') }}:
           - template: templates/node-github-release/template.yaml@pagopaCommons 
-            workingDirectory: io-pay-portal-fe
             parameters:
               release_branch: 'main'
               semver: '${{ parameters.RELEASE_SEMVER }}'
