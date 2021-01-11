@@ -57,10 +57,10 @@ stages:
     jobs:
       - job: make_release
         steps:
-        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/175844896-fix-pipelines-be') }}:
+        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - template: templates/node-github-release/template.yaml@pagopaCommons 
             parameters:
-              release_branch: '175844896-fix-pipelines-be'
+              release_branch: 'main'
               semver: '${{ parameters.RELEASE_SEMVER }}'
               gitEmail: $(GIT_EMAIL)
               gitUsername: $(GIT_USERNAME)
