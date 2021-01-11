@@ -68,7 +68,7 @@ stages:
               pkg_cache_version_id: $(CACHE_VERSION_ID)
               pkg_cache_folder: $(YARN_CACHE_FOLDER)
 
-        - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+        - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - script: |
               echo "We assume this reference to be a valid release: $(Build.SourceBranch). Therefore, there is no need to bundle a new release."
             displayName: 'Skip release bundle'
