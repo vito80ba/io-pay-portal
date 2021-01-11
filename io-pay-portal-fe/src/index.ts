@@ -21,13 +21,16 @@ $("#verify").on(
   async (evt): Promise<void> => {
     evt.preventDefault();
     $("#loading").show();
-    const rtdId: string = fromNullable($("#rtdId").val()?.toString()).getOrElse(
-      ""
-    );
-    await getPaymentInfoTask(rtdId)
+    const paymentNoticeCode: string = fromNullable(
+      $("#paymentNoticeCode").val()?.toString()
+    ).getOrElse("");
+    const organizationId: string = fromNullable(
+      $("#organizationId").val()?.toString()
+    ).getOrElse("");
+    await getPaymentInfoTask(organizationId, paymentNoticeCode)
       .fold(
         (errorMessage) => showPaymentInfoError(errorMessage),
-        (paymentInfo) => showPaymentInfo(rtdId, paymentInfo)
+        (paymentInfo) => showPaymentInfo(paymentNoticeCode, paymentInfo)
       )
       .run();
     $("#loading").hide();
