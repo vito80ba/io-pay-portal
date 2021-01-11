@@ -2,7 +2,7 @@
 
 variables:
   NODE_VERSION: '12.19.1'
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/io-pay-portal-fe/.yarn
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)//.yarn
 
 parameters:
   - name: 'RELEASE_SEMVER'
@@ -57,16 +57,18 @@ stages:
     jobs:
       - job: make_release
         steps:
-        - template: templates/node-github-release/template.yaml@pagopaCommons 
-          parameters:
-            release_branch: 'main'
-            semver: '${{ parameters.RELEASE_SEMVER }}'
-            gitEmail: $(GIT_EMAIL)
-            gitUsername: $(GIT_USERNAME)
-            gitHubConnection: $(GITHUB_CONNECTION)
-            nodeVersion: $(NODE_VERSION)
-            pkg_cache_version_id: $(CACHE_VERSION_ID)
-            pkg_cache_folder: $(YARN_CACHE_FOLDER)
+        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/175844896-fix-pipelines-be') }}:
+          - template: templates/node-github-release/template.yaml@pagopaCommons 
+            workingDirectory: io-pay-portal-fe
+            parameters:
+              release_branch: 'main'
+              semver: '${{ parameters.RELEASE_SEMVER }}'
+              gitEmail: $(GIT_EMAIL)
+              gitUsername: $(GIT_USERNAME)
+              gitHubConnection: $(GITHUB_CONNECTION)
+              nodeVersion: $(NODE_VERSION)
+              pkg_cache_version_id: $(CACHE_VERSION_ID)
+              pkg_cache_folder: $(YARN_CACHE_FOLDER)
 
         - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - script: |
