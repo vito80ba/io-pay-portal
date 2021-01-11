@@ -1,11 +1,27 @@
 # IO Functions Pay Portal
 
+
+
+
+[![codecov](https://codecov.io/gh/pagopa/io-pay-portal/branch/main/graph/badge.svg)](https://codecov.io/gh/pagopa/io-pay-portal)
+
+
+
+pagopa.io-pay-portal.be.deploy
+[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.df-purgehistory-policies?branchName=master)](https://dev.azure.com/pagopa-io/io-pay-portal/_build?definitionId=67&branchName=master)
+
+pagopa.io-pay-portal.fe.code-review
+[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.df-purgehistory-policies?branchName=master)](https://dev.azure.com/pagopa-io/io-pay-portal/_build?definitionId=69&branchName=master)
+
+pagopa.io-pay-portal
+[![Build Status](https://dev.azure.com/pagopa-io/io-pay-portal/_apis/build/status/pagopa.df-purgehistory-policies?branchName=master)](https://dev.azure.com/pagopa-io/io-pay-portal/_build?definitionId=65&branchName=master)
+
+
 - [IO Functions Pay Portal](#io-functions-pay-portal)
   - [Local development](#local-development)
     - [Prerequisites](#prerequisites)
     - [Backend side](#backend-side)
     - [Frontend side](#frontend-side)
-  - [Deploy](#deploy)
 ## Local development
 
 ### Prerequisites
@@ -55,6 +71,3 @@ functions_1  |  Info: [GET] http://localhost:7071/info
 
 
 ### Frontend side
-
-## Deploy
-TODO

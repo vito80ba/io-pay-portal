@@ -6,6 +6,8 @@ import {
 } from "fp-ts/lib/TaskEither";
 import * as t from "io-ts";
 import { IResponseType } from "italia-ts-commons/lib/requests";
+import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
+import { ProblemJson } from "../generated/pagopa-proxy/ProblemJson";
 import { ILogger } from "./logging";
 import {
   ErrorResponses,
@@ -16,7 +18,9 @@ import {
 export const withApiRequestWrapper = <T>(
   logger: ILogger,
   apiCallWithParams: () => Promise<
-    t.Validation<IResponseType<number, T, never>>
+    t.Validation<
+      IResponseType<number, T | ProblemJson | PaymentProblemJson, never>
+    >
   >,
   successStatusCode: 200 | 201 | 202 = 200
 ): TaskEither<ErrorResponses, T> =>
@@ -37,6 +41,6 @@ export const withApiRequestWrapper = <T>(
         responseType =>
           responseType.status !== successStatusCode
             ? fromLeft(toErrorServerResponse(responseType))
-            : taskEither.of(responseType.value)
+            : taskEither.of(responseType.value as T)
       )
   );

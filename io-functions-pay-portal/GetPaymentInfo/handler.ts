@@ -37,8 +37,8 @@ const getPaymentInfoTask = (
   rptId: RptIdFromString
 ): TaskEither<ErrorResponses, PaymentRequestsGetResponse> =>
   withApiRequestWrapper<PaymentRequestsGetResponse>(
-    logger, // tslint:disable-next-line: no-any
-    (): any =>
+    logger,
+    () =>
       apiClient.getPaymentInfo({
         rpt_id_from_string: RptIdFromString.encode(rptId)
       }),
