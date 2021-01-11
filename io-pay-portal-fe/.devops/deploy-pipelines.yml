@@ -2,7 +2,7 @@
 
 variables:
   NODE_VERSION: '12.19.1'
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/io-pay-portal-fe/.yarn
 
 parameters:
   - name: 'RELEASE_SEMVER'
@@ -59,7 +59,6 @@ stages:
         steps:
         # - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
         - template: templates/node-github-release/template.yaml@pagopaCommons 
-          workingDirectory: io-pay-portal-fe
           parameters:
             release_branch: 'main'
             semver: '${{ parameters.RELEASE_SEMVER }}'
