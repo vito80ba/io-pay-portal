@@ -1,7 +1,9 @@
 /**
- * Development server built as an express application,
- * able to run frontend (thanks to parcel-bundler) and an API server proxy (thanks to http-proxy-middleware)
- * on localhost:1234, in order to you don't have to deal with CORS.
+ * Development server built as an express application.
+ *
+ * We run the frontend application (thanks to parcel-bundler)
+ * and the API proxy server (thanks to http-proxy-middleware)
+ * on localhost:1234 so we don't have to deal with CORS.
  *
  * Note: to run the development server must be set IO_PAY_PORTAL_API_HOST=http://localhost:1234
  * and apiHost with the host api (for example http://localhost:80).
