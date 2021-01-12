@@ -70,7 +70,7 @@ steps:
   - task: Cache@2
     inputs:
       workingDirectory: io-pay-portal-fe
-      key: 'yarn-${{ parameters.pkg_cache_version_id }} | "$(Agent.OS)" | yarn.lock'
+      key: 'yarn-${{ parameters.pkg_cache_version_id }} | "$(Agent.OS)" | io-pay-portal-fe/yarn.lock'
       restoreKeys: |
         yarn-${{ parameters.pkg_cache_version_id }} | "$(Agent.OS)"
       path: '${{ parameters.pkg_cache_folder }}'
