@@ -2,7 +2,7 @@
 
 variables:
   NODE_VERSION: '12.19.1'
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/io-pay-portal-fe/.yarn
+  YARN_CACHE_FOLDER: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/.yarn
 
 parameters:
   - name: 'RELEASE_SEMVER'
@@ -63,7 +63,7 @@ stages:
             pwd  
             echo ".....ls"
             ls
-            cd $(Pipeline.Workspace)/io-pay-portal-fe
+            cd $(System.DefaultWorkingDirectory)/io-pay-portal-fe
           displayName: 'move to sub folder'
 
         - template: templates/node-github-release/template.yaml@pagopaCommons 
