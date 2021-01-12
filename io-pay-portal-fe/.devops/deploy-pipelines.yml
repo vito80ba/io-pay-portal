@@ -3,7 +3,7 @@
 variables:
   NODE_VERSION: '12.19.1'
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/io-pay-portal-fe/.yarn
-  GITHUB_RELEASE_TEMPLATE: 'azure-templates/node-github-release.yaml'
+  GITHUB_RELEASE_TEMPLATE: azure-templates/node-github-release.yaml
 
 parameters:
   - name: 'RELEASE_SEMVER'
