@@ -33,7 +33,8 @@ The table below describes all the Environment variables needed by the applicatio
 
 | Variable name | Description | type |
 |----------------|-------------|------|
-|IO\_PAY\_PORTAL\_FUNCTION| api services | endpoint/string
+|IO\_PAY\_PORTAL\_API\_HOST| api services | endpoint/string
+|IO\_PAY\_PORTAL\_API\_REQUEST\_TIMEOUT| request timeout | milliseconds
 
 ### Installation
 
@@ -45,37 +46,33 @@ The table below describes all the Environment variables needed by the applicatio
    ```sh
    yarn install
    ```
-3. Export env variables from .env.io-pay-portal.development
-   ```JS
-    export $(grep -v '^#' .env.io-pay-portal.development | xargs) && chmod +x env.sh && source env.sh
+4. Generate api client 
+   ```sh
+   yarn generate
+   ```
+5. Build 
+   ```sh
+   yarn build
+   ```
+6. tests 
+   ```sh
+   yarn test
+   ```
+7. Linter 
+   ```sh
+   yarn lint
    ```
 
 ### Usage
 
-In order to run the application on a local dev server:
-
-1. Generate api client 
-   ```sh
-   yarn generate
-   ```
-2. Build 
-   ```sh
-   yarn build
-3. tests 
-   ```sh
-   yarn test
-   ```
-4. Linter 
-   ```sh
-   yarn lint
-4. Local dev server
-   ```sh
+In order to run the application on a local dev server with mock API responses:
+-  ```sh
    yarn dev
-Then, point your browser to
-
-- http://localhost:1234 
-
-to reach the frontend.   
+   ```
+To run the application on a local dev server with real API:
+-  ```sh
+   yarn dev:proxy
+   ```
 
 ## Azure Pipeline
 

@@ -40,28 +40,24 @@ export const getPaymentInfoTask = (
       )
   );
 
-export const showPaymentInfo = (
-  rtdId: string,
-  paymentInfo: PaymentRequestsGetResponse
-) => {
+export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
   $("#stateCard").show();
   $("#initCard").hide();
-  $("#payStateHeader").text("Informazioni pagamento " + rtdId);
-  $("#payState")
+
+  $("#destinatario")
     .text("")
-    .append(
-      PayDetail.reduce(
-        (stateKeys, key) =>
-          // eslint-disable-next-line no-param-reassign
-          (stateKeys += `<li class="list-group-item">
-          ${key} : <strong>${Object(paymentInfo)[key]}</strong></li>`),
-        ""
-      )
-    );
+    .append(paymentInfo.enteBeneficiario?.denominazioneBeneficiario);
+  $("#causale").text("").append(paymentInfo.causaleVersamento);
+  $("#importo")
+    .text("")
+    .append(paymentInfo.importoSingoloVersamento.toString());
+  $("#cf-pa")
+    .text("")
+    .append(paymentInfo.enteBeneficiario?.identificativoUnivocoBeneficiario);
 };
 
 export const showPaymentInfoError = (errorMessage: string) => {
-  $("#error").text(
-    fromNullable(errorMessage).getOrElse("Errore Validazione Pagamento")
-  );
+  $("#error")
+    .show()
+    .text(fromNullable(errorMessage).getOrElse("Errore Validazione Pagamento"));
 };

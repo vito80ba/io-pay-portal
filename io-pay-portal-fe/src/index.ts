@@ -12,6 +12,7 @@ import {
  * */
 $("#stateCard").hide();
 $("#loading").hide();
+$("#error").hide();
 
 /**
  * Verify and show payment info
@@ -20,6 +21,7 @@ $("#verify").on(
   "click",
   async (evt): Promise<void> => {
     evt.preventDefault();
+    $("#error").hide();
     $("#loading").show();
     const paymentNoticeCode: string = fromNullable(
       $("#paymentNoticeCode").val()?.toString()
@@ -30,7 +32,7 @@ $("#verify").on(
     await getPaymentInfoTask(organizationId, paymentNoticeCode)
       .fold(
         (errorMessage) => showPaymentInfoError(errorMessage),
-        (paymentInfo) => showPaymentInfo(paymentNoticeCode, paymentInfo)
+        (paymentInfo) => showPaymentInfo(paymentInfo)
       )
       .run();
     $("#loading").hide();

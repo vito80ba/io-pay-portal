@@ -2,54 +2,97 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Security-Policy" content="worker-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="worker-src 'self'">
-    <meta http-equiv="X-Webkit-CSP" content="worker-src 'self'">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="worker-src 'self'" />
+    <meta http-equiv="X-Content-Security-Policy" content="worker-src 'self'" />
+    <meta http-equiv="X-Webkit-CSP" content="worker-src 'self'" />
     <title>Portale dei Pagamenti</title>
     <script src="env-config.js"></script>
   </head>
   <body>
-    <div class="d-flex align-items-center light-blue-gradient" style="height: 100vh;">
-      <div class="container" >
+    <div
+      class="d-flex align-items-center light-blue-gradient"
+      style="height: 100vh"
+    >
+      <div class="container">
         <div class="d-flex justify-content-center">
           <div class="col-md-6" id="initCard">
             <div class="card rounded-0 shadow">
               <div class="card-body">
-                  <h3>Portale dei Pagamenti</h3>
-                  <form>
-                      <div class="form-group">
-                        <label for="organizationId"> Ente beneficiario: </label>
-                        <input type="text" class="form-control" id="organizationId">
-                      </div>                  
-                      <div class="form-group">
-                        <label for="paymentNoticeCode">Codice avviso: </label>
-                        <input type="text" class="form-control" id="paymentNoticeCode">
-                      </div>
-                      <button type="submit" id="verify" class="btn btn-primary">Verifica</button>
-                      <div class="spinner-border" id="loading"></div>
-                  </form>
-                  <p id="error"></p>
+                <h3>Inserisci i dati dell'avviso</h3>
+                <p>
+                  che ci consentono di identificare il pagamento (<a href="#"
+                    >Dove si trovano?</a
+                  >)
+                </p>
+                <form>
+                  <div class="form-group">
+                    <label for="paymentNoticeCode">Codice Avviso: </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="paymentNoticeCode"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="organizationId"
+                      >Codice Fiscale Ente Creditore:
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="organizationId"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" id="verify" class="btn btn-primary">
+                      Continua
+                    </button>
+                  </div>
+                  <div class="spinner-border" id="loading"></div>
+                  <div class="alert alert-danger" role="alert" id="error"></div>
+                </form>
               </div>
             </div>
           </div>
           <div class="col-md-6" id="stateCard">
             <div class="card rounded-0 shadow">
               <div class="card-body">
-                <h3 id="payStateHeader"></h3>
-                <ul id="payState" class="list-group"></ul>
-                  <form>
-                    <button type="submit" id="back" class="btn btn-primary">Indietro</button>
-                    <button type="submit" id="active" class="btn btn-primary">Continua</button>
-                  </form>
+                <div class="card border-light">
+                  <div class="card-header">Avviso di pagamento</div>
+                  <div class="card-body">
+                    <h5>Destinatario</h5>
+                    <p id="destinatario" class="card-text"></p>
+                    <h5>Causale</h5>
+                    <p id="causale" class="card-text"></p>
+                    <h5>Importo aggiornato</h5>
+                    <p id="importo" class="card-text"></p>
+                    <p class="card-text">
+                      <small class="text-muted"
+                        >Il sistema pagoPA aggiorna automaticamente l’importo
+                        per assicurarti di aver pagato esattamente quanto dovuto
+                        ed evitarti così more o altri interessi.</small
+                      >
+                    </p>
+                    <h5>Codice Fiscale Creditore</h5>
+                    <p id="cf-pa" class="card-text"></p>
+                  </div>
                 </div>
+                <form>
+                  <button type="submit" id="back" class="btn btn-primary">
+                    Indietro
+                  </button>
+                  <button type="submit" id="active" class="btn btn-primary">
+                    Continua
+                  </button>
+                </form>
               </div>
             </div>
           </div>
-        </div> 
-      </div> 
-    </div>  
+        </div>
+      </div>
+    </div>
     <script type="text/javascript" src="./index.ts"></script>
   </body>
 </html>
