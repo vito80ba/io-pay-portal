@@ -63,6 +63,9 @@ stages:
             pwd  
             echo ".....ls"
             ls
+            echo ".....mkdir"
+            mkdir -p $(System.DefaultWorkingDirectory)/io-pay-portal-fe
+            echo ".....cd"
             cd $(System.DefaultWorkingDirectory)/io-pay-portal-fe
           displayName: 'move to sub folder'
 
