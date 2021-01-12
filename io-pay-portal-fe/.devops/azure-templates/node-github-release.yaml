@@ -69,6 +69,7 @@ steps:
     displayName: 'Set up Node.js'
   - task: Cache@2
     inputs:
+      workingDirectory: io-pay-portal-fe
       key: 'yarn-${{ parameters.pkg_cache_version_id }} | "$(Agent.OS)" | yarn.lock'
       restoreKeys: |
         yarn-${{ parameters.pkg_cache_version_id }} | "$(Agent.OS)"
