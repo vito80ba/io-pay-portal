@@ -41,37 +41,37 @@ stages:
   # - is on branch master 
   # - is a tag in the form v{version}-RELEASE
   - stage: Release
-    condition:
-      and(
-        succeeded(),
-        or(
-          eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-          and(
-            startsWith(variables['Build.SourceBranch'], 'refs/tags'),
-            endsWith(variables['Build.SourceBranch'], '-RELEASE')
-          )
-        )
-      )
+    # condition:
+    #   and(
+    #     succeeded(),
+    #     or(
+    #       eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+    #       and(
+    #         startsWith(variables['Build.SourceBranch'], 'refs/tags'),
+    #         endsWith(variables['Build.SourceBranch'], '-RELEASE')
+    #       )
+    #     )
+    #   )
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
       - job: make_release
         steps:
-        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
-          - script: |
-              cd io-pay-portal-fe
-            displayName: 'move to sub folder'
+        # - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+        - script: |
+            cd $(Pipeline.Workspace)/io-pay-portal-fe
+          displayName: 'move to sub folder'
 
-          - template: templates/node-github-release/template.yaml@pagopaCommons 
-            parameters:
-              release_branch: 'main'
-              semver: '${{ parameters.RELEASE_SEMVER }}'
-              gitEmail: $(GIT_EMAIL)
-              gitUsername: $(GIT_USERNAME)
-              gitHubConnection: $(GITHUB_CONNECTION)
-              nodeVersion: $(NODE_VERSION)
-              pkg_cache_version_id: $(CACHE_VERSION_ID)
-              pkg_cache_folder: $(YARN_CACHE_FOLDER)
+        - template: templates/node-github-release/template.yaml@pagopaCommons 
+          parameters:
+            release_branch: 'main'
+            semver: '${{ parameters.RELEASE_SEMVER }}'
+            gitEmail: $(GIT_EMAIL)
+            gitUsername: $(GIT_USERNAME)
+            gitHubConnection: $(GITHUB_CONNECTION)
+            nodeVersion: $(NODE_VERSION)
+            pkg_cache_version_id: $(CACHE_VERSION_ID)
+            pkg_cache_folder: $(YARN_CACHE_FOLDER)
 
         - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - script: |
