@@ -58,6 +58,10 @@ stages:
       - job: make_release
         steps:
         - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+          - script: |
+              cd io-pay-portal-fe
+            displayName: 'move to sub folder'
+
           - template: templates/node-github-release/template.yaml@pagopaCommons 
             parameters:
               release_branch: 'main'
