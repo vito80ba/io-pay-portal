@@ -59,6 +59,8 @@ stages:
         steps:
         # - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
         - script: |
+            echo pwd
+            echo ls
             cd $(Pipeline.Workspace)/io-pay-portal-fe
           displayName: 'move to sub folder'
 
