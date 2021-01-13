@@ -57,7 +57,7 @@ it("should return a PaymentActivationsPostResponse if the activation is successf
 
   const handler = ActivatePaymentHandler(apiClientMock as any);
 
-  const response = await handler(mockContext, validPaymentActivationsRequest);
+  const response = await handler(context, validPaymentActivationsRequest);
 
   expect(response.kind).toBe("IResponseSuccessJson");
 });
@@ -75,8 +75,7 @@ it("should return a PaymentActivationsPostResponse if the activation is successf
 
   const handler = ActivatePaymentHandler(apiClientMock as any);
 
-  const response = await handler(mockContext, invalidPaymentActivationsRequest);
+  const response = await handler(context, invalidPaymentActivationsRequest);
 
   expect(response.kind).toBe("IResponseErrorInternal");
->>>>>>> [#176140405] Add test for activePaymentRequest
 });
