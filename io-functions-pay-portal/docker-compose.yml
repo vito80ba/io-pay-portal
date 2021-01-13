@@ -40,7 +40,7 @@ services:
     command: |-
       --entrypoints.web.address=:81
       --providers.docker=true
-      --providers.docker.network=io-fn
+      --providers.docker.network=io-mock_io-fn
       --log.level=ERROR
     env_file:
       - .env

@@ -1,34 +1,73 @@
 import * as express from "express";
 
+import { Context } from "@azure/functions";
 import { ContextMiddleware } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
+
+import { identity } from "fp-ts/lib/function";
+import { IApiClient } from "../clients/pagopa";
+
 import { RequiredBodyPayloadMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_body_payload";
+
 import {
   withRequestMiddlewares,
   wrapRequestHandler
 } from "io-functions-commons/dist/src/utils/request_middleware";
 import {
-  IResponseErrorNotFound,
   IResponseSuccessJson,
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
-import { PaymentActivationsPostRequest } from "../generated/definitions/PaymentActivationsPostRequest";
-import { PaymentActivationsPostResponse } from "../generated/definitions/PaymentActivationsPostResponse";
 
-type IHttpHandler = () => Promise<
-  IResponseSuccessJson<PaymentActivationsPostResponse> | IResponseErrorNotFound
+import { PaymentRequestsGetResponse } from "../generated/definitions/PaymentRequestsGetResponse";
+import { withApiRequestWrapper } from "../utils/api";
+import { getLogger, ILogger } from "../utils/logging";
+import { ErrorResponses } from "../utils/responses";
+
+import { TaskEither } from "fp-ts/lib/TaskEither";
+import { RptIdFromString } from "italia-pagopa-commons/lib/pagopa";
+import { PaymentActivationsPostRequest } from "../generated/pagopa-proxy/PaymentActivationsPostRequest";
+import { PaymentActivationsPostResponse } from "../generated/pagopa-proxy/PaymentActivationsPostResponse";
+
+type IActivatePaymentHandler = (
+  context: Context,
+  paymentRequest: PaymentActivationsPostRequest
+) => Promise<
+  IResponseSuccessJson<PaymentActivationsPostResponse> | ErrorResponses
 >;
 
-export function HttpHandler(): IHttpHandler {
-  return async () => {
-    return ResponseSuccessJson({
-      importoSingoloVersamento: 10
-    } as PaymentActivationsPostResponse);
+const logPrefix = "PostActivatePaymentHandler";
+
+const activatePaymentTask = (
+  logger: ILogger,
+  apiClient: IApiClient,
+  paymentRequest: PaymentActivationsPostRequest
+): TaskEither<ErrorResponses, PaymentActivationsPostResponse> =>
+  withApiRequestWrapper<PaymentActivationsPostResponse>(
+    logger,
+    () => apiClient.activatePayment({ body: paymentRequest }),
+    200
+  );
+
+export function ActivatePaymentHandler(
+  pagoPaClient: IApiClient
+): IActivatePaymentHandler {
+  return (context, paymentRequest) => {
+    return activatePaymentTask(
+      getLogger(context, logPrefix, "ActivatePayment"),
+      pagoPaClient,
+      paymentRequest
+    )
+      .map(myPayment => ResponseSuccessJson(myPayment))
+      .fold<
+        IResponseSuccessJson<PaymentActivationsPostResponse> | ErrorResponses
+      >(identity, identity)
+      .run();
   };
 }
 
-export function HttpCtrl(): express.RequestHandler {
-  const handler = HttpHandler();
-
+export function ActivatePaymentCtrl(
+  pagoPaClient: IApiClient
+): express.RequestHandler {
+  const handler = ActivatePaymentHandler(pagoPaClient);
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
     RequiredBodyPayloadMiddleware(PaymentActivationsPostRequest)
