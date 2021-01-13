@@ -2,11 +2,13 @@
   
 steps:
 - bash: |
-    echo 'IO_PAY_PORTAL_FUNCTION: $IO_PAY_PORTAL_FUNCTION'
+    echo 'IO_PAY_PORTAL_API_HOST: $IO_PAY_PORTAL_API_HOST'
+    echo 'IO_PAY_PORTAL_API_REQUEST_TIMEOUT: $IO_PAY_PORTAL_API_REQUEST_TIMEOUT'
     chmod +x env.sh && source env.sh
     yarn build
   workingDirectory: io-pay-portal-fe
   env:
-    IO_DEVELOPER_PORTAL_PORT: $(IO_PAY_PORTAL_FUNCTION)
+    IO_PAY_PORTAL_API_HOST: $(IO_PAY_PORTAL_API_HOST)
+    IO_PAY_PORTAL_API_REQUEST_TIMEOUT: $(IO_PAY_PORTAL_API_REQUEST_TIMEOUT)
   displayName: 'Build files'
   
