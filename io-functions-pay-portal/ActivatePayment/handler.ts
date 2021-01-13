@@ -17,13 +17,11 @@ import {
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
 
-import { PaymentRequestsGetResponse } from "../generated/definitions/PaymentRequestsGetResponse";
 import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
 import { ErrorResponses } from "../utils/responses";
 
 import { TaskEither } from "fp-ts/lib/TaskEither";
-import { RptIdFromString } from "italia-pagopa-commons/lib/pagopa";
 import { PaymentActivationsPostRequest } from "../generated/pagopa-proxy/PaymentActivationsPostRequest";
 import { PaymentActivationsPostResponse } from "../generated/pagopa-proxy/PaymentActivationsPostResponse";
 

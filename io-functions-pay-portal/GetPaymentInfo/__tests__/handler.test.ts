@@ -98,7 +98,7 @@ it("should return a payment info OK response PaymentRequestsGetResponse", async 
             codiceContestoPagamento: "5ae4e3a051c111ebb015abe7e7394a7d",
             ibanAccredito: "IT47L0300203280645139156879",
             causaleVersamento: "Causale versamento mock"
-          }
+          } as PaymentRequestsGetResponse
         })
       );
     })
