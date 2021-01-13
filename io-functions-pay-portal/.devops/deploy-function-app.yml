@@ -2,7 +2,7 @@
 
 variables:
   NODE_VERSION: '12.18.0'
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/io-functions-pay-portal/.yarn
 
 parameters:
   - name: 'RELEASE_SEMVER'
@@ -58,13 +58,10 @@ stages:
       - job: make_release
         steps:
         - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
-          - script: |
-              cd io-functions-pay-portal
-            displayName: 'move to sub folder'
-            
-          - template: templates/node-github-release/template.yaml@pagopaCommons 
+          - template: azure-templates/node-github-release.yaml 
             parameters:
               release_branch: 'main'
+              project_folder: 'io-functions-pay-portal/'
               semver: '${{ parameters.RELEASE_SEMVER }}'
               gitEmail: $(GIT_EMAIL)
               gitUsername: $(GIT_USERNAME)
