@@ -14,6 +14,8 @@ import { PaymentActivationsPostResponse } from "../generated/PaymentActivationsP
 import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import { apiClient } from "./api/client";
 import { getConfig } from "./util/config";
+import { Millisecond } from "italia-ts-commons/lib/units";
+
 
 export const PayDetail: ReadonlyArray<string> = [
   "importoSingoloVersamento",
@@ -105,7 +107,7 @@ export const pollingActivationStatus = async (
         attempts > 0
           ? setTimeout(
               pollingActivationStatus,
-              5000,
+              getConfig("IO_PAY_PORTAL_PAY_WL_POLLING_INTERVAL") as Millisecond,
               paymentNoticeCode,
               --attempts // eslint-disable-line no-param-reassign
             )

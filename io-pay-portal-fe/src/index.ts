@@ -10,6 +10,7 @@ import {
   showPaymentInfo,
   showPaymentInfoError,
 } from "./helper";
+import { getConfig } from "./util/config";
 
 /**
  * Init
@@ -51,7 +52,7 @@ $("#verify").on(
 );
 
 /**
- * Verify and show payment info
+ * Active Payment
  * */
 $("#active").on(
   "click",
@@ -75,7 +76,10 @@ $("#active").on(
           .fold(
             (errorMessage) => showPaymentInfoError(errorMessage),
             (_) =>
-              pollingActivationStatus(paymentInfo.codiceContestoPagamento, 10)
+              pollingActivationStatus(
+                paymentInfo.codiceContestoPagamento,
+                getConfig("IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS") as number
+              )
           )
           .run()
     );

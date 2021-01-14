@@ -4,6 +4,8 @@ export interface IConfig {
   IO_PAY_PORTAL_API_HOST: string;
   IO_PAY_PORTAL_API_REQUEST_TIMEOUT: Millisecond;
   IO_PAY_PORTAL_PAY_WL_HOST: string;
+  IO_PAY_PORTAL_PAY_WL_POLLING_INTERVAL: Millisecond;
+  IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS: number;
 }
 
 export function getConfig(param: keyof IConfig): string | Millisecond {
