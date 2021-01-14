@@ -94,26 +94,28 @@ export const getActivationStatusTask = (
       )
   );
 
-export const pollingActivationStatus = (
+export const pollingActivationStatus = async (
   paymentNoticeCode: CodiceContestoPagamento,
   attempts: number
-): void => {
-  getActivationStatusTask(paymentNoticeCode)
+): Promise<void> => {
+  await getActivationStatusTask(paymentNoticeCode)
     .fold(
       () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         attempts > 0
           ? setTimeout(
               pollingActivationStatus,
               5000,
               paymentNoticeCode,
-              --attempts
+              --attempts // eslint-disable-line no-param-reassign
             )
           : showActivationError("Errore Attivazione Pagamento");
       },
       (acivationResponse) =>
-        (location.href = `${getConfig("IO_PAY_PORTAL_PAY_HOST") as string}/index.html?p=${
-          acivationResponse.idPagamento
-        }`)
+        // eslint-disable-next-line functional/immutable-data
+        (location.href = `${
+          getConfig("IO_PAY_PORTAL_PAY_WL_HOST") as string
+        }/index.html?p=${acivationResponse.idPagamento}`)
     )
     .run();
 };

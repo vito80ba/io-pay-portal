@@ -1,6 +1,7 @@
 import { default as $ } from "jquery";
 import { fromNullable } from "fp-ts/lib/Option";
 import "bootstrap/dist/css/bootstrap.css";
+import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import {
   activePaymentTask,
   getPaymentInfoTask,
@@ -9,7 +10,6 @@ import {
   showPaymentInfo,
   showPaymentInfoError,
 } from "./helper";
-import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 
 /**
  * Init
@@ -65,7 +65,7 @@ $("#active").on(
     ).getOrElse("");
 
     PaymentRequestsGetResponse.decode(JSON.parse(paymentInfo)).fold(
-      (_) => showActivationError("Errore Attivazione Pagamento"),
+      () => showActivationError("Errore Attivazione Pagamento"),
       async (paymentInfo) =>
         await activePaymentTask(
           paymentInfo.enteBeneficiario?.identificativoUnivocoBeneficiario,
@@ -74,7 +74,8 @@ $("#active").on(
         )
           .fold(
             (errorMessage) => showPaymentInfoError(errorMessage),
-            (_) => pollingActivationStatus( paymentInfo.codiceContestoPagamento, 10)
+            (_) =>
+              pollingActivationStatus(paymentInfo.codiceContestoPagamento, 10)
           )
           .run()
     );
