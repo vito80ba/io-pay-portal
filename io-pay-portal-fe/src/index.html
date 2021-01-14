@@ -80,12 +80,20 @@
                   </div>
                 </div>
                 <form>
-                  <button type="submit" id="back" class="btn btn-primary">
-                    Indietro
-                  </button>
-                  <button type="submit" id="active" class="btn btn-primary">
-                    Continua
-                  </button>
+                  <div class="form-group">
+                    <button type="submit" id="back" class="btn btn-primary">
+                      Indietro
+                    </button>
+                    <button type="submit" id="active" class="btn btn-primary">
+                      Paga questo avviso
+                    </button>
+                  </div>
+                  <div class="spinner-border" id="activationLoading"></div>
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    id="activationError"
+                  ></div>
                 </form>
               </div>
             </div>

@@ -6,8 +6,14 @@ import {
   tryCatch,
 } from "fp-ts/lib/TaskEither";
 import { default as $ } from "jquery";
+import { CodiceContestoPagamento } from "../generated/CodiceContestoPagamento";
+import { EnteBeneficiario } from "../generated/EnteBeneficiario";
+import { ImportoEuroCents } from "../generated/ImportoEuroCents";
+import { PaymentActivationsGetResponse } from "../generated/PaymentActivationsGetResponse";
+import { PaymentActivationsPostResponse } from "../generated/PaymentActivationsPostResponse";
 import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import { apiClient } from "./api/client";
+import { getConfig } from "./util/config";
 
 export const PayDetail: ReadonlyArray<string> = [
   "importoSingoloVersamento",
@@ -40,6 +46,78 @@ export const getPaymentInfoTask = (
       )
   );
 
+export const activePaymentTask = (
+  organizationId: EnteBeneficiario,
+  amountSinglePayment: ImportoEuroCents,
+  paymentNoticeCode: CodiceContestoPagamento
+): TaskEither<string, PaymentActivationsPostResponse> =>
+  tryCatch(
+    () =>
+      apiClient.activatePayment({
+        body: {
+          rptId: `${organizationId}${paymentNoticeCode}`,
+          importoSingoloVersamento: amountSinglePayment,
+          codiceContestoPagamento: paymentNoticeCode,
+        },
+      }),
+    () => "Errore attivazione pagamento"
+  ).foldTaskEither(
+    (err) => fromLeft(err),
+    (errorOrResponse) =>
+      errorOrResponse.fold(
+        () => fromLeft("Errore attivazione pagamento"),
+        (responseType) =>
+          responseType.status !== 200
+            ? fromLeft(`Errore attivazione pagamento : ${responseType.status}`)
+            : taskEither.of(responseType.value)
+      )
+  );
+
+export const getActivationStatusTask = (
+  paymentNoticeCode: CodiceContestoPagamento
+): TaskEither<string, PaymentActivationsGetResponse> =>
+  tryCatch(
+    () =>
+      apiClient.getActivationStatus({
+        codiceContestoPagamento: paymentNoticeCode,
+      }),
+    () => "Errore stato pagamento"
+  ).foldTaskEither(
+    (err) => fromLeft(err),
+    (errorOrResponse) =>
+      errorOrResponse.fold(
+        () => fromLeft("Errore stato pagamento"),
+        (responseType) =>
+          responseType.status !== 200
+            ? fromLeft(`Errore stato pagamento : ${responseType.status}`)
+            : taskEither.of(responseType.value)
+      )
+  );
+
+export const pollingActivationStatus = (
+  paymentNoticeCode: CodiceContestoPagamento,
+  attempts: number
+): void => {
+  getActivationStatusTask(paymentNoticeCode)
+    .fold(
+      () => {
+        attempts > 0
+          ? setTimeout(
+              pollingActivationStatus,
+              5000,
+              paymentNoticeCode,
+              --attempts
+            )
+          : showActivationError("Errore Attivazione Pagamento");
+      },
+      (acivationResponse) =>
+        (location.href = `${getConfig("IO_PAY_PORTAL_PAY_HOST") as string}/index.html?p=${
+          acivationResponse.idPagamento
+        }`)
+    )
+    .run();
+};
+
 export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
   $("#stateCard").show();
   $("#initCard").hide();
@@ -60,4 +138,10 @@ export const showPaymentInfoError = (errorMessage: string) => {
   $("#error")
     .show()
     .text(fromNullable(errorMessage).getOrElse("Errore Validazione Pagamento"));
+};
+
+export const showActivationError = (errorMessage: string) => {
+  $("#activationError")
+    .show()
+    .text(fromNullable(errorMessage).getOrElse("Errore Attivazione Pagamento"));
 };
