@@ -41,34 +41,34 @@ stages:
   # - is on branch master 
   # - is a tag in the form v{version}-RELEASE
   - stage: Release
-    condition:
-      and(
-        succeeded(),
-        or(
-          eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-          and(
-            startsWith(variables['Build.SourceBranch'], 'refs/tags'),
-            endsWith(variables['Build.SourceBranch'], '-RELEASE')
-          )
-        )
-      )
+    # condition:
+    #   and(
+    #     succeeded(),
+    #     or(
+    #       eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+    #       and(
+    #         startsWith(variables['Build.SourceBranch'], 'refs/tags'),
+    #         endsWith(variables['Build.SourceBranch'], '-RELEASE')
+    #       )
+    #     )
+    #   )
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
       - job: make_release
         steps:
-        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
-          - template: azure-templates/node-github-release.yaml 
-            parameters:
-              release_branch: 'main'
-              project_folder: 'io-functions-pay-portal/'
-              semver: '${{ parameters.RELEASE_SEMVER }}'
-              gitEmail: $(GIT_EMAIL)
-              gitUsername: $(GIT_USERNAME)
-              gitHubConnection: $(GITHUB_CONNECTION)
-              nodeVersion: $(NODE_VERSION)
-              pkg_cache_version_id: $(CACHE_VERSION_ID)
-              pkg_cache_folder: $(YARN_CACHE_FOLDER)
+        # - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+        - template: azure-templates/node-github-release.yaml 
+          parameters:
+            release_branch: 'main'
+            project_folder: 'io-functions-pay-portal/'
+            semver: '${{ parameters.RELEASE_SEMVER }}'
+            gitEmail: $(GIT_EMAIL)
+            gitUsername: $(GIT_USERNAME)
+            gitHubConnection: $(GITHUB_CONNECTION)
+            nodeVersion: $(NODE_VERSION)
+            pkg_cache_version_id: $(CACHE_VERSION_ID)
+            pkg_cache_folder: $(YARN_CACHE_FOLDER)
 
         - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - script: |

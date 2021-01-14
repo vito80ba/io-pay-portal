@@ -87,6 +87,9 @@ portale -> wl : send data payment
 
 
 ## Sequence diagram : _WISP light_
+
+[Here](https://io-p-cdnendpoint-iopay.azureedge.net/index.html?p=12112) the public endpoint to io-pay (alias _Wisp Light_)
+
 <!-- 
 @startuml docs/media/seqdiag-wisplight
 
