@@ -8,11 +8,11 @@ import {
 import { default as $ } from "jquery";
 import { Millisecond } from "italia-ts-commons/lib/units";
 import { CodiceContestoPagamento } from "../generated/CodiceContestoPagamento";
-import { EnteBeneficiario } from "../generated/EnteBeneficiario";
 import { ImportoEuroCents } from "../generated/ImportoEuroCents";
 import { PaymentActivationsGetResponse } from "../generated/PaymentActivationsGetResponse";
 import { PaymentActivationsPostResponse } from "../generated/PaymentActivationsPostResponse";
 import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
+import { RptId } from "../generated/RptId";
 import { apiClient } from "./api/client";
 import { getConfig } from "./util/config";
 
@@ -26,13 +26,12 @@ export const PayDetail: ReadonlyArray<string> = [
 ];
 
 export const getPaymentInfoTask = (
-  organizationId: string,
-  paymentNoticeCode: string
+  rptId: RptId
 ): TaskEither<string, PaymentRequestsGetResponse> =>
   tryCatch(
     () =>
       apiClient.getPaymentInfo({
-        rptId: `${organizationId}${paymentNoticeCode}`,
+        rptId,
       }),
     () => "Errore recupero pagamento"
   ).foldTaskEither(
@@ -48,17 +47,17 @@ export const getPaymentInfoTask = (
   );
 
 export const activePaymentTask = (
-  organizationId: EnteBeneficiario,
   amountSinglePayment: ImportoEuroCents,
-  paymentNoticeCode: CodiceContestoPagamento
+  paymentContextCode: CodiceContestoPagamento,
+  rptId: RptId
 ): TaskEither<string, PaymentActivationsPostResponse> =>
   tryCatch(
     () =>
       apiClient.activatePayment({
         body: {
-          rptId: `${organizationId}${paymentNoticeCode}`,
+          rptId,
           importoSingoloVersamento: amountSinglePayment,
-          codiceContestoPagamento: paymentNoticeCode,
+          codiceContestoPagamento: paymentContextCode,
         },
       }),
     () => "Errore attivazione pagamento"
@@ -75,12 +74,12 @@ export const activePaymentTask = (
   );
 
 export const getActivationStatusTask = (
-  paymentNoticeCode: CodiceContestoPagamento
+  paymentContextCode: CodiceContestoPagamento
 ): TaskEither<string, PaymentActivationsGetResponse> =>
   tryCatch(
     () =>
       apiClient.getActivationStatus({
-        codiceContestoPagamento: paymentNoticeCode,
+        codiceContestoPagamento: paymentContextCode,
       }),
     () => "Errore stato pagamento"
   ).foldTaskEither(
