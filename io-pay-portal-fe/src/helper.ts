@@ -6,6 +6,7 @@ import {
   tryCatch,
 } from "fp-ts/lib/TaskEither";
 import { default as $ } from "jquery";
+import { Millisecond } from "italia-ts-commons/lib/units";
 import { CodiceContestoPagamento } from "../generated/CodiceContestoPagamento";
 import { EnteBeneficiario } from "../generated/EnteBeneficiario";
 import { ImportoEuroCents } from "../generated/ImportoEuroCents";
@@ -14,7 +15,6 @@ import { PaymentActivationsPostResponse } from "../generated/PaymentActivationsP
 import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import { apiClient } from "./api/client";
 import { getConfig } from "./util/config";
-import { Millisecond } from "italia-ts-commons/lib/units";
 
 export const PayDetail: ReadonlyArray<string> = [
   "importoSingoloVersamento",
