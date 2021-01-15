@@ -83,7 +83,7 @@ $("#active").on(
       () => showActivationError("Errore Attivazione Pagamento"),
       async (paymentInfo) =>
         await activePaymentTask(
-          paymentInfo.enteBeneficiario?.identificativoUnivocoBeneficiario,
+          paymentInfo.importoSingoloVersamento,
           paymentInfo.codiceContestoPagamento,
           rptId
         )
