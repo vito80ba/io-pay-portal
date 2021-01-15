@@ -59,6 +59,9 @@ $("#active").on(
   async (evt): Promise<void> => {
     evt.preventDefault();
     $("#activationError").hide();
+    $("#paymentInfo").hide();
+    $("#active").hide();
+    $("#back").hide();
     $("#activationLoading").show();
 
     const paymentInfo: string = fromNullable(
@@ -83,7 +86,5 @@ $("#active").on(
           )
           .run()
     );
-
-    $("#activationLoading").hide();
   }
 );

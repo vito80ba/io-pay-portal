@@ -16,7 +16,6 @@ import { apiClient } from "./api/client";
 import { getConfig } from "./util/config";
 import { Millisecond } from "italia-ts-commons/lib/units";
 
-
 export const PayDetail: ReadonlyArray<string> = [
   "importoSingoloVersamento",
   "codiceContestoPagamento",
@@ -145,6 +144,8 @@ export const showPaymentInfoError = (errorMessage: string) => {
 };
 
 export const showActivationError = (errorMessage: string) => {
+  $("#activationLoading").hide();
+  $("#back").show();
   $("#activationError")
     .show()
     .text(fromNullable(errorMessage).getOrElse("Errore Attivazione Pagamento"));
