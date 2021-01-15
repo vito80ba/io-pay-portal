@@ -48,7 +48,7 @@ $("#verify").on(
         (errorMessage) => showPaymentInfoError(errorMessage),
         (paymentInfo) => {
           sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
-          sessionStorage.setItem("rptId", JSON.stringify(rptId));
+          sessionStorage.setItem("rptId", rptId);
           showPaymentInfo(paymentInfo);
         }
       )
