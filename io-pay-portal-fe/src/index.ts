@@ -77,7 +77,7 @@ $("#active").on(
           paymentInfo.codiceContestoPagamento
         )
           .fold(
-            (errorMessage) => showPaymentInfoError(errorMessage),
+            (errorMessage) => showActivationError(errorMessage),
             (_) =>
               pollingActivationStatus(
                 paymentInfo.codiceContestoPagamento,
