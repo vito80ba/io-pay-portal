@@ -36,17 +36,14 @@ app.post("/api/payportal/v1/payment-activations", (_, res) => {
   });
 });
 
-app.get("/api/payportal/v1/payment-activations/:codiceContestoPagamento", (_, res) => {
-  res.send({
-    ibanAccredito: "IT21Q0760101600000000546200",
-    causaleVersamento: "Retta asilo [demo]",
-    enteBeneficiario: {
-      identificativoUnivocoBeneficiario: "01199250158",
-      denominazioneBeneficiario: "Comune di Milano",
-    },
-    importoSingoloVersamento: 1100,
-  });
-});
+app.get(
+  "/api/payportal/v1/payment-activations/:codiceContestoPagamento",
+  (_, res) => {
+    res.send({
+      idPagamento: "123455",
+    });
+  }
+);
 
 const bundler = new Bundler("src/index.html");
 app.use(bundler.middleware());

@@ -50,8 +50,14 @@
                       Continua
                     </button>
                   </div>
-                  <div class="spinner-border" id="loading"></div>
-                  <div class="alert alert-danger" role="alert" id="error"></div>
+                  <div class="text-center">
+                    <div class="spinner-border" id="loading"></div>
+                    <div
+                      class="alert alert-danger"
+                      role="alert"
+                      id="error"
+                    ></div>
+                  </div>
                 </form>
               </div>
             </div>
@@ -59,7 +65,7 @@
           <div class="col-md-6" id="stateCard">
             <div class="card rounded-0 shadow">
               <div class="card-body">
-                <div class="card border-light">
+                <div class="card border-light" id="paymentInfo">
                   <div class="card-header">Avviso di pagamento</div>
                   <div class="card-body">
                     <h5>Destinatario</h5>
@@ -80,12 +86,28 @@
                   </div>
                 </div>
                 <form>
-                  <button type="submit" id="back" class="btn btn-primary">
-                    Indietro
-                  </button>
-                  <button type="submit" id="active" class="btn btn-primary">
-                    Continua
-                  </button>
+                  <div class="form-group">
+                    <button type="submit" id="back" class="btn btn-primary">
+                      Indietro
+                    </button>
+                    <button type="submit" id="active" class="btn btn-primary">
+                      Paga questo avviso
+                    </button>
+                  </div>
+                  <div class="text-center">
+                    <div id="activationLoading">
+                      <div class="spinner-border"></div>
+                      <p>
+                        Sto avvisando l'ente creditore, attendi qualche
+                        secondo...
+                      </p>
+                    </div>
+                    <div
+                      class="alert alert-danger"
+                      role="alert"
+                      id="activationError"
+                    ></div>
+                  </div>
                 </form>
               </div>
             </div>
