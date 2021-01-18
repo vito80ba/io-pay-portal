@@ -10,13 +10,14 @@
 ## Infrastructure
 The infrastructure decided for the `io-pay-portal` project has been defined [here](https://github.com/pagopa/io-infrastructure-live-new/pull/363) 
 
+How it's integrated into the [IO](https://io.italia.it/) system see [here](https://excalidraw.com/#room=82cbf71c24b07f891902,Dl6JQ8FcjKLoDzOZ5Iz8Ew)
 ### Public endpoint
 
 - [io-pay-portal (fe)](https://io-p-cdnendpoint-iopayportal.azureedge.net/)
 - io-pay-portal (be)
-  - [verify](https://api.io.italia.it/api/payportal/v1/payment-requests/123456)
-  - [activate](https://api.io.italia.it/api/payportal/v1/BLABLABLABLA)
-  - [getPayment](https://api.io.italia.it/api/payportal/v1/BLABLABLABLA)
+  - [verify](https://api.io.italia.it/api/payportal/v1/payment-requests/{rptID})
+  - [activate](https://api.io.italia.it/api/payportal/v1/payment-activations)
+  - [getPayment](https://api.io.italia.it/api/payportal/v1/{codiceContestoPagamento})
 
 
 ## Code coverage and CI/CD status
