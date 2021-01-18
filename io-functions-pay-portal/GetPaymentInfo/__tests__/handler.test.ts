@@ -1,6 +1,9 @@
 /* tslint:disable: no-any */
+import { Context } from "@azure/functions";
 
 import { GetPaymentInfoHandler } from "../handler";
+
+import { paymentInfo } from "../../__mocks__/mock";
 
 import {
   ApplicationCode,
@@ -23,8 +26,6 @@ process.env = {
 
 import { apiClient } from "../../clients/pagopa";
 
-import { context } from "../__mocks__/durable-functions";
-
 import { fromEither, fromLeft } from "fp-ts/lib/TaskEither";
 import {
   ResponseErrorNotFound,
@@ -36,16 +37,19 @@ import * as logger from "../../utils/logging";
 
 import { PaymentRequestsGetResponse } from "../../generated/definitions/PaymentRequestsGetResponse";
 
-// import fetch from 'node-fetch'
-// import { Response } from 'node-fetch'
-// jest.mock('node-fetch');
-
-const iuv13 = "1234567890123";
-const iuv15 = "123456789012345";
-const iuv17 = "12345678901234567";
-const checkDigit = "12";
-const segregationCode = "12";
-const applicationCode = "12";
+const context = ({
+  bindings: {},
+  log: {
+    // tslint:disable-next-line: no-console
+    error: jest.fn().mockImplementation(console.log),
+    // tslint:disable-next-line: no-console
+    info: jest.fn().mockImplementation(console.log),
+    // tslint:disable-next-line: no-console
+    verbose: jest.fn().mockImplementation(console.log),
+    // tslint:disable-next-line: no-console
+    warn: jest.fn().mockImplementation(console.log)
+  }
+} as any) as Context;
 
 // use to mock getLogger
 jest.spyOn(logger, "getLogger").mockReturnValueOnce({
@@ -65,7 +69,7 @@ it("should return a payment info KO response", async () => {
         left({
           status: 400,
           value: {
-            type: "bahhh"
+            type: paymentInfo.messageReceivedNOK
           }
         })
       );
@@ -75,12 +79,12 @@ it("should return a payment info KO response", async () => {
   const handler = GetPaymentInfoHandler(apiClientMock as any);
 
   const response = await handler(context, {
-    organizationFiscalCode: "12345678901",
+    organizationFiscalCode: paymentInfo.organizationFiscalCode,
     paymentNoticeNumber: {
-      applicationCode: "12",
-      auxDigit: "0",
-      checkDigit: "99",
-      iuv13: "1234567890123"
+      applicationCode: paymentInfo.applicationCode,
+      auxDigit: paymentInfo.auxDigit,
+      checkDigit: paymentInfo.checkDigit,
+      iuv13: paymentInfo.iuv13
     }
   } as RptIdFromString);
 
@@ -94,11 +98,11 @@ it("should return a payment info OK response PaymentRequestsGetResponse", async 
         right({
           status: 200,
           value: {
-            importoSingoloVersamento: 100,
-            codiceContestoPagamento: "5ae4e3a051c111ebb015abe7e7394a7d",
-            ibanAccredito: "IT47L0300203280645139156879",
-            causaleVersamento: "Causale versamento mock"
-          }
+            importoSingoloVersamento: paymentInfo.importoSingoloVersamento,
+            codiceContestoPagamento: paymentInfo.codiceContestoPagamento,
+            ibanAccredito: paymentInfo.ibanAccredito,
+            causaleVersamento: paymentInfo.causaleVersamento
+          } as PaymentRequestsGetResponse
         })
       );
     })
@@ -107,12 +111,12 @@ it("should return a payment info OK response PaymentRequestsGetResponse", async 
   const handler = GetPaymentInfoHandler(apiClientMock as any);
 
   const response = await handler(context, {
-    organizationFiscalCode: "12345678901",
+    organizationFiscalCode: paymentInfo.organizationFiscalCode,
     paymentNoticeNumber: {
-      applicationCode: "12",
-      auxDigit: "0",
-      checkDigit: "99",
-      iuv13: "1234567890123"
+      applicationCode: paymentInfo.applicationCode,
+      auxDigit: paymentInfo.auxDigit,
+      checkDigit: paymentInfo.checkDigit,
+      iuv13: paymentInfo.iuv13
     }
   } as RptIdFromString);
 
