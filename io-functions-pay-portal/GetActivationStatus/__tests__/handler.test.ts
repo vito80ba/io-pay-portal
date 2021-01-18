@@ -1,4 +1,7 @@
 /* tslint:disable: no-any */
+import { Context } from "@azure/functions";
+
+import { paymentInfo } from "../../__mocks__/mock";
 
 import { GetActivationStatusHandler } from "../handler";
 
@@ -12,8 +15,6 @@ process.env = {
 
 import { apiClient } from "../../clients/pagopa";
 
-import { context } from "../__mocks__/durable-functions";
-
 import { fromEither, fromLeft } from "fp-ts/lib/TaskEither";
 import {
   ResponseErrorNotFound,
@@ -26,11 +27,22 @@ import * as logger from "../../utils/logging";
 import { PaymentActivationsGetResponse } from "../../generated/definitions/PaymentActivationsGetResponse";
 import { CodiceContestoPagamento } from "../../generated/pagopa-proxy/CodiceContestoPagamento";
 
-// import fetch from 'node-fetch'
-// import { Response } from 'node-fetch'
-// jest.mock('node-fetch');
+const context = ({
+  bindings: {},
+  log: {
+    // tslint:disable-next-line: no-console
+    error: jest.fn().mockImplementation(console.log),
+    // tslint:disable-next-line: no-console
+    info: jest.fn().mockImplementation(console.log),
+    // tslint:disable-next-line: no-console
+    verbose: jest.fn().mockImplementation(console.log),
+    // tslint:disable-next-line: no-console
+    warn: jest.fn().mockImplementation(console.log)
+  }
+} as any) as Context;
 
-const codiceContestoPagamento: string = "P8GWJBJ5JWR";
+// const codiceContestoPagamento: string = "P8GWJBJ5JWR";
+// const codiceContestoPagamentoWrong: string = "12345678901234567890123456789012";
 
 // use to mock getLogger
 jest.spyOn(logger, "getLogger").mockReturnValueOnce({
@@ -50,7 +62,7 @@ it("should return a payment info KO response", async () => {
         left({
           status: 400,
           value: {
-            type: "bahhh"
+            type: "example error message"
           }
         })
       );
@@ -61,20 +73,20 @@ it("should return a payment info KO response", async () => {
 
   const response = await handler(
     context,
-    "12345678901234567890123456789012" as CodiceContestoPagamento
+    paymentInfo.codiceContestoPagamentoWrong as CodiceContestoPagamento
   );
 
   expect(response.kind).toBe("IResponseErrorInternal");
 });
 
-it("should return a payment info OK response PaymentRequestsGetResponse", async () => {
+it("should return a payment info OK response PaymentActivationsGetResponse", async () => {
   const apiClientMock = {
     getActivationStatus: jest.fn(_ => {
       return Promise.resolve(
         right({
           status: 200,
           value: {
-            idPagamento: codiceContestoPagamento
+            idPagamento: paymentInfo.codiceContestoPagamento
           } as PaymentActivationsGetResponse
         })
       );

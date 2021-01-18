@@ -5,7 +5,12 @@ import { right } from "fp-ts/lib/Either";
 import { PaymentActivationsPostRequest } from "../../generated/pagopa-proxy/PaymentActivationsPostRequest";
 import { ActivatePaymentHandler } from "../handler";
 
-export const context = ({
+import {
+  invalidPaymentActivationsRequest,
+  validPaymentActivationsRequest
+} from "../../__mocks__/mock";
+
+const context = ({
   bindings: {},
   log: {
     // tslint:disable-next-line: no-console
@@ -23,16 +28,6 @@ afterEach(() => {
   jest.resetAllMocks();
   jest.restoreAllMocks();
 });
-
-const validPaymentActivationsRequest = {
-  codiceContestoPagamento: "6f69d150541e11ebb70c7b05c53756dd",
-  importoSingoloVersamento: 1100,
-  rptId: "01199250158002720356519484501"
-} as PaymentActivationsPostRequest;
-
-const invalidPaymentActivationsRequest = {
-  importoSingoloVersamento: 1100
-} as PaymentActivationsPostRequest;
 
 it("should return a PaymentActivationsPostResponse if the activation is successful", async () => {
   const apiClientMock = {
@@ -62,7 +57,7 @@ it("should return a PaymentActivationsPostResponse if the activation is successf
   expect(response.kind).toBe("IResponseSuccessJson");
 });
 
-it("should return a PaymentActivationsPostResponse if the activation is successful", async () => {
+it("should return a payment KO response if the activation is not successful", async () => {
   const apiClientMock = {
     activatePayment: jest.fn(_ => {
       return Promise.resolve(
