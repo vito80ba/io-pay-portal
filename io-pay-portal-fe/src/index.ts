@@ -20,6 +20,7 @@ sessionStorage.clear();
 document.addEventListener("DOMContentLoaded", () => {
   const inputFields = document.getElementsByTagName("input") || null;
   const stateCard = document.getElementById("stateCard") || null;
+  const initCard = document.getElementById("initCard") || null;
   const verify = document.getElementById("verify") || null;
   const active = document.getElementById("active") || null;
   const error = document.getElementById("error") || null;
@@ -32,11 +33,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const organizationIdEl: HTMLInputElement | null =
     (document.getElementById("organizationId") as HTMLInputElement) || null;
 
+  // check if all fields are OK
+  function fieldsCheck() {
+    const checkedFields = document.querySelectorAll("input[data-checked]");
+
+    if (checkedFields?.length === inputFields?.length) {
+      verify?.removeAttribute("disabled");
+    } else {
+      verify?.setAttribute("disabled", "disabled");
+    }
+  }
+
+  // Add / remove validity to input elements
+  function toggleValid(el: any, isItValid: any) {
+    if (isItValid === true) {
+      el.parentNode.classList.remove("is-invalid");
+      el.parentNode.classList.add("is-valid");
+      el.classList.remove("is-invalid");
+      el.classList.add("is-valid");
+      el.setAttribute("data-checked", 1);
+    } else {
+      el.parentNode.classList.remove("is-valid");
+      el.parentNode.classList.add("is-invalid");
+      el.classList.remove("is-valid");
+      el.classList.add("is-invalid");
+      el.removeAttribute("data-checked");
+    }
+  }
+
   if (inputFields) {
     for (const inputEl of Array.from(inputFields)) {
       (inputEl as HTMLInputElement).addEventListener("focus", (evt: Event) => {
         const el = evt?.target;
         (el as HTMLInputElement).nextElementSibling?.classList.add("active");
+      });
+      (inputEl as HTMLInputElement).addEventListener("keyup", (evt: Event) => {
+        const el = evt?.target as HTMLInputElement;
+        if (el.value.length > 0) {
+          toggleValid(el, true);
+        } else {
+          toggleValid(el, false);
+        }
+        fieldsCheck();
       });
     }
   }
@@ -73,6 +111,15 @@ document.addEventListener("DOMContentLoaded", () => {
         .run();
 
       document.body.classList.remove("loading");
+    }
+  );
+
+  back?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+      stateCard?.classList.add("d-none");
+      initCard?.classList.remove("d-none");
     }
   );
 
