@@ -14,6 +14,7 @@ export type IConfig = t.TypeOf<typeof IConfig>;
 export const IConfig = t.interface({
   IO_PAGOPA_PROXY_PROD_BASE_URL: NonEmptyString,
   IO_PAGOPA_PROXY_TEST_BASE_URL: NonEmptyString,
+  IO_PAY_CHALLENGE_RESUME_URL: NonEmptyString,
   PAGOPA_BASE_PATH: NonEmptyString
 });
 
