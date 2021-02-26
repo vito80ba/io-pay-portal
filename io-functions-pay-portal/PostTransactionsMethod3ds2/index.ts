@@ -18,12 +18,10 @@ winston.add(contextTransport);
 
 // Setup Express
 const app = express();
-
-secureExpressApp(app);
-
 // Add express route
 
 app.post("/api/v1/transactions/:id/method/", (_, res) => {
+  res.removeHeader("X-Frame-Options");
   res.set("Content-Type", "text/html");
   return res.send(methodPage);
 });

@@ -34,7 +34,7 @@ app.post("/api/v1/transactions/:id/challenge", (req, res) => {
         "IO_PAY_CHALLENGE_RESUME_URL",
         config.IO_PAY_CHALLENGE_RESUME_URL
       )
-      .replace("id", req.params.id)
+      .replace("idTransaction", req.params.id)
   );
 });
 
