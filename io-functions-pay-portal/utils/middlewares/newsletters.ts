@@ -26,6 +26,7 @@ export const recaptchaCheckTask = (
       fetchApi(`${config.RECAPTCHA_URL}/recaptcha/api/siteverify`, {
         body: `secret=${config.RECAPTCHA_SECRET}&response=${recaptchaToken}`,
         headers: {
+          // tslint:disable-next-line: no-duplicate-string
           "Content-Type": "application/x-www-form-urlencoded"
         },
         method: "POST"
