@@ -682,7 +682,12 @@ body {
   padding-bottom: 1rem;
   @include media-breakpoint-up(md) {
     border-radius: 4px;
-    width: 50vh;
+    width: 30vw;
+  }
+  .xl & {
+    @include media-breakpoint-up(md) {
+      width: 60vw;
+    }
   }
 }
 

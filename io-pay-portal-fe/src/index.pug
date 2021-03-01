@@ -24,7 +24,7 @@ html(lang='it')
                     div(id="initCard").windowcont.px-4.px-md-0
                         h1.h2 Cosa devi pagare?
                         p.reset-font-size.text-muted Inserisci i dati come riportato sull'avviso di pagamento
-                        a(href="").reset-font-size.text-decoration-none.font-weight-bold Dove trovo i dati?
+                        a(href="#", id="helpmodal").reset-font-size.text-decoration-none.font-weight-bold Dove trovo i dati?
                         .firstindexform 
                             form.my-5(id="firstindexform")
                                 .form-group.my-2
@@ -80,3 +80,4 @@ html(lang='it')
 
             // FOOTER
             include includes/footer.pug
+            include includes/modal.pug
