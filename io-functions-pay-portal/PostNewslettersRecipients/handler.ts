@@ -58,12 +58,12 @@ const AuthTokenO = t.interface({
   refresh_token: t.string
 });
 
-const AuthMailupToken = t.intersection(
+const MailupAuthToken = t.intersection(
   [AuthTokenR, AuthTokenO],
-  "AuthMailupToken"
+  "MailupAuthToken"
 );
 
-type AuthMailupToken = t.TypeOf<typeof AuthMailupToken>;
+type MailupAuthToken = t.TypeOf<typeof MailupAuthToken>;
 
 /**
  * Model for Google reCaptcha response
@@ -146,7 +146,7 @@ const recaptchaCheckTask = (
       )
     );
 
-const getTokenMailupTask = (): TaskEither<Error, AuthMailupToken> =>
+const getMailupAuthTokenTask = (): TaskEither<Error, MailupAuthToken> =>
   tryCatch(
     () =>
       fetchApi(`${config.MAILUP_URL}/Authorization/OAuth/Token`, {
@@ -174,7 +174,7 @@ const getTokenMailupTask = (): TaskEither<Error, AuthMailupToken> =>
     )
     .chain(json =>
       fromEither(
-        AuthMailupToken.decode(json).mapLeft(
+        MailupAuthToken.decode(json).mapLeft(
           errors =>
             new Error(
               `Error while decoding response from auth request mailup: ${readableReport(
@@ -242,7 +242,7 @@ export function PostNewslettersRecipientsHandler(): IPostNewslettersRecipientsHa
     context.log.info(`${logPrefix}| Add new recipient to mailup group ${id}`);
 
     return recaptchaCheckTask(recipientRequest.recaptchaToken)
-      .chain(_ => getTokenMailupTask())
+      .chain(_ => getMailupAuthTokenTask())
       .chain(authMailupResponse =>
         addRecipientToMailupListTask(
           id,
