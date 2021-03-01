@@ -8,7 +8,6 @@ import { AzureContextTransport } from "io-functions-commons/dist/src/utils/loggi
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
 import { getConfigOrThrow } from "../utils/config";
-import { challengePage } from "../utils/page3ds";
 
 const config = getConfigOrThrow();
 
@@ -19,13 +18,15 @@ const contextTransport = new AzureContextTransport(() => logger, {
 });
 winston.add(contextTransport);
 
+const challengePage =
+  '<head><meta http-equiv="refresh" content="0; URL=IO_PAY_CHALLENGE_RESUME_URL"></head>';
+
 // Setup Express
 const app = express();
 
 secureExpressApp(app);
 
 // Add express route
-
 app.post("/api/v1/transactions/:id/challenge", (req, res) => {
   res.set("Content-Type", "text/html");
   return res.send(

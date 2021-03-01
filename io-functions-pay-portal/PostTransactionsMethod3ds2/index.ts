@@ -6,7 +6,6 @@ import { Context } from "@azure/functions";
 import { AzureContextTransport } from "io-functions-commons/dist/src/utils/logging";
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
-import { methodPage } from "../utils/page3ds";
 
 // tslint:disable-next-line: no-let
 let logger: Context["log"] | undefined;
@@ -15,10 +14,13 @@ const contextTransport = new AzureContextTransport(() => logger, {
 });
 winston.add(contextTransport);
 
+const methodPage =
+  '<html><head><script>window.parent.postMessage("3DS.Notification.Received", "http://localhost:1234");</script></head><body></body></html>';
+
 // Setup Express
 const app = express();
-// Add express route
 
+// Add express route
 app.post("/api/v1/transactions/:id/method/", (_, res) => {
   res.removeHeader("X-Frame-Options");
   res.set("Content-Type", "text/html");
