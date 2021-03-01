@@ -18,11 +18,9 @@ export const IConfig = t.interface({
   MAILUP_CLIENT_ID: NonEmptyString,
   MAILUP_PASSWORD: NonEmptyString,
   MAILUP_SECRET: NonEmptyString,
-  MAILUP_URL: NonEmptyString,
   MAILUP_USERNAME: NonEmptyString,
   PAGOPA_BASE_PATH: NonEmptyString,
-  RECAPTCHA_SECRET: NonEmptyString,
-  RECAPTCHA_URL: NonEmptyString
+  RECAPTCHA_SECRET: NonEmptyString
 });
 
 // No need to re-evaluate this object for each call

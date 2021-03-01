@@ -105,7 +105,7 @@ const recaptchaCheckTask = (
 ): TaskEither<Error, ResponseRecaptcha> =>
   tryCatch(
     () =>
-      fetchApi(`${config.RECAPTCHA_URL}/recaptcha/api/siteverify`, {
+      fetchApi(`https://www.google.com/recaptcha/api/siteverify`, {
         body: `secret=${config.RECAPTCHA_SECRET}&response=${recaptchaToken}`,
         headers: {
           // tslint:disable-next-line: no-duplicate-string
@@ -149,7 +149,7 @@ const recaptchaCheckTask = (
 const getMailupAuthTokenTask = (): TaskEither<Error, MailupAuthToken> =>
   tryCatch(
     () =>
-      fetchApi(`${config.MAILUP_URL}/Authorization/OAuth/Token`, {
+      fetchApi(`https://services.mailup.com/Authorization/OAuth/Token`, {
         body: `grant_type=password&client_id=${config.MAILUP_CLIENT_ID}&client_secret=${config.MAILUP_SECRET}&username=${config.MAILUP_USERNAME}&password=${config.MAILUP_PASSWORD}`,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -200,7 +200,7 @@ const addRecipientToMailupListTask = (
   tryCatch(
     () =>
       fetchApi(
-        `${config.MAILUP_URL}/API/v1.1/Rest/ConsoleService.svc/Console/List/${id}/Recipient`,
+        `https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc/Console/List/${id}/Recipient`,
         {
           body: JSON.stringify({
             Email: email,
