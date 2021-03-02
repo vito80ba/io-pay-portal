@@ -22,7 +22,10 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.post("/api/v1/newsletters/:id/recipients", PostNewslettersRecipientsCtrl());
+app.post(
+  "/api/v1/newsletters/groups/:id/recipients",
+  PostNewslettersRecipientsCtrl()
+);
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 
