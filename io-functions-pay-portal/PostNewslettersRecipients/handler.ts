@@ -35,6 +35,7 @@ import { getConfigOrThrow } from "../utils/config";
 
 import { IRequestMiddleware } from "io-functions-commons/dist/src/utils/request_middleware";
 import { ResponseErrorFromValidationErrors } from "italia-ts-commons/lib/responses";
+import { RecipientResponse } from "../generated/definitions/RecipientResponse";
 
 const logPrefix = "PostNewslettersRecipients";
 const config = getConfigOrThrow();
@@ -43,7 +44,7 @@ type IPostNewslettersRecipientsHandler = (
   context: Context,
   id: NonEmptyString,
   recipientRequest: RecipientRequest
-) => Promise<IResponseSuccessJson<string> | ErrorResponses>;
+) => Promise<IResponseSuccessJson<RecipientResponse> | ErrorResponses>;
 
 /**
  * Model for mailup OAuth token
@@ -200,7 +201,7 @@ const addRecipientToMailupListTask = (
   tryCatch(
     () =>
       fetchApi(
-        `https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc/Console/List/${id}/Recipient`,
+        `https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc/Console/Group/${id}/Recipient`,
         {
           body: JSON.stringify({
             Email: email,
@@ -251,9 +252,13 @@ export function PostNewslettersRecipientsHandler(): IPostNewslettersRecipientsHa
           authMailupResponse.access_token
         )
       )
-      .fold<IResponseSuccessJson<string> | ErrorResponses>(
+      .fold<IResponseSuccessJson<RecipientResponse> | ErrorResponses>(
         error => toDefaultResponseErrorInternal(error),
-        _ => ResponseSuccessJson("")
+        _ =>
+          ResponseSuccessJson({
+            email: recipientRequest.email,
+            name: recipientRequest.name
+          })
       )
       .run();
   };

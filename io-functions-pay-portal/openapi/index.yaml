@@ -141,6 +141,8 @@ paths:
       responses:
         "200":
           description: Recipient added
+          schema:
+            $ref: "#/definitions/RecipientResponse"
         "400":
           description: Bad request
         "401":
@@ -189,4 +191,14 @@ definitions:
           type: string
           format: email
         recaptchaToken:
-          type: string  
+          type: string
+    RecipientResponse:
+      type: object
+      required:
+          - email
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email       
