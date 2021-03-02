@@ -123,7 +123,7 @@ paths:
           description: Unavailable service
           schema:
             $ref: "#/definitions/ProblemJson"
-  "/newsletters/{id}/recipients":
+  "/newsletters/groups/{id}/recipients":
     post:
       operationId: PostNewslettersEmails
       description: Add an email to newsletter
