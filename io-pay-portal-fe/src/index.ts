@@ -1,4 +1,5 @@
 import { fromNullable } from "fp-ts/lib/Option";
+import Tingle from "tingle.js";
 import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import { RptId } from "../generated/RptId";
 import {
@@ -32,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
     (document.getElementById("paymentNoticeCode") as HTMLInputElement) || null;
   const organizationIdEl: HTMLInputElement | null =
     (document.getElementById("organizationId") as HTMLInputElement) || null;
+  const helpmodal: HTMLInputElement | null =
+    (document.getElementById("helpmodal") as HTMLInputElement) || null;
 
   // check if all fields are OK
   function fieldsCheck() {
@@ -67,17 +70,65 @@ document.addEventListener("DOMContentLoaded", () => {
         const el = evt?.target;
         (el as HTMLInputElement).nextElementSibling?.classList.add("active");
       });
-      (inputEl as HTMLInputElement).addEventListener("keyup", (evt: Event) => {
-        const el = evt?.target as HTMLInputElement;
-        if (el.value.length > 0) {
-          toggleValid(el, true);
-        } else {
-          toggleValid(el, false);
-        }
-        fieldsCheck();
-      });
     }
   }
+
+  paymentNoticeCodeEl?.addEventListener(
+    "keyup",
+    async (evt): Promise<void> => {
+      const inputel = evt?.target as HTMLInputElement;
+      // only 18 numbers
+      const regexTest = new RegExp(/^[0-9]{18}$/);
+      // eslint-disable-next-line functional/immutable-data
+      inputel.value = inputel.value.trim();
+      if (regexTest.test(inputel.value) === true) {
+        toggleValid(inputel, true);
+      } else {
+        toggleValid(inputel, false);
+      }
+      fieldsCheck();
+    }
+  );
+
+  organizationIdEl?.addEventListener(
+    "keyup",
+    async (evt): Promise<void> => {
+      const inputel = evt?.target as HTMLInputElement;
+      // only chars& numbers, min 11 max 16
+      const regexTest = new RegExp(/^[a-zA-Z0-9]{11,16}$/);
+      // eslint-disable-next-line functional/immutable-data
+      inputel.value = inputel.value.trim();
+      if (regexTest.test(inputel.value) === true) {
+        toggleValid(inputel, true);
+      } else {
+        toggleValid(inputel, false);
+      }
+      fieldsCheck();
+    }
+  );
+
+  helpmodal?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+      const modalTarget = document.getElementById("modal-wheredata") || null;
+      const modalWindow = new Tingle.modal({
+        footer: false,
+        stickyFooter: false,
+        cssClass: ["xl"],
+        onOpen: () => {
+          const modalClose = modalWindow
+            .getContent()
+            .querySelector(".modalwindow__close");
+          modalClose?.addEventListener("click", () => {
+            modalWindow.close();
+          });
+        },
+      });
+      modalWindow.setContent(modalTarget?.innerHTML || " ");
+      modalWindow.open();
+    }
+  );
 
   /**
    * Verify and show payment info
