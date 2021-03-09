@@ -23,7 +23,7 @@ secureExpressApp(app);
 
 // Add express route
 app.post(
-  "/api/v1/newsletters/groups/:id/recipients",
+  "/api/v1/newsletters/groups/:groupId/recipients",
   PostNewslettersRecipientsCtrl()
 );
 

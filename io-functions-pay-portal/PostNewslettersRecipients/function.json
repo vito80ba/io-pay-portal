@@ -5,7 +5,7 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "route": "api/v1/newsletters/groups/{id}/recipients",
+      "route": "api/v1/newsletters/groups/{groupId}/recipients",
       "methods": [
         "post"
       ]
