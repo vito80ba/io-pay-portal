@@ -11,6 +11,7 @@ import {
 } from "io-functions-commons/dist/src/utils/request_middleware";
 import {
   IResponseSuccessJson,
+  ResponseErrorForbiddenNotAuthorized,
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
 
@@ -42,7 +43,7 @@ const config = getConfigOrThrow();
 
 type IPostNewslettersRecipientsHandler = (
   context: Context,
-  id: NonEmptyString,
+  groupId: NonEmptyString,
   recipientRequest: RecipientRequest
 ) => Promise<IResponseSuccessJson<RecipientResponse> | ErrorResponses>;
 
@@ -101,12 +102,13 @@ const RecipientRequestMiddleware: IRequestMiddleware<
     )
   );
 
-const recaptchaCheckTask = (
-  recaptchaToken: string
+export const recaptchaCheckTask = (
+  recaptchaToken: string,
+  googleHost: string = "https://www.google.com"
 ): TaskEither<Error, ResponseRecaptcha> =>
   tryCatch(
     () =>
-      fetchApi(`https://www.google.com/recaptcha/api/siteverify`, {
+      fetchApi(`${googleHost}/recaptcha/api/siteverify`, {
         body: `secret=${config.RECAPTCHA_SECRET}&response=${recaptchaToken}`,
         headers: {
           // tslint:disable-next-line: no-duplicate-string
@@ -147,10 +149,12 @@ const recaptchaCheckTask = (
       )
     );
 
-const getMailupAuthTokenTask = (): TaskEither<Error, MailupAuthToken> =>
+export const getMailupAuthTokenTask = (
+  mailupHost: string = "https://services.mailup.com"
+): TaskEither<Error, MailupAuthToken> =>
   tryCatch(
     () =>
-      fetchApi(`https://services.mailup.com/Authorization/OAuth/Token`, {
+      fetchApi(`${mailupHost}/Authorization/OAuth/Token`, {
         body: `grant_type=password&client_id=${config.MAILUP_CLIENT_ID}&client_secret=${config.MAILUP_SECRET}&username=${config.MAILUP_USERNAME}&password=${config.MAILUP_PASSWORD}`,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
@@ -192,16 +196,17 @@ const getMailupAuthTokenTask = (): TaskEither<Error, MailupAuthToken> =>
       )
     );
 
-const addRecipientToMailupListTask = (
+export const addRecipientToMailupListTask = (
   id: NonEmptyString,
   email: EmailString,
   name: string | undefined,
-  token: NonEmptyString
+  token: NonEmptyString,
+  mailupHost: string = "https://services.mailup.com"
 ): TaskEither<Error, number> =>
   tryCatch(
     () =>
       fetchApi(
-        `https://services.mailup.com/API/v1.1/Rest/ConsoleService.svc/Console/Group/${id}/Recipient`,
+        `${mailupHost}/API/v1.1/Rest/ConsoleService.svc/Console/Group/${id}/Recipient`,
         {
           body: JSON.stringify({
             Email: email,
@@ -239,21 +244,30 @@ const addRecipientToMailupListTask = (
     );
 
 export function PostNewslettersRecipientsHandler(): IPostNewslettersRecipientsHandler {
-  return (context, id, recipientRequest) => {
-    context.log.info(`${logPrefix}| Add new recipient to mailup group ${id}`);
+  return (context, groupId, recipientRequest) => {
+    context.log.info(
+      `${logPrefix}| Add new recipient to mailup group ${groupId}`
+    );
 
-    return recaptchaCheckTask(recipientRequest.recaptchaToken)
+    return fromPredicate<Error, string>(
+      id => config.MAILUP_ALLOWED_GROUPS.includes(id),
+      _ => new Error("forbidden_mailup_group")
+    )(groupId)
+      .chain(_ => recaptchaCheckTask(recipientRequest.recaptchaToken))
       .chain(_ => getMailupAuthTokenTask())
       .chain(authMailupResponse =>
         addRecipientToMailupListTask(
-          id,
+          groupId,
           recipientRequest.email,
           recipientRequest.name,
           authMailupResponse.access_token
         )
       )
       .fold<IResponseSuccessJson<RecipientResponse> | ErrorResponses>(
-        error => toDefaultResponseErrorInternal(error),
+        error =>
+          error.message === "forbidden_mailup_group"
+            ? ResponseErrorForbiddenNotAuthorized
+            : toDefaultResponseErrorInternal(error),
         _ =>
           ResponseSuccessJson({
             email: recipientRequest.email,
@@ -268,7 +282,7 @@ export function PostNewslettersRecipientsCtrl(): express.RequestHandler {
   const handler = PostNewslettersRecipientsHandler();
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
-    RequiredParamMiddleware("id", NonEmptyString),
+    RequiredParamMiddleware("groupId", NonEmptyString),
     RecipientRequestMiddleware
   );
 

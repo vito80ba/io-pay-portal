@@ -145,8 +145,8 @@ paths:
             $ref: "#/definitions/RecipientResponse"
         "400":
           description: Bad request
-        "401":
-          description: not authenticated
+        "403":
+          description: forbidden
         "500":
           description: generic error            
 definitions:
