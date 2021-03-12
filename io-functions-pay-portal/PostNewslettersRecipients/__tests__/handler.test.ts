@@ -140,7 +140,7 @@ describe("PostNewslettersRecipientHandler", () => {
     expect(response.kind).toBe("IResponseErrorInternal");
   });
 
-  it("should return IResponseErrorInternal if adding receiver to mailup fails fails", async () => {
+  it("should return IResponseErrorInternal if adding receiver to mailup fails", async () => {
     jest.spyOn(handlers, "recaptchaCheckTask").mockReturnValueOnce(
       taskEither.of({
         challenge_ts: "challenge_ts",
@@ -176,9 +176,6 @@ describe("PostNewslettersRecipientHandler", () => {
   });
 
   it("should return IResponseErrorForbiddenNotAuthorized if groupId is unauthorized", async () => {
-    jest
-      .spyOn(handlers, "addRecipientToMailupListTask")
-      .mockReturnValueOnce(fromLeft(Error()));
 
     const handler = handlers.PostNewslettersRecipientsHandler();
 
