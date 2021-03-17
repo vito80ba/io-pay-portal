@@ -34,6 +34,8 @@ import { readableReport } from "italia-ts-commons/lib/reporters";
 import { fetchApi } from "../clients/fetchApi";
 import { getConfigOrThrow } from "../utils/config";
 
+import { array } from "fp-ts/lib/Array";
+import { taskEither } from "fp-ts/lib/TaskEither";
 import { IRequestMiddleware } from "io-functions-commons/dist/src/utils/request_middleware";
 import { ResponseErrorFromValidationErrors } from "italia-ts-commons/lib/responses";
 import { RecipientResponse } from "../generated/definitions/RecipientResponse";
@@ -43,9 +45,17 @@ const config = getConfigOrThrow();
 
 type IPostNewslettersRecipientsHandler = (
   context: Context,
+  clientId: ClientId,
   groupId: NonEmptyString,
   recipientRequest: RecipientRequest
 ) => Promise<IResponseSuccessJson<RecipientResponse> | ErrorResponses>;
+
+/**
+ * Model for clientId path param
+ */
+const ClientId = t.union([t.literal("io"), t.literal("pagopa")]);
+
+type ClientId = t.TypeOf<typeof ClientId>;
 
 /**
  * Model for mailup OAuth token
@@ -104,12 +114,17 @@ const RecipientRequestMiddleware: IRequestMiddleware<
 
 export const recaptchaCheckTask = (
   recaptchaToken: string,
+  clientId: ClientId,
   googleHost: string = "https://www.google.com"
-): TaskEither<Error, ResponseRecaptcha> =>
-  tryCatch(
+): TaskEither<Error, ResponseRecaptcha> => {
+  const reCaptchaSecret: string =
+    clientId === "io"
+      ? config.RECAPTCHA_SECRET_IO
+      : config.RECAPTCHA_SECRET_PAGOPA;
+  return tryCatch(
     () =>
       fetchApi(`${googleHost}/recaptcha/api/siteverify`, {
-        body: `secret=${config.RECAPTCHA_SECRET}&response=${recaptchaToken}`,
+        body: `secret=${reCaptchaSecret}&response=${recaptchaToken}`,
         headers: {
           // tslint:disable-next-line: no-duplicate-string
           "Content-Type": "application/x-www-form-urlencoded"
@@ -148,6 +163,7 @@ export const recaptchaCheckTask = (
         _ => new Error(`Error checking recaptcha`)
       )
     );
+};
 
 export const getMailupAuthTokenTask = (
   mailupHost: string = "https://services.mailup.com"
@@ -196,76 +212,111 @@ export const getMailupAuthTokenTask = (
       )
     );
 
-export const addRecipientToMailupListTask = (
-  id: NonEmptyString,
+export const addRecipientToMailupListOrGroupTask = (
   email: EmailString,
   name: string | undefined,
   token: NonEmptyString,
+  path: string,
   mailupHost: string = "https://services.mailup.com"
 ): TaskEither<Error, number> =>
   tryCatch(
     () =>
-      fetchApi(
-        `${mailupHost}/API/v1.1/Rest/ConsoleService.svc/Console/Group/${id}/Recipient`,
-        {
-          body: JSON.stringify({
-            Email: email,
-            Name: name
-          }),
-          headers: {
-            // tslint:disable-next-line: prettier
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          method: "POST"
-        }
-      ),
-    err => new Error(`Error posting new recipient mailup API: ${err}`)
+      fetchApi(`${mailupHost}${path}`, {
+        body: JSON.stringify({
+          Email: email,
+          Name: name
+        }),
+        headers: {
+          // tslint:disable-next-line: prettier
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        method: "POST"
+      }),
+    err => new Error(`Error posting new recipient in List mailup API: ${err}`)
   )
     .chain(
       fromPredicate<Error, Response>(
         r => r.ok,
         r =>
-          new Error(`Error returned from new recipient mailup API: ${r.status}`)
+          new Error(
+            `Error returned from new recipient in List mailup API: ${r.status}`
+          )
       )
     )
     .chain(response =>
       tryCatch(
         () => response.json(),
         err =>
-          new Error(`Error getting new recipient mailup API payload: ${err}`)
+          new Error(
+            `Error getting new recipient in List mailup API payload: ${err}`
+          )
       )
     )
     .chain(
       fromPredicate(
         idRecipient => idRecipient > 0,
-        _ => new Error(`Error new recipient  mailup`)
+        _ => new Error(`Error new recipient in List mailup`)
       )
     );
 
+export const addRecipientToMailupTask = (
+  idList: NonEmptyString,
+  email: EmailString,
+  name: string | undefined,
+  token: NonEmptyString,
+  groups: readonly string[] | undefined
+): TaskEither<Error, number | readonly number[]> =>
+  groups === undefined || groups === []
+    ? addRecipientToMailupListOrGroupTask(
+        email,
+        name,
+        token,
+        `/API/v1.1/Rest/ConsoleService.svc/Console/List/${idList}/Recipient`
+      )
+    : array.traverse(taskEither)([...groups], idGroup =>
+        addRecipientToMailupListOrGroupTask(
+          email,
+          name,
+          token,
+          `/API/v1.1/Rest/ConsoleService.svc/Console/Group/${idGroup}/Recipient`
+        )
+      );
+
 export function PostNewslettersRecipientsHandler(): IPostNewslettersRecipientsHandler {
-  return (context, groupId, recipientRequest) => {
+  return (context, clientId, listId, recipientRequest) => {
     context.log.info(
-      `${logPrefix}| Add new recipient to mailup group ${groupId}`
+      `${logPrefix}| Add new recipient to mailup list ${listId}`
     );
 
     return fromPredicate<Error, string>(
-      id => config.MAILUP_ALLOWED_GROUPS.includes(id),
-      _ => new Error("forbidden_mailup_group")
-    )(groupId)
-      .chain(_ => recaptchaCheckTask(recipientRequest.recaptchaToken))
+      id => config.MAILUP_ALLOWED_LISTS.includes(id),
+      _ => new Error("forbidden_mailup_lists")
+    )(listId)
+      .chain(_ =>
+        fromPredicate<Error, readonly string[] | undefined>(
+          groups =>
+            groups === undefined ||
+            groups === [] ||
+            groups.every(group => config.MAILUP_ALLOWED_GROUPS.includes(group)),
+          () => new Error("forbidden_mailup_groups")
+        )(recipientRequest.groups)
+      )
+      .chain(_ => recaptchaCheckTask(recipientRequest.recaptchaToken, clientId))
       .chain(_ => getMailupAuthTokenTask())
       .chain(authMailupResponse =>
-        addRecipientToMailupListTask(
-          groupId,
+        addRecipientToMailupTask(
+          listId,
           recipientRequest.email,
           recipientRequest.name,
-          authMailupResponse.access_token
+          authMailupResponse.access_token,
+          recipientRequest.groups
         )
       )
       .fold<IResponseSuccessJson<RecipientResponse> | ErrorResponses>(
         error =>
-          error.message === "forbidden_mailup_group"
+          error.message === "forbidden_mailup_groups" ||
+          error.message === "forbidden_mailup_lists"
             ? ResponseErrorForbiddenNotAuthorized
             : toDefaultResponseErrorInternal(error),
         _ =>
@@ -282,7 +333,8 @@ export function PostNewslettersRecipientsCtrl(): express.RequestHandler {
   const handler = PostNewslettersRecipientsHandler();
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
-    RequiredParamMiddleware("groupId", NonEmptyString),
+    RequiredParamMiddleware("clientId", ClientId),
+    RequiredParamMiddleware("listId", NonEmptyString),
     RecipientRequestMiddleware
   );
 

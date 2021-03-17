@@ -123,16 +123,24 @@ paths:
           description: Unavailable service
           schema:
             $ref: "#/definitions/ProblemJson"
-  "/newsletters/groups/{id}/recipients":
+  "/newsletters/{idClient}/lists/{idList}/recipients":
     post:
       operationId: PostNewslettersEmails
       description: Add an email to newsletter
       parameters:
-      - name: id
+      - name: idList
         in: path
         required: true
-        description: newsletter id
+        description: list id
         type: string
+      - name: idClient
+        in: path
+        required: true
+        description: client id
+        type: string
+        enum:
+          - "io" 
+          - "pagopa" 
       - name: body
         in: body
         required: true
@@ -205,6 +213,10 @@ definitions:
           format: email
         recaptchaToken:
           type: string
+        groups:
+          type: array
+          items:
+            type: string  
     RecipientResponse:
       type: object
       required:
