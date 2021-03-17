@@ -10,12 +10,14 @@ process.env = {
   PAGOPA_BASE_PATH: "NonEmptyString",
 
   MAILUP_ALLOWED_GROUPS: "6,123",
+  MAILUP_ALLOWED_LISTS: "1",
   MAILUP_CLIENT_ID: "26XXXXXXXXXXXXXXXXXXXXXXXe",
   MAILUP_PASSWORD: "XXXXXXX",
   MAILUP_SECRET: "f638dexxxxxxxxxxxx8812480",
   MAILUP_USERNAME: "mXXXXXX",
 
-  RECAPTCHA_SECRET: "6dddddd0P7N0dddddTdd"
+  RECAPTCHA_SECRET_IO: "6dddddd0P7N0dddddTdd",
+  RECAPTCHA_SECRET_PAGOPA: "6dddddd0P7N0dddddTdd"
 };
 
 import * as handlers from "../handler";
@@ -49,6 +51,8 @@ const email = "test.test@test.it";
 const recaptchaToken = "03AGsdB8g-4s9SKbbg";
 const idNewRecipient = 123;
 const groupId = "6";
+const listId = "1";
+const clientId = "io";
 
 describe("PostNewslettersRecipientHandler", () => {
   it("should return IResponseSuccessJson if the mail and recaptcha token are valid", async () => {
@@ -69,14 +73,15 @@ describe("PostNewslettersRecipientHandler", () => {
     );
 
     jest
-      .spyOn(handlers, "addRecipientToMailupListTask")
+      .spyOn(handlers, "addRecipientToMailupTask")
       .mockReturnValueOnce(taskEither.of(idNewRecipient));
 
     const handler = handlers.PostNewslettersRecipientsHandler();
 
     const response = await handler(
       context,
-      groupId as NonEmptyString,
+      clientId,
+      listId as NonEmptyString,
       {
         email,
         recaptchaToken
@@ -103,7 +108,8 @@ describe("PostNewslettersRecipientHandler", () => {
 
     const response = await handler(
       context,
-      groupId as NonEmptyString,
+      clientId,
+      listId as NonEmptyString,
       {
         email,
         recaptchaToken
@@ -130,7 +136,8 @@ describe("PostNewslettersRecipientHandler", () => {
 
     const response = await handler(
       context,
-      groupId as NonEmptyString,
+      clientId,
+      listId as NonEmptyString,
       {
         email,
         recaptchaToken
@@ -158,14 +165,15 @@ describe("PostNewslettersRecipientHandler", () => {
     );
 
     jest
-      .spyOn(handlers, "addRecipientToMailupListTask")
+      .spyOn(handlers, "addRecipientToMailupTask")
       .mockReturnValueOnce(fromLeft(Error()));
 
     const handler = handlers.PostNewslettersRecipientsHandler();
 
     const response = await handler(
       context,
-      groupId as NonEmptyString,
+      clientId,
+      listId as NonEmptyString,
       {
         email,
         recaptchaToken
@@ -176,12 +184,11 @@ describe("PostNewslettersRecipientHandler", () => {
   });
 
   it("should return IResponseErrorForbiddenNotAuthorized if groupId is unauthorized", async () => {
-
     const handler = handlers.PostNewslettersRecipientsHandler();
-
     const response = await handler(
       context,
-      "23445" as NonEmptyString,
+      clientId,
+      "12321" as NonEmptyString,
       {
         email,
         recaptchaToken
