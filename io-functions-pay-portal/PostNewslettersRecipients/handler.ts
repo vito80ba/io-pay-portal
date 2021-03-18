@@ -114,17 +114,12 @@ const RecipientRequestMiddleware: IRequestMiddleware<
 
 export const recaptchaCheckTask = (
   recaptchaToken: string,
-  clientId: ClientId,
   googleHost: string = "https://www.google.com"
-): TaskEither<Error, ResponseRecaptcha> => {
-  const reCaptchaSecret: string =
-    clientId === "io"
-      ? config.RECAPTCHA_SECRET_IO
-      : config.RECAPTCHA_SECRET_PAGOPA;
-  return tryCatch(
+): TaskEither<Error, ResponseRecaptcha> =>
+  tryCatch(
     () =>
       fetchApi(`${googleHost}/recaptcha/api/siteverify`, {
-        body: `secret=${reCaptchaSecret}&response=${recaptchaToken}`,
+        body: `secret=${config.RECAPTCHA_SECRET}&response=${recaptchaToken}`,
         headers: {
           // tslint:disable-next-line: no-duplicate-string
           "Content-Type": "application/x-www-form-urlencoded"
@@ -163,7 +158,6 @@ export const recaptchaCheckTask = (
         _ => new Error(`Error checking recaptcha`)
       )
     );
-};
 
 export const getMailupAuthTokenTask = (
   mailupHost: string = "https://services.mailup.com"
@@ -286,7 +280,7 @@ export const addRecipientToMailupTask = (
 export function PostNewslettersRecipientsHandler(): IPostNewslettersRecipientsHandler {
   return (context, clientId, listId, recipientRequest) => {
     context.log.info(
-      `${logPrefix}| Add new recipient to mailup list ${listId}`
+      `${logPrefix}-${clientId} | Add new recipient to mailup list ${listId}`
     );
 
     return fromPredicate<Error, string>(
@@ -302,7 +296,7 @@ export function PostNewslettersRecipientsHandler(): IPostNewslettersRecipientsHa
           () => new Error("forbidden_mailup_groups")
         )(recipientRequest.groups)
       )
-      .chain(_ => recaptchaCheckTask(recipientRequest.recaptchaToken, clientId))
+      .chain(_ => recaptchaCheckTask(recipientRequest.recaptchaToken))
       .chain(_ => getMailupAuthTokenTask())
       .chain(authMailupResponse =>
         addRecipientToMailupTask(
