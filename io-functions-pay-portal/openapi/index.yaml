@@ -149,6 +149,19 @@ paths:
           description: forbidden
         "500":
           description: generic error            
+  "/browsers/current/info":
+    get:
+      operationId: GetBrowsersInfo
+      description: Get info of the current browser used by the user
+      responses:
+        "200":
+          description: Browser info retrieved
+          schema:
+            $ref: "#/definitions/BrowserInfoResponse"
+        "400":
+          description: Bad request   
+        "500":
+          description: generic error             
 definitions:
     ProblemJson:
       $ref: "https://raw.githubusercontent.com/pagopa/io-functions-commons/v10.7.0/openapi/definitions.yaml#/ProblemJson"
@@ -201,4 +214,17 @@ definitions:
           type: string
         email:
           type: string
-          format: email       
+          format: email
+    BrowserInfoResponse:
+      type: object
+      required:
+          - ip
+          - useragent
+          - accept
+      properties:
+        ip:
+          type: string
+        useragent:
+          type: string
+        accept:
+          type: string
