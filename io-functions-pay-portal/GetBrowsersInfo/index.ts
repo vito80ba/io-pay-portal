@@ -21,16 +21,22 @@ const app = express();
 
 secureExpressApp(app);
 
+app.set("trust proxy", true);
+
 // Add express route
 app.get("/api/v1/browsers/current/info", (req, res) => {
   res.set("Content-Type", "application/json");
-  return BrowserInfoResponse.decode({
+
+  const browserInfo = {
     accept: req.get("Accept"),
     ip: req.ip,
     useragent: req.get("User-Agent")
-  }).fold(
+  };
+  logger?.info(`X-Forwarded-Host: ${req.get("X-Forwarded-Host")}`);
+  logger?.info(`clientIp (req.ip) : ${req.ip}`);
+  return BrowserInfoResponse.decode(browserInfo).fold(
     _ => res.sendStatus(400),
-    browserInfo => res.send(browserInfo)
+    browserInfoResult => res.send(browserInfoResult)
   );
 });
 
