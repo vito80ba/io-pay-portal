@@ -8,7 +8,7 @@ process.env = {
   IO_PAGOPA_PROXY_TEST_BASE_URL: "http://localhost:7071/api/v1",
   IO_PAY_CHALLENGE_RESUME_URL:
     "http://localhost:1234/response.html?id=idTransaction",
-
+  IO_PAY_ORIGIN: "http://localhost:1234",
   PAGOPA_BASE_PATH: "NonEmptyString",
 
   MAILUP_ALLOWED_GROUPS: "6,123",
@@ -199,7 +199,7 @@ describe("PostNewslettersRecipientHandler", () => {
 
     expect(response.kind).toBe("IResponseErrorForbiddenNotAuthorized");
   });
-  
+
   it("should return valid ResponseRecaptcha if Google Recaptcha token is valid", async () => {
     jest.spyOn(fetch, "fetchApi").mockReturnValueOnce(
       Promise.resolve({
