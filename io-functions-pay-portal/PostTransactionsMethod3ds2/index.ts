@@ -18,7 +18,7 @@ const contextTransport = new AzureContextTransport(() => logger, {
 winston.add(contextTransport);
 
 const methodPage =
-  '<html><head><script>window.parent.postMessage("3DS.Notification.Received", "IO_PAY_ORIGN");</script></head><body></body></html>';
+  '<html><head><script>window.parent.postMessage("3DS.Notification.Received", "IO_PAY_ORIGIN");</script></head><body></body></html>';
 
 // Setup Express
 const app = express();
@@ -27,7 +27,7 @@ const app = express();
 app.post("/api/v1/transactions/:id/method/", (_, res) => {
   res.removeHeader("X-Frame-Options");
   res.set("Content-Type", "text/html");
-  return res.send(methodPage.replace("IO_PAY_ORIGN", config.IO_PAY_ORIGIN));
+  return res.send(methodPage.replace("IO_PAY_ORIGIN", config.IO_PAY_ORIGIN));
 });
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
