@@ -266,14 +266,14 @@ export const addRecipientToMailupTask = (
         email,
         name,
         token,
-        `/API/v1.1/Rest/ConsoleService.svc/Console/List/${idList}/Recipient`
+        `/API/v1.1/Rest/ConsoleService.svc/Console/List/${idList}/Recipient?ConfirmEmail=true`
       )
     : array.traverse(taskEither)([...groups], idGroup =>
         addRecipientToMailupListOrGroupTask(
           email,
           name,
           token,
-          `/API/v1.1/Rest/ConsoleService.svc/Console/Group/${idGroup}/Recipient`
+          `/API/v1.1/Rest/ConsoleService.svc/Console/Group/${idGroup}/Recipient?ConfirmEmail=true`
         )
       );
 
