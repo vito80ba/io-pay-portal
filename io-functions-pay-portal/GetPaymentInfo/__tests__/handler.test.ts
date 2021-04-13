@@ -20,7 +20,8 @@ import { OrganizationFiscalCode } from "italia-ts-commons/lib/strings";
 process.env = {
   IO_PAGOPA_PROXY_PROD_BASE_URL: "http://localhost:7071/api/v1",
   IO_PAGOPA_PROXY_TEST_BASE_URL: "http://localhost:7071/api/v1",
-  PAGOPA_BASE_PATH: "NonEmptyString"
+  PAGOPA_BASE_PATH: "NonEmptyString",
+  IO_PAY_XPAY_REDIRECT: "http://localhost"
 };
 // debug("ENV", process.env);
 

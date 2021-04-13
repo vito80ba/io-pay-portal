@@ -9,6 +9,8 @@ process.env = {
   IO_PAY_CHALLENGE_RESUME_URL:
     "http://localhost:1234/response.html?id=idTransaction",
   IO_PAY_ORIGIN: "http://localhost:1234",
+  IO_PAY_XPAY_REDIRECT: "http://localhost",
+
   PAGOPA_BASE_PATH: "NonEmptyString",
 
   MAILUP_ALLOWED_GROUPS: "6,123",
