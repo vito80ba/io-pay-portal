@@ -326,4 +326,61 @@ describe("PostNewslettersRecipientHandler", () => {
 
     expect(result.isLeft()).toBe(true);
   });
+
+  it("should return Error if there is a network error", async () => {
+    jest.spyOn(fetch, "fetchApi").mockReturnValueOnce(Promise.reject());
+
+    const result = await handlers
+      .addRecipientToMailupListOrGroupTask(
+        "test@test.it" as EmailString,
+        "name",
+        "token" as NonEmptyString,
+        `/API/v1.1/Rest/ConsoleService.svc/Console/Group/6/Recipient`
+      )
+      .run();
+
+    expect(result.isLeft()).toBe(true);
+  });
+
+  it("should return Error if the json response is invalid", async () => {
+    jest.spyOn(fetch, "fetchApi").mockReturnValueOnce(
+      Promise.resolve({
+        json: () => Promise.reject(),
+        ok: true,
+        status: 200
+      } as Response)
+    );
+
+    const result = await handlers
+      .addRecipientToMailupListOrGroupTask(
+        "test@test.it" as EmailString,
+        "name",
+        "token" as NonEmptyString,
+        `/API/v1.1/Rest/ConsoleService.svc/Console/Group/6/Recipient`
+      )
+      .run();
+
+    expect(result.isLeft()).toBe(true);
+  });
+
+  it("should return Error if the recipient id is invalid", async () => {
+    jest.spyOn(fetch, "fetchApi").mockReturnValueOnce(
+      Promise.resolve({
+        json: () => Promise.resolve(-1),
+        ok: true,
+        status: 200
+      } as Response)
+    );
+
+    const result = await handlers
+      .addRecipientToMailupListOrGroupTask(
+        "test@test.it" as EmailString,
+        "name",
+        "token" as NonEmptyString,
+        `/API/v1.1/Rest/ConsoleService.svc/Console/Group/6/Recipient`
+      )
+      .run();
+
+    expect(result.isLeft()).toBe(true);
+  });
 });
