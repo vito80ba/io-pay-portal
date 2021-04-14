@@ -24,7 +24,6 @@ import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
 import { ErrorResponses, ResponseErrorUnauthorized } from "../utils/responses";
 
-import { none } from "fp-ts/lib/OptionT";
 import {
   fromEither,
   fromPredicate,
@@ -77,7 +76,7 @@ const getPaymentInfoTask = (
     200
   );
 
-const recaptchaCheckTask = (
+export const recaptchaCheckTask = (
   recaptchaResponse: string,
   recaptchaSecret: string,
   googleHost: string = "https://www.google.com"

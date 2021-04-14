@@ -20,6 +20,11 @@ paths:
         required: true
         description: Unique identifier for payments.
         type: string
+      - name: recaptchaResponse
+        in: query
+        description: google recaptcha Response
+        type: string
+        required: true
     get:
       operationId: getPaymentInfo
       summary: Get Payment Info
