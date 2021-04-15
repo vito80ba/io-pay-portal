@@ -146,8 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ).getOrElse("");
 
       const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
+      
+      const recaptchaResponse: string = "recaptchaResponse";
 
-      await getPaymentInfoTask(rptId)
+      await getPaymentInfoTask(rptId, recaptchaResponse)
         .fold(
           () => showPaymentInfoError(),
           (paymentInfo) => {

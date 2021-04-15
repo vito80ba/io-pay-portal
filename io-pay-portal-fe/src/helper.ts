@@ -25,12 +25,14 @@ export const PayDetail: ReadonlyArray<string> = [
 ];
 
 export const getPaymentInfoTask = (
-  rptId: RptId
+  rptId: RptId,
+  recaptchaResponse: string
 ): TaskEither<string, PaymentRequestsGetResponse> =>
   tryCatch(
     () =>
       apiClient.getPaymentInfo({
         rptId,
+        recaptchaResponse
       }),
     () => "Errore recupero pagamento"
   ).foldTaskEither(
