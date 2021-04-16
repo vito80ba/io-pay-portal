@@ -30,37 +30,14 @@ secureExpressApp(app);
 // Add express route
 app.get("/api/v1/transactions/xpay/verification/:id", (req, res) => {
   res.set("Content-Type", "text/html");
+  const i = req.originalUrl.indexOf("?");
+  const queryParams = req.originalUrl.slice(i + 1);
   return res.send(
     xpayRedirectPage
       .replace("IO_PAY_XPAY_REDIRECT", config.IO_PAY_XPAY_REDIRECT)
       .replace("_id_", req.params.id)
-      .replace("_esito_", fromNullable(req.query.esito).getOrElse("") as string)
-      .replace(
-        "_idOperazione_",
-        fromNullable(req.query.idOperazione).getOrElse("") as string
-      )
-      .replace(
-        "_timeStamp_",
-        fromNullable(req.query.timeStamp).getOrElse("") as string
-      )
-      .replace("_mac_", fromNullable(req.query.mac).getOrElse("") as string)
-      .replace(
-        "_xpayNonce_",
-        fromNullable(req.query.xpayNonce).getOrElse("") as string
-      )
-      .replace(
-        "_outcome_",
-        fromNullable(req.query.outcome).getOrElse("") as string
-      )
-      .replace(
-        "_codice_",
-        fromNullable(req.query.codice).getOrElse("") as string
-      )
-      .replace(
-        "_messaggio_",
-        fromNullable(req.query.messaggio).getOrElse("") as string
-      )
       .replace("_resumeType_", "xpayVerification")
+      .replace("_queryParams_", queryParams)
   );
 });
 
