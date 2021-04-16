@@ -11,6 +11,7 @@ import {
   showPaymentInfoError,
 } from "./helper";
 import { getConfig } from "./util/config";
+declare const grecaptcha: any;
 
 /**
  * Init
@@ -138,6 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
     async (evt): Promise<void> => {
       evt.preventDefault();
 
+      const token: string = await grecaptcha
+        .execute("6Ld3RKsaAAAAAAGZXFcPvzdl_lcTKKCv9SiIBtHX", {
+          action: "submit",
+        })
+        .then((token: string) => token);
+
       error?.classList.add("d-none");
       document.body.classList.add("loading");
 
@@ -149,8 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
       ).getOrElse("");
 
       const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
-      
-      const recaptchaResponse: string = "recaptchaResponse";
+
+      const recaptchaResponse: string = token;
 
       await getPaymentInfoTask(rptId, recaptchaResponse)
         .fold(

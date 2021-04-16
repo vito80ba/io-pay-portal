@@ -32,7 +32,7 @@ export const getPaymentInfoTask = (
     () =>
       apiClient.getPaymentInfo({
         rptId,
-        recaptchaResponse
+        recaptchaResponse,
       }),
     () => "Errore recupero pagamento"
   ).foldTaskEither(
