@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "click",
     async (evt): Promise<void> => {
       evt.preventDefault();
-      activationLoading?.classList.remove("d-none");
+      document.body.classList.add("loading");
 
       const paymentInfo: string = fromNullable(
         sessionStorage.getItem("paymentInfo")

@@ -161,6 +161,7 @@ export const showActivationError = () => {
   modalWindowWithText(
     "Non riesco ad attivare il pagamento, per favore riprova"
   );
+  document.body.classList.remove("loading");
 };
 
 export const modalWindowWithText = (text: string = "") => {
