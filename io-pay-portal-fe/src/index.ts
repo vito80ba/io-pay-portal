@@ -26,8 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const active = document.getElementById("active") || null;
   const error = document.getElementById("error") || null;
   const back = document.getElementById("back") || null;
-  const activationLoading =
-    document.getElementById("activationLoading") || null;
   const paymentNoticeCodeEl: HTMLInputElement | null =
     (document.getElementById("paymentNoticeCode") as HTMLInputElement) || null;
   const organizationIdEl: HTMLInputElement | null =
