@@ -21,6 +21,9 @@ html(lang='it')
             include includes/header.pug
             .main.flex-fill.container
                 .row.justify-content-md-center
+                    div(id="error").d-none 
+                    div(id="activationError").d-none 
+                    div(id="activationLoading").d-none 
                     div(id="initCard").windowcont.px-4.px-md-0
                         h1.h2 Cosa devi pagare?
                         p.reset-font-size.text-muted Inserisci i dati come riportato sull'avviso di pagamento
@@ -43,9 +46,6 @@ html(lang='it')
                     div(id="stateCard").windowcont.px-4.px-md-0.d-none
                         .h2 Avviso di pagamento
                         p.reset-font-size.text-muted pagoPA aggiorna automaticamente l’importo per assicurarti di aver pagato esattamente quanto dovuto ed evitarti così more o altri interessi.
-                        div(id="error").d-none 
-                        div(id="activationError").d-none 
-                        div(id="activationLoading").d-none 
                         .stateCard__detail.check
                             .windowcont__totamount.d-flex.align-items-end.border-bottom.border-bottom-gray.py-2
                                 .h5 Importo aggiornato
@@ -81,3 +81,4 @@ html(lang='it')
             // FOOTER
             include includes/footer.pug
             include includes/modal.pug
+            include includes/modalerror.pug

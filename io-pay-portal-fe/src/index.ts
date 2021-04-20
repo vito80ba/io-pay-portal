@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const verify = document.getElementById("verify") || null;
   const active = document.getElementById("active") || null;
   const error = document.getElementById("error") || null;
-  const activationError = document.getElementById("activationError") || null;
   const back = document.getElementById("back") || null;
   const activationLoading =
     document.getElementById("activationLoading") || null;
@@ -152,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       await getPaymentInfoTask(rptId)
         .fold(
-          (errorMessage) => showPaymentInfoError(errorMessage),
+          () => showPaymentInfoError(),
           (paymentInfo) => {
             sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
             sessionStorage.setItem("rptId", rptId);
@@ -181,10 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "click",
     async (evt): Promise<void> => {
       evt.preventDefault();
-      stateCard?.classList.add("d-none");
-      activationError?.classList.add("d-none");
-      active?.classList.add("d-none");
-      back?.classList.add("d-none");
       activationLoading?.classList.remove("d-none");
 
       const paymentInfo: string = fromNullable(
@@ -196,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ).getOrElse("");
 
       PaymentRequestsGetResponse.decode(JSON.parse(paymentInfo)).fold(
-        () => showActivationError("Errore Attivazione Pagamento"),
+        () => showActivationError(),
         async (paymentInfo) =>
           await activePaymentTask(
             paymentInfo.importoSingoloVersamento,
@@ -204,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
             rptId
           )
             .fold(
-              (errorMessage) => showActivationError(errorMessage),
+              () => showActivationError(),
               (_) =>
                 pollingActivationStatus(
                   paymentInfo.codiceContestoPagamento,
