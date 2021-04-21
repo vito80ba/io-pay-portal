@@ -16,6 +16,7 @@ export const IConfig = t.interface({
   IO_PAGOPA_PROXY_TEST_BASE_URL: NonEmptyString,
   IO_PAY_CHALLENGE_RESUME_URL: NonEmptyString,
   IO_PAY_ORIGIN: NonEmptyString,
+  IO_PAY_PORTAL_RECAPTCHA_SECRET: NonEmptyString,
   IO_PAY_XPAY_REDIRECT: NonEmptyString,
   MAILUP_ALLOWED_GROUPS: t.array(t.string).type,
   MAILUP_ALLOWED_LISTS: t.array(t.string).type,
