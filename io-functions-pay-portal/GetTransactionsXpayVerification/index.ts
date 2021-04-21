@@ -3,7 +3,6 @@ import * as winston from "winston";
 
 import { Context } from "@azure/functions";
 
-import { fromNullable } from "fp-ts/lib/Option";
 import { secureExpressApp } from "io-functions-commons/dist/src/utils/express";
 import { AzureContextTransport } from "io-functions-commons/dist/src/utils/logging";
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
