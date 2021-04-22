@@ -105,7 +105,7 @@ $text-color: #17324d;
 // @import 'custom/overlay-panel';
 // @import 'custom/progress-donuts';
 // @import 'custom/progress-bars';
-// @import 'custom/progress-spinners';
+@import "~bootstrap-italia/src/scss/custom/progress-spinners";
 // @import 'custom/gridlist';
 // @import 'custom/popover';
 // @import 'custom/tooltip';
@@ -181,10 +181,6 @@ $text-color: #17324d;
       format("ttf");
 }
 
-// OVERRIDES
-.btn-outline-primary {
-  box-shadow: inset 0 0 0 2px #0066cc;
-}
 
 // CUSTOM
 // ------------------
@@ -246,6 +242,9 @@ body {
   height: 100vh;
   width: 100vw;
   pointer-events: none;
+  .progress-spinner {
+    margin-top: -24px;
+  }
 
   body.loading & {
     display: flex;

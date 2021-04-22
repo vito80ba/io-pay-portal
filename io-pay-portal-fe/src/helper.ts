@@ -1,10 +1,10 @@
-import { fromNullable } from "fp-ts/lib/Option";
 import {
   fromLeft,
   taskEither,
   TaskEither,
   tryCatch,
 } from "fp-ts/lib/TaskEither";
+import Tingle from "tingle.js";
 import { Millisecond } from "italia-ts-commons/lib/units";
 import { CodiceContestoPagamento } from "../generated/CodiceContestoPagamento";
 import { ImportoEuroCents } from "../generated/ImportoEuroCents";
@@ -108,7 +108,7 @@ export const pollingActivationStatus = async (
               paymentNoticeCode,
               --attempts // eslint-disable-line no-param-reassign
             )
-          : showActivationError("Errore Attivazione Pagamento");
+          : showActivationError();
       },
       (acivationResponse) =>
         // eslint-disable-next-line functional/immutable-data
@@ -153,29 +153,45 @@ export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
   }
 };
 
-export const showPaymentInfoError = (errorMessage: string) => {
-  const error = document.getElementById("error") || null;
-  if (error) {
-    error.classList.remove("d-none");
-    // eslint-disable-next-line functional/immutable-data
-    error.innerText = fromNullable(errorMessage).getOrElse(
-      "Errore Validazione Pagamento"
-    );
-  }
+export const showPaymentInfoError = () => {
+  modalWindowWithText("Attenzione, i dati immessi non sono validi");
 };
 
-export const showActivationError = (errorMessage: string) => {
-  const activationLoading =
-    document.getElementById("activationLoading") || null;
-  const back = document.getElementById("back") || null;
-  const activationError = document.getElementById("activationError") || null;
-  activationLoading?.classList.add("d-none");
-  back?.classList.remove("d-none");
-  activationError?.classList.remove("d-none");
-  if (activationError) {
+export const showActivationError = () => {
+  modalWindowWithText(
+    "Non riesco ad attivare il pagamento, per favore riprova"
+  );
+  document.body.classList.remove("loading");
+};
+
+export const modalWindowWithText = (text: string = "") => {
+  const modalTarget = document.getElementById("modal-error") || null;
+  const modalTargetParagraph = modalTarget && modalTarget.querySelector("p");
+  if (modalTargetParagraph) {
     // eslint-disable-next-line functional/immutable-data
-    activationError.innerText = fromNullable(errorMessage).getOrElse(
-      "Errore Attivazione Pagamento"
-    );
+    modalTargetParagraph.innerText = text;
   }
+  const modalWindow = new Tingle.modal({
+    closeLabel: "Close",
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ["overlay", "button", "escape"],
+    onOpen: () => {
+      const modalClose = modalWindow
+        .getContent()
+        .querySelector(".modalwindow__close");
+      modalClose?.addEventListener("click", () => {
+        modalWindow.close();
+      });
+    },
+  });
+  modalWindow.addFooterBtn(
+    "Chiudi",
+    "btn btn-outline-primary w-100",
+    function () {
+      modalWindow.close();
+    }
+  );
+  modalWindow.setContent(modalTarget?.innerHTML || "");
+  modalWindow.open();
 };
