@@ -114,7 +114,9 @@ export const pollingActivationStatus = async (
         // eslint-disable-next-line functional/immutable-data
         (location.href = `${
           getConfig("IO_PAY_PORTAL_PAY_WL_HOST") as string
-        }/index.html?p=${acivationResponse.idPagamento}`)
+        }/index.html?p=${acivationResponse.idPagamento}&origin=${
+          window.location.origin
+        }`)
     )
     .run();
 };
