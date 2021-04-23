@@ -156,7 +156,7 @@ export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
 };
 
 export const showPaymentInfoError = () => {
-  modalWindowWithText("Attenzione, i dati immessi non sono validi");
+  modalWindowWithText("Non riusciamo a trovare un avviso di pagamento con i dati da te inseriti", "Dati non corretti", "Riprova" );
 };
 
 export const showActivationError = () => {
@@ -166,15 +166,20 @@ export const showActivationError = () => {
   document.body.classList.remove("loading");
 };
 
-export const modalWindowWithText = (text: string = "") => {
+export const modalWindowWithText = (text: string = "", title: string = "Errore", closebtn: string = "Chiudi") => {
   const modalTarget = document.getElementById("modal-error") || null;
+  const modalTargetTitle = modalTarget && modalTarget.querySelector(".modalwindow__title");
   const modalTargetParagraph = modalTarget && modalTarget.querySelector("p");
+  if (modalTargetTitle) {
+    // eslint-disable-next-line functional/immutable-data
+    (modalTargetTitle as HTMLElement).innerText = title;
+  }
   if (modalTargetParagraph) {
     // eslint-disable-next-line functional/immutable-data
     modalTargetParagraph.innerText = text;
   }
   const modalWindow = new Tingle.modal({
-    closeLabel: "Close",
+    closeLabel: closebtn,
     footer: true,
     stickyFooter: false,
     closeMethods: ["overlay", "button", "escape"],
@@ -188,7 +193,7 @@ export const modalWindowWithText = (text: string = "") => {
     },
   });
   modalWindow.addFooterBtn(
-    "Chiudi",
+    closebtn,
     "btn btn-outline-primary w-100",
     function () {
       modalWindow.close();
