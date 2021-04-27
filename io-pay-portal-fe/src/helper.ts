@@ -4,6 +4,7 @@ import {
   TaskEither,
   tryCatch,
 } from "fp-ts/lib/TaskEither";
+import { fromNullable } from "fp-ts/lib/Option";
 import Tingle from "tingle.js";
 import { Millisecond } from "italia-ts-commons/lib/units";
 import { CodiceContestoPagamento } from "../generated/CodiceContestoPagamento";
@@ -14,7 +15,15 @@ import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetRespo
 import { RptId } from "../generated/RptId";
 import { apiClient } from "./api/client";
 import { getConfig } from "./util/config";
-import { ProblemJson } from "../generated/ProblemJson";
+
+export enum PaymentFaultEnum {
+  "PAYMENT_DUPLICATED" = "PAGAMENTO DUPLICATO",
+  "INVALID_AMOUNT" = "IMPORTO INVALIDO",
+  "PAYMENT_ONGOING" = "PAGAMENTO GIA' CORSO",
+  "PAYMENT_EXPIRED" = "SESSIONE PAGAMENTO SCADUTA",
+  "PAYMENT_UNAVAILABLE" = "PAGAMENTO NON DISPONIBILE",
+  "PAYMENT_UNKNOWN" = "PAGAMENTO SCONOSCIUTO",
+}
 
 export const PayDetail: ReadonlyArray<string> = [
   "importoSingoloVersamento",
@@ -27,7 +36,7 @@ export const PayDetail: ReadonlyArray<string> = [
 
 export const getPaymentInfoTask = (
   rptId: RptId
-): TaskEither<ProblemJson, PaymentRequestsGetResponse> =>
+): TaskEither<string, PaymentRequestsGetResponse> =>
   tryCatch(
     () =>
       apiClient.getPaymentInfo({
@@ -41,7 +50,11 @@ export const getPaymentInfoTask = (
         () => fromLeft("Errore recupero pagamento"),
         (responseType) =>
           responseType.status !== 200
-            ? fromLeft(`Errore recupero pagamento : ${responseType.status}`)
+            ? fromLeft(
+                fromNullable(responseType.value?.detail).getOrElse(
+                  "Errore recupero pagamento"
+                )
+              )
             : taskEither.of(responseType.value)
       )
   );
@@ -198,3 +211,20 @@ export const modalWindowWithText = (text: string = "") => {
   modalWindow.setContent(modalTarget?.innerHTML || "");
   modalWindow.open();
 };
+
+export function getErrorMessageConv(faultCode: string): PaymentFaultEnum {
+  switch (faultCode) {
+    case "INVALID_AMOUNT":
+      return PaymentFaultEnum.INVALID_AMOUNT;
+    case "PAYMENT_DUPLICATED":
+      return PaymentFaultEnum.PAYMENT_DUPLICATED;
+    case "PAYMENT_ONGOING":
+      return PaymentFaultEnum.PAYMENT_ONGOING;
+    case "PAYMENT_EXPIRED":
+      return PaymentFaultEnum.PAYMENT_EXPIRED;
+    case "PAYMENT_UNKNOWN":
+      return PaymentFaultEnum.PAYMENT_UNKNOWN;
+    default:
+      return PaymentFaultEnum.PAYMENT_UNAVAILABLE;
+  }
+}

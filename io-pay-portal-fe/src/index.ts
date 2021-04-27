@@ -4,11 +4,12 @@ import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetRespo
 import { RptId } from "../generated/RptId";
 import {
   activePaymentTask,
+  getErrorMessageConv,
   getPaymentInfoTask,
+  modalWindowWithText,
   pollingActivationStatus,
   showActivationError,
   showPaymentInfo,
-  showPaymentInfoError,
 } from "./helper";
 import { getConfig } from "./util/config";
 
@@ -147,23 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
 
-      // export enum PaymentFaultEnum {
-      //   "PAYMENT_DUPLICATED" = "PAYMENT_DUPLICATED",
-      //   "INVALID_AMOUNT" = "INVALID_AMOUNT",
-      //   "PAYMENT_ONGOING" = "PAYMENT_ONGOING",
-      //   "PAYMENT_EXPIRED" = "PAYMENT_EXPIRED",
-      //   "PAYMENT_UNAVAILABLE" = "PAYMENT_UNAVAILABLE",
-      //   "PAYMENT_UNKNOWN" = "PAYMENT_UNKNOWN",
-      //   "DOMAIN_UNKNOWN" = "DOMAIN_UNKNOWN",
-      // }
       await getPaymentInfoTask(rptId)
         .fold(
-          (r) => {
-            // TODO : replace follwing console.log with helper show error function
-            // TODO : base on "detail" field value that should be eq
-            console.log(r);
-            showPaymentInfoError();
-          },
+          (r) => modalWindowWithText(getErrorMessageConv(r)),
           (paymentInfo) => {
             sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
             sessionStorage.setItem("rptId", rptId);
@@ -211,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
             rptId
           )
             .fold(
-              () => showActivationError(),
+              (r) => modalWindowWithText(getErrorMessageConv(r)),
               (_) =>
                 pollingActivationStatus(
                   paymentInfo.codiceContestoPagamento,
