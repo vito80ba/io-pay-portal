@@ -147,9 +147,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
 
+      // export enum PaymentFaultEnum {
+      //   "PAYMENT_DUPLICATED" = "PAYMENT_DUPLICATED",
+      //   "INVALID_AMOUNT" = "INVALID_AMOUNT",
+      //   "PAYMENT_ONGOING" = "PAYMENT_ONGOING",
+      //   "PAYMENT_EXPIRED" = "PAYMENT_EXPIRED",
+      //   "PAYMENT_UNAVAILABLE" = "PAYMENT_UNAVAILABLE",
+      //   "PAYMENT_UNKNOWN" = "PAYMENT_UNKNOWN",
+      //   "DOMAIN_UNKNOWN" = "DOMAIN_UNKNOWN",
+      // }
       await getPaymentInfoTask(rptId)
         .fold(
-          () => showPaymentInfoError(),
+          (r) => {
+            // TODO : replace follwing console.log with helper show error function
+            // TODO : base on "detail" field value that should be eq
+            console.log(r);
+            showPaymentInfoError();
+          },
           (paymentInfo) => {
             sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
             sessionStorage.setItem("rptId", rptId);

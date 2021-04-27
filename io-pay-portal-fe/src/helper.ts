@@ -14,6 +14,7 @@ import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetRespo
 import { RptId } from "../generated/RptId";
 import { apiClient } from "./api/client";
 import { getConfig } from "./util/config";
+import { ProblemJson } from "../generated/ProblemJson";
 
 export const PayDetail: ReadonlyArray<string> = [
   "importoSingoloVersamento",
@@ -26,7 +27,7 @@ export const PayDetail: ReadonlyArray<string> = [
 
 export const getPaymentInfoTask = (
   rptId: RptId
-): TaskEither<string, PaymentRequestsGetResponse> =>
+): TaskEither<ProblemJson, PaymentRequestsGetResponse> =>
   tryCatch(
     () =>
       apiClient.getPaymentInfo({
