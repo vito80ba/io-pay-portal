@@ -156,7 +156,11 @@ export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
 };
 
 export const showPaymentInfoError = () => {
-  modalWindowWithText("Non riusciamo a trovare un avviso di pagamento con i dati da te inseriti", "Dati non corretti", "Riprova" );
+  modalWindowWithText(
+    "Non riusciamo a trovare un avviso di pagamento con i dati da te inseriti",
+    "Dati non corretti",
+    "Riprova"
+  );
 };
 
 export const showActivationError = () => {
@@ -166,9 +170,14 @@ export const showActivationError = () => {
   document.body.classList.remove("loading");
 };
 
-export const modalWindowWithText = (text: string = "", title: string = "Errore", closebtn: string = "Chiudi") => {
+export const modalWindowWithText = (
+  text: string = "",
+  title: string = "Errore",
+  closebtn: string = "Chiudi"
+) => {
   const modalTarget = document.getElementById("modal-error") || null;
-  const modalTargetTitle = modalTarget && modalTarget.querySelector(".modalwindow__title");
+  const modalTargetTitle =
+    modalTarget && modalTarget.querySelector(".modalwindow__title");
   const modalTargetParagraph = modalTarget && modalTarget.querySelector("p");
   if (modalTargetTitle) {
     // eslint-disable-next-line functional/immutable-data
