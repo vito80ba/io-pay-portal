@@ -12,6 +12,7 @@ import {
   showPaymentInfo,
 } from "./helper";
 import { getConfig } from "./util/config";
+import { mixpanel } from "./util/mixpanelHelperInit";
 
 /**
  * Init

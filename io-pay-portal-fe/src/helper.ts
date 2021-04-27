@@ -15,6 +15,24 @@ import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetRespo
 import { RptId } from "../generated/RptId";
 import { apiClient } from "./api/client";
 import { getConfig } from "./util/config";
+import {
+  mixpanel,
+  PAYMENT_ACTIVATE_INIT,
+  PAYMENT_ACTIVATE_NET_ERR,
+  PAYMENT_ACTIVATE_RESP_ERR,
+  PAYMENT_ACTIVATE_SUCCESS,
+  PAYMENT_ACTIVATE_SVR_ERR,
+  PAYMENT_ACTIVATION_STATUS_INIT,
+  PAYMENT_ACTIVATION_STATUS_NET_ERR,
+  PAYMENT_ACTIVATION_STATUS_RESP_ERR,
+  PAYMENT_ACTIVATION_STATUS_SUCCESS,
+  PAYMENT_ACTIVATION_STATUS_SVR_ERR,
+  PAYMENT_VERIFY_INIT,
+  PAYMENT_VERIFY_NET_ERR,
+  PAYMENT_VERIFY_RESP_ERR,
+  PAYMENT_VERIFY_SUCCESS,
+  PAYMENT_VERIFY_SVR_ERR,
+} from "./util/mixpanelHelperInit";
 
 export enum PaymentFaultEnum {
   "PAYMENT_DUPLICATED" = "PAGAMENTO DUPLICATO",
@@ -38,24 +56,48 @@ export const getPaymentInfoTask = (
   rptId: RptId
 ): TaskEither<string, PaymentRequestsGetResponse> =>
   tryCatch(
-    () =>
-      apiClient.getPaymentInfo({
+    () => {
+      mixpanel.track(PAYMENT_VERIFY_INIT.value, {
+        EVENT_ID: PAYMENT_VERIFY_INIT.value,
+      });
+      return apiClient.getPaymentInfo({
         rptId,
-      }),
-    () => "Errore recupero pagamento"
+      });
+    },
+    () => {
+      mixpanel.track(PAYMENT_VERIFY_NET_ERR.value, {
+        EVENT_ID: PAYMENT_VERIFY_NET_ERR.value,
+      });
+      return "Errore recupero pagamento";
+    }
   ).foldTaskEither(
-    (err) => fromLeft(err),
+    (err) => {
+      mixpanel.track(PAYMENT_VERIFY_SVR_ERR.value, {
+        EVENT_ID: PAYMENT_VERIFY_SVR_ERR.value,
+      });
+      return fromLeft(err);
+    },
     (errorOrResponse) =>
       errorOrResponse.fold(
         () => fromLeft("Errore recupero pagamento"),
-        (responseType) =>
-          responseType.status !== 200
+        (responseType) => {
+          if (responseType.status === 200) {
+            mixpanel.track(PAYMENT_VERIFY_SUCCESS.value, {
+              EVENT_ID: PAYMENT_VERIFY_SUCCESS.value,
+            });
+          } else {
+            mixpanel.track(PAYMENT_VERIFY_RESP_ERR.value, {
+              EVENT_ID: PAYMENT_VERIFY_RESP_ERR.value,
+            });
+          }
+          return responseType.status !== 200
             ? fromLeft(
                 fromNullable(responseType.value?.detail).getOrElse(
                   "Errore recupero pagamento"
                 )
               )
-            : taskEither.of(responseType.value)
+            : taskEither.of(responseType.value);
+        }
       )
   );
 
@@ -65,24 +107,48 @@ export const activePaymentTask = (
   rptId: RptId
 ): TaskEither<string, PaymentActivationsPostResponse> =>
   tryCatch(
-    () =>
-      apiClient.activatePayment({
+    () => {
+      mixpanel.track(PAYMENT_ACTIVATE_INIT.value, {
+        EVENT_ID: PAYMENT_ACTIVATE_INIT.value,
+      });
+      return apiClient.activatePayment({
         body: {
           rptId,
           importoSingoloVersamento: amountSinglePayment,
           codiceContestoPagamento: paymentContextCode,
         },
-      }),
-    () => "Errore attivazione pagamento"
+      });
+    },
+    () => {
+      mixpanel.track(PAYMENT_ACTIVATE_NET_ERR.value, {
+        EVENT_ID: PAYMENT_ACTIVATE_NET_ERR.value,
+      });
+      return "Errore attivazione pagamento";
+    }
   ).foldTaskEither(
-    (err) => fromLeft(err),
+    (err) => {
+      mixpanel.track(PAYMENT_ACTIVATE_SVR_ERR.value, {
+        EVENT_ID: PAYMENT_ACTIVATE_SVR_ERR.value,
+      });
+      return fromLeft(err);
+    },
     (errorOrResponse) =>
       errorOrResponse.fold(
         () => fromLeft("Errore attivazione pagamento"),
-        (responseType) =>
-          responseType.status !== 200
+        (responseType) => {
+          if (responseType.status === 200) {
+            mixpanel.track(PAYMENT_ACTIVATE_SUCCESS.value, {
+              EVENT_ID: PAYMENT_ACTIVATE_SUCCESS.value,
+            });
+          } else {
+            mixpanel.track(PAYMENT_ACTIVATE_RESP_ERR.value, {
+              EVENT_ID: PAYMENT_ACTIVATE_RESP_ERR.value,
+            });
+          }
+          return responseType.status !== 200
             ? fromLeft(`Errore attivazione pagamento : ${responseType.status}`)
-            : taskEither.of(responseType.value)
+            : taskEither.of(responseType.value);
+        }
       )
   );
 
@@ -90,20 +156,44 @@ export const getActivationStatusTask = (
   paymentContextCode: CodiceContestoPagamento
 ): TaskEither<string, PaymentActivationsGetResponse> =>
   tryCatch(
-    () =>
-      apiClient.getActivationStatus({
+    () => {
+      mixpanel.track(PAYMENT_ACTIVATION_STATUS_INIT.value, {
+        EVENT_ID: PAYMENT_ACTIVATION_STATUS_INIT.value,
+      });
+      return apiClient.getActivationStatus({
         codiceContestoPagamento: paymentContextCode,
-      }),
-    () => "Errore stato pagamento"
+      });
+    },
+    () => {
+      mixpanel.track(PAYMENT_ACTIVATION_STATUS_NET_ERR.value, {
+        EVENT_ID: PAYMENT_ACTIVATION_STATUS_NET_ERR.value,
+      });
+      return "Errore stato pagamento";
+    }
   ).foldTaskEither(
-    (err) => fromLeft(err),
+    (err) => {
+      mixpanel.track(PAYMENT_ACTIVATION_STATUS_SVR_ERR.value, {
+        EVENT_ID: PAYMENT_ACTIVATION_STATUS_SVR_ERR.value,
+      });
+      return fromLeft(err);
+    },
     (errorOrResponse) =>
       errorOrResponse.fold(
         () => fromLeft("Errore stato pagamento"),
-        (responseType) =>
-          responseType.status !== 200
+        (responseType) => {
+          if (responseType.status === 200) {
+            mixpanel.track(PAYMENT_ACTIVATION_STATUS_SUCCESS.value, {
+              EVENT_ID: PAYMENT_ACTIVATION_STATUS_SUCCESS.value,
+            });
+          } else {
+            mixpanel.track(PAYMENT_ACTIVATION_STATUS_RESP_ERR.value, {
+              EVENT_ID: PAYMENT_ACTIVATION_STATUS_RESP_ERR.value,
+            });
+          }
+          return responseType.status !== 200
             ? fromLeft(`Errore stato pagamento : ${responseType.status}`)
-            : taskEither.of(responseType.value)
+            : taskEither.of(responseType.value);
+        }
       )
   );
 
