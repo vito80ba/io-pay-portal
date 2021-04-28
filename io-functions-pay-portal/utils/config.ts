@@ -24,6 +24,7 @@ export const IConfig = t.interface({
   MAILUP_SECRET: NonEmptyString,
   MAILUP_USERNAME: NonEmptyString,
   PAGOPA_BASE_PATH: NonEmptyString,
+  PAY_PORTAL_RECAPTCHA_SECRET: NonEmptyString,
   RECAPTCHA_SECRET: NonEmptyString
 });
 

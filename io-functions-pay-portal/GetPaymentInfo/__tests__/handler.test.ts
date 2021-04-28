@@ -1,20 +1,7 @@
 /* tslint:disable: no-any */
 import { Context } from "@azure/functions";
 
-import { GetPaymentInfoHandler } from "../handler";
-
 import { paymentInfo } from "../../__mocks__/mock";
-
-import {
-  ApplicationCode,
-  AuxDigit,
-  CheckDigit,
-  IUV13,
-  PaymentNoticeNumber,
-  RptId,
-  RptIdFromString
-} from "italia-pagopa-commons/lib/pagopa";
-import { OrganizationFiscalCode } from "italia-ts-commons/lib/strings";
 
 // should be HERE !!!!
 process.env = {
@@ -23,20 +10,21 @@ process.env = {
   PAGOPA_BASE_PATH: "NonEmptyString",
   IO_PAY_XPAY_REDIRECT: "http://localhost"
 };
-// debug("ENV", process.env);
 
-import { apiClient } from "../../clients/pagopa";
-
-import { fromEither, fromLeft } from "fp-ts/lib/TaskEither";
-import {
-  ResponseErrorNotFound,
-  ResponseSuccessJson
-} from "italia-ts-commons/lib/responses";
 import { left, right } from "fp-ts/lib/Either";
 
 import * as logger from "../../utils/logging";
 
 import { PaymentRequestsGetResponse } from "../../generated/definitions/PaymentRequestsGetResponse";
+
+import { RptIdFromString } from "italia-pagopa-commons/lib/pagopa";
+
+import * as handlers from "../handler";
+
+import { taskEither } from "fp-ts/lib/TaskEither";
+import { ResponseRecaptcha } from "../handler";
+
+import * as fetch from "../../clients/fetchApi";
 
 const context = ({
   bindings: {},
@@ -64,6 +52,14 @@ afterEach(() => {
 });
 
 it("should return a payment info KO response", async () => {
+  jest.spyOn(handlers, "recaptchaCheckTask").mockReturnValueOnce(
+    taskEither.of({
+      challenge_ts: "challenge_ts",
+      hostname: "hostname",
+      success: true
+    } as ResponseRecaptcha)
+  );
+
   const apiClientMock = {
     getPaymentInfo: jest.fn(_ => {
       return Promise.resolve(
@@ -77,22 +73,37 @@ it("should return a payment info KO response", async () => {
     })
   };
 
-  const handler = GetPaymentInfoHandler(apiClientMock as any);
+  const handler = handlers.GetPaymentInfoHandler(
+    apiClientMock as any,
+    "recaptchaSecret"
+  );
 
-  const response = await handler(context, {
-    organizationFiscalCode: paymentInfo.organizationFiscalCode,
-    paymentNoticeNumber: {
-      applicationCode: paymentInfo.applicationCode,
-      auxDigit: paymentInfo.auxDigit,
-      checkDigit: paymentInfo.checkDigit,
-      iuv13: paymentInfo.iuv13
-    }
-  } as RptIdFromString);
+  const response = await handler(
+    context,
+    {
+      organizationFiscalCode: paymentInfo.organizationFiscalCode,
+      paymentNoticeNumber: {
+        applicationCode: paymentInfo.applicationCode,
+        auxDigit: paymentInfo.auxDigit,
+        checkDigit: paymentInfo.checkDigit,
+        iuv13: paymentInfo.iuv13
+      }
+    } as RptIdFromString,
+    "recaptchaResponse"
+  );
 
   expect(response.kind).toBe("IResponseErrorInternal");
 });
 
 it("should return a payment info OK response PaymentRequestsGetResponse", async () => {
+  jest.spyOn(handlers, "recaptchaCheckTask").mockReturnValueOnce(
+    taskEither.of({
+      challenge_ts: "challenge_ts",
+      hostname: "hostname",
+      success: true
+    } as ResponseRecaptcha)
+  );
+
   const apiClientMock = {
     getPaymentInfo: jest.fn(_ => {
       return Promise.resolve(
@@ -109,17 +120,65 @@ it("should return a payment info OK response PaymentRequestsGetResponse", async 
     })
   };
 
-  const handler = GetPaymentInfoHandler(apiClientMock as any);
+  const handler = handlers.GetPaymentInfoHandler(
+    apiClientMock as any,
+    "captchaSecret"
+  );
 
-  const response = await handler(context, {
-    organizationFiscalCode: paymentInfo.organizationFiscalCode,
-    paymentNoticeNumber: {
-      applicationCode: paymentInfo.applicationCode,
-      auxDigit: paymentInfo.auxDigit,
-      checkDigit: paymentInfo.checkDigit,
-      iuv13: paymentInfo.iuv13
-    }
-  } as RptIdFromString);
+  const response = await handler(
+    context,
+    {
+      organizationFiscalCode: paymentInfo.organizationFiscalCode,
+      paymentNoticeNumber: {
+        applicationCode: paymentInfo.applicationCode,
+        auxDigit: paymentInfo.auxDigit,
+        checkDigit: paymentInfo.checkDigit,
+        iuv13: paymentInfo.iuv13
+      }
+    } as RptIdFromString,
+    "captchaResponse"
+  );
 
   expect(response.kind).toBe("IResponseSuccessJson");
+});
+
+it("should return Error if recaptcha check fails - recaptchaCheckTask", async () => {
+  jest.spyOn(fetch, "fetchApi").mockReturnValueOnce(
+    Promise.resolve({
+      ok: false,
+      status: 500
+    } as Response)
+  );
+
+  const result = await handlers
+    .recaptchaCheckTask("recaptchaResponse", "recaptchaSecret")
+    .run();
+
+  expect(result.isLeft()).toBe(true);
+});
+
+it("should return Error if there is a network error - recaptchaCheckTask", async () => {
+  jest.spyOn(fetch, "fetchApi").mockReturnValueOnce(Promise.reject());
+
+  const result = await handlers
+    .recaptchaCheckTask("recaptchaResponse", "recaptchaSecret")
+    .run();
+
+  expect(result.isLeft()).toBe(true);
+});
+
+it("should return Error if the json response is invalid  - recaptchaCheckTask", async () => {
+  jest.spyOn(fetch, "fetchApi").mockReturnValueOnce(
+    Promise.resolve({
+      json: () => Promise.reject(),
+      ok: true,
+      status: 200
+    } as Response)
+  );
+
+  const result = await handlers
+    .recaptchaCheckTask("recaptchaResponse", "recaptchaSecret")
+    .run();
+
+  expect(result.isLeft()).toBe(true);
 });

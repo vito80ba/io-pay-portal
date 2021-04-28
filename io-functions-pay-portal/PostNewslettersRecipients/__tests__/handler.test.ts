@@ -20,7 +20,9 @@ process.env = {
   MAILUP_SECRET: "f638dexxxxxxxxxxxx8812480",
   MAILUP_USERNAME: "mXXXXXX",
 
-  RECAPTCHA_SECRET: "6dddddd0P7N0dddddTdd"
+  RECAPTCHA_SECRET: "6dddddd0P7N0dddddTdd",
+
+  PAY_PORTAL_RECAPTCHA_SECRET: "6dddddd0P7N0dddddTdd"
 };
 
 import * as handlers from "../handler";

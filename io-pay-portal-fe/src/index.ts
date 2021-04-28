@@ -12,7 +12,7 @@ import {
   showPaymentInfo,
 } from "./helper";
 import { getConfig } from "./util/config";
-import { mixpanel } from "./util/mixpanelHelperInit";
+declare const grecaptcha: any;
 
 /**
  * Init
@@ -137,6 +137,12 @@ document.addEventListener("DOMContentLoaded", () => {
     async (evt): Promise<void> => {
       evt.preventDefault();
 
+      const token: string = await grecaptcha
+        .execute("6Ld3RKsaAAAAAAGZXFcPvzdl_lcTKKCv9SiIBtHX", {
+          action: "submit",
+        })
+        .then((token: string) => token);
+
       error?.classList.add("d-none");
       document.body.classList.add("loading");
 
@@ -149,7 +155,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
 
-      await getPaymentInfoTask(rptId)
+      const recaptchaResponse: string = token;
+
+      await getPaymentInfoTask(rptId, recaptchaResponse)
         .fold(
           (r) => modalWindowWithText(getErrorMessageConv(r)),
           (paymentInfo) => {
