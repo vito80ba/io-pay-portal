@@ -15,7 +15,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const app = express();
 
-const apiHost = "http://localhost:80";
+const apiHost = "http://localhost:7071";
 
 app.use(
   createProxyMiddleware("/api/payportal/v1", {
@@ -26,7 +26,7 @@ app.use(
   })
 );
 
-const bundler = new Bundler("src/index.html");
+const bundler = new Bundler("src/index.pug");
 app.use(bundler.middleware());
 
 app.listen(Number(1234));

@@ -4,11 +4,12 @@ import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetRespo
 import { RptId } from "../generated/RptId";
 import {
   activePaymentTask,
+  getErrorMessageConv,
   getPaymentInfoTask,
+  modalWindowWithText,
   pollingActivationStatus,
   showActivationError,
   showPaymentInfo,
-  showPaymentInfoError,
 } from "./helper";
 import { getConfig } from "./util/config";
 declare const grecaptcha: any;
@@ -158,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       await getPaymentInfoTask(rptId, recaptchaResponse)
         .fold(
-          () => showPaymentInfoError(),
+          (r) => modalWindowWithText(getErrorMessageConv(r)),
           (paymentInfo) => {
             sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
             sessionStorage.setItem("rptId", rptId);
@@ -206,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
             rptId
           )
             .fold(
-              () => showActivationError(),
+              (r) => modalWindowWithText(getErrorMessageConv(r)),
               (_) =>
                 pollingActivationStatus(
                   paymentInfo.codiceContestoPagamento,
