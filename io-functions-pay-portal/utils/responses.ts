@@ -69,7 +69,7 @@ export const toErrorServerResponse = <S extends number, T>(
       return ResponseErrorInternal(
         PaymentProblemJson.decode(response.value).getOrElse({
           detail: PaymentFaultEnum.PAYMENT_UNKNOWN
-        }).detail || "PaymentProblemJson on decode"
+        }).detail || "Generic Error"
       );
     default:
       return unhandledResponseStatus(response.status);
