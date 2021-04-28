@@ -81,15 +81,12 @@ export const getPaymentInfoTask = (
       errorOrResponse.fold(
         () => fromLeft("Errore recupero pagamento"),
         (responseType) => {
-          if (responseType.status === 200) {
-            mixpanel.track(PAYMENT_VERIFY_SUCCESS.value, {
-              EVENT_ID: PAYMENT_VERIFY_SUCCESS.value,
-            });
-          } else {
-            mixpanel.track(PAYMENT_VERIFY_RESP_ERR.value, {
-              EVENT_ID: PAYMENT_VERIFY_RESP_ERR.value,
-            });
-          }
+          const EVENT_ID: string =
+            responseType.status === 200
+              ? PAYMENT_VERIFY_SUCCESS.value
+              : PAYMENT_VERIFY_RESP_ERR.value;
+          mixpanel.track(EVENT_ID, { EVENT_ID });
+
           return responseType.status !== 200
             ? fromLeft(
                 fromNullable(responseType.value?.detail).getOrElse(
@@ -136,15 +133,12 @@ export const activePaymentTask = (
       errorOrResponse.fold(
         () => fromLeft("Errore attivazione pagamento"),
         (responseType) => {
-          if (responseType.status === 200) {
-            mixpanel.track(PAYMENT_ACTIVATE_SUCCESS.value, {
-              EVENT_ID: PAYMENT_ACTIVATE_SUCCESS.value,
-            });
-          } else {
-            mixpanel.track(PAYMENT_ACTIVATE_RESP_ERR.value, {
-              EVENT_ID: PAYMENT_ACTIVATE_RESP_ERR.value,
-            });
-          }
+          const EVENT_ID: string =
+            responseType.status === 200
+              ? PAYMENT_ACTIVATE_SUCCESS.value
+              : PAYMENT_ACTIVATE_RESP_ERR.value;
+          mixpanel.track(EVENT_ID, { EVENT_ID });
+
           return responseType.status !== 200
             ? fromLeft(`Errore attivazione pagamento : ${responseType.status}`)
             : taskEither.of(responseType.value);
@@ -181,15 +175,12 @@ export const getActivationStatusTask = (
       errorOrResponse.fold(
         () => fromLeft("Errore stato pagamento"),
         (responseType) => {
-          if (responseType.status === 200) {
-            mixpanel.track(PAYMENT_ACTIVATION_STATUS_SUCCESS.value, {
-              EVENT_ID: PAYMENT_ACTIVATION_STATUS_SUCCESS.value,
-            });
-          } else {
-            mixpanel.track(PAYMENT_ACTIVATION_STATUS_RESP_ERR.value, {
-              EVENT_ID: PAYMENT_ACTIVATION_STATUS_RESP_ERR.value,
-            });
-          }
+          const EVENT_ID: string =
+            responseType.status === 200
+              ? PAYMENT_ACTIVATION_STATUS_SUCCESS.value
+              : PAYMENT_ACTIVATION_STATUS_RESP_ERR.value;
+          mixpanel.track(EVENT_ID, { EVENT_ID });
+
           return responseType.status !== 200
             ? fromLeft(`Errore stato pagamento : ${responseType.status}`)
             : taskEither.of(responseType.value);
