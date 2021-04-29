@@ -17,9 +17,9 @@ import {
 } from "italia-ts-commons/lib/responses";
 
 import { PaymentActivationsGetResponse } from "../generated/definitions/PaymentActivationsGetResponse";
-import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
-import { ErrorResponses } from "../utils/responses";
+import { withApiRequestWrapper } from "../utils/pagopaProxyApiHandler";
+import { ErrorResponses } from "../utils/pagopaProxyApiHandler";
 
 import { TaskEither } from "fp-ts/lib/TaskEither";
 import { CodiceContestoPagamento } from "../generated/definitions/CodiceContestoPagamento";

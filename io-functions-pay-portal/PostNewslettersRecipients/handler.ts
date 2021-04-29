@@ -10,15 +10,16 @@ import {
   wrapRequestHandler
 } from "io-functions-commons/dist/src/utils/request_middleware";
 import {
+  IResponseErrorForbiddenNotAuthorized,
+  IResponseErrorInternal,
+  IResponseErrorNotFound,
+  IResponseErrorTooManyRequests,
+  IResponseErrorValidation,
   IResponseSuccessJson,
   ResponseErrorForbiddenNotAuthorized,
+  ResponseErrorInternal,
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
-
-import {
-  ErrorResponses,
-  toDefaultResponseErrorInternal
-} from "../utils/responses";
 
 import { EmailString, NonEmptyString } from "italia-ts-commons/lib/strings";
 import { RecipientRequest } from "../generated/definitions/RecipientRequest";
@@ -35,6 +36,7 @@ import { fetchApi } from "../clients/fetchApi";
 import { getConfigOrThrow } from "../utils/config";
 
 import { array } from "fp-ts/lib/Array";
+import { toError } from "fp-ts/lib/Either";
 import { taskEither } from "fp-ts/lib/TaskEither";
 import { IRequestMiddleware } from "io-functions-commons/dist/src/utils/request_middleware";
 import { ResponseErrorFromValidationErrors } from "italia-ts-commons/lib/responses";
@@ -98,6 +100,13 @@ export const ResponseRecaptcha = t.intersection(
 );
 
 export type ResponseRecaptcha = t.TypeOf<typeof ResponseRecaptcha>;
+
+type ErrorResponses =
+  | IResponseErrorNotFound
+  | IResponseErrorForbiddenNotAuthorized
+  | IResponseErrorInternal
+  | IResponseErrorTooManyRequests
+  | IResponseErrorValidation;
 
 /**
  * A middleware that extracts a RecipientRequest payload from a request.
@@ -312,7 +321,7 @@ export function PostNewslettersRecipientsHandler(): IPostNewslettersRecipientsHa
           error.message === "forbidden_mailup_groups" ||
           error.message === "forbidden_mailup_lists"
             ? ResponseErrorForbiddenNotAuthorized
-            : toDefaultResponseErrorInternal(error),
+            : ResponseErrorInternal(toError(error).message),
         _ =>
           ResponseSuccessJson({
             email: recipientRequest.email,

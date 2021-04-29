@@ -20,9 +20,12 @@ import {
 } from "italia-ts-commons/lib/responses";
 
 import { PaymentRequestsGetResponse } from "../generated/definitions/PaymentRequestsGetResponse";
-import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
-import { ErrorResponses, ResponseErrorUnauthorized } from "../utils/responses";
+import { withApiRequestWrapper } from "../utils/pagopaProxyApiHandler";
+import {
+  ErrorResponses,
+  ResponseErrorUnauthorized
+} from "../utils/pagopaProxyApiHandler";
 
 import {
   fromEither,

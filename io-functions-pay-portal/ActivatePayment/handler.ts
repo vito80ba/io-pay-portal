@@ -17,9 +17,9 @@ import {
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
 
-import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
-import { ErrorResponses } from "../utils/responses";
+import { withApiRequestWrapper } from "../utils/pagopaProxyApiHandler";
+import { ErrorResponses } from "../utils/pagopaProxyApiHandler";
 
 import { TaskEither } from "fp-ts/lib/TaskEither";
 import { PaymentActivationsPostRequest } from "../generated/pagopa-proxy/PaymentActivationsPostRequest";
