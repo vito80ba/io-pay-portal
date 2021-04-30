@@ -33,6 +33,9 @@ import {
 import { RptIdFromString } from "italia-pagopa-commons/lib/pagopa";
 import { readableReport } from "italia-ts-commons/lib/reporters";
 import { fetchApi } from "../clients/fetchApi";
+import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
+import { ProblemJson } from "../generated/pagopa-proxy/ProblemJson";
+import { toErrorPagopaProxyResponse } from "../utils/pagopaProxyUtil";
 
 type IGetPaymentInfoHandler = (
   context: Context,
@@ -67,13 +70,17 @@ const getPaymentInfoTask = (
   apiClient: IApiClient,
   rptId: RptIdFromString
 ): TaskEither<ErrorResponses, PaymentRequestsGetResponse> =>
-  withApiRequestWrapper<PaymentRequestsGetResponse>(
+  withApiRequestWrapper<
+    PaymentRequestsGetResponse,
+    ProblemJson | PaymentProblemJson
+  >(
     logger,
     () =>
       apiClient.getPaymentInfo({
         rpt_id_from_string: RptIdFromString.encode(rptId)
       }),
-    200
+    200,
+    toErrorPagopaProxyResponse
   );
 
 export const recaptchaCheckTask = (

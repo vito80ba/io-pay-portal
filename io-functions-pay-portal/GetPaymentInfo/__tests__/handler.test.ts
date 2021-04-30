@@ -182,3 +182,88 @@ it("should return Error if the json response is invalid  - recaptchaCheckTask", 
 
   expect(result.isLeft()).toBe(true);
 });
+
+it("should return IResponseErrorValidation response when pagopa proxy return 500 with PAYMENT_ONGOING", async () => {
+  jest.spyOn(handlers, "recaptchaCheckTask").mockReturnValueOnce(
+    taskEither.of({
+      challenge_ts: "challenge_ts",
+      hostname: "hostname",
+      success: true
+    } as ResponseRecaptcha)
+  );
+
+  const apiClientMock = {
+    getPaymentInfo: jest.fn(_ => {
+      return Promise.resolve(
+        right({
+          status: 500,
+          value: {
+            detail: "PAYMENT_ONGOING"
+          }
+        })
+      );
+    })
+  };
+
+  const handler = handlers.GetPaymentInfoHandler(
+    apiClientMock as any,
+    "recaptchaSecret"
+  );
+
+  const response = await handler(
+    context,
+    {
+      organizationFiscalCode: paymentInfo.organizationFiscalCode,
+      paymentNoticeNumber: {
+        applicationCode: paymentInfo.applicationCode,
+        auxDigit: paymentInfo.auxDigit,
+        checkDigit: paymentInfo.checkDigit,
+        iuv13: paymentInfo.iuv13
+      }
+    } as RptIdFromString,
+    "recaptchaResponse"
+  );
+
+  expect(response.kind).toBe("IResponseErrorValidation");
+});
+
+it("should return IResponseErrorInternal response when pagopa proxy return 500 without details", async () => {
+  jest.spyOn(handlers, "recaptchaCheckTask").mockReturnValueOnce(
+    taskEither.of({
+      challenge_ts: "challenge_ts",
+      hostname: "hostname",
+      success: true
+    } as ResponseRecaptcha)
+  );
+
+  const apiClientMock = {
+    getPaymentInfo: jest.fn(_ => {
+      return Promise.resolve(
+        right({
+          status: 500
+        })
+      );
+    })
+  };
+
+  const handler = handlers.GetPaymentInfoHandler(
+    apiClientMock as any,
+    "recaptchaSecret"
+  );
+
+  const response = await handler(
+    context,
+    {
+      organizationFiscalCode: paymentInfo.organizationFiscalCode,
+      paymentNoticeNumber: {
+        applicationCode: paymentInfo.applicationCode,
+        auxDigit: paymentInfo.auxDigit,
+        checkDigit: paymentInfo.checkDigit,
+        iuv13: paymentInfo.iuv13
+      }
+    } as RptIdFromString,
+    "recaptchaResponse"
+  );
+
+  expect(response.kind).toBe("IResponseErrorInternal");
+});
