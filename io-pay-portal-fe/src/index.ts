@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     (document.getElementById("organizationId") as HTMLInputElement) || null;
   const helpmodal: HTMLInputElement | null =
     (document.getElementById("helpmodal") as HTMLInputElement) || null;
+  const privacybtn: HTMLAnchorElement | null =
+    (document.getElementById("privacy") as HTMLAnchorElement) || null;
 
   // check if all fields are OK
   function fieldsCheck() {
@@ -125,6 +127,36 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       });
       modalWindow.setContent(modalTarget?.innerHTML || " ");
+      modalWindow.open();
+    }
+  );
+
+  privacybtn?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+      const modalTarget = document.getElementById("modal-privacy") || null;
+      const modalWindow = new Tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        cssClass: ["xl"],
+        onOpen: () => {
+          const modalClose = modalWindow
+            .getContent()
+            .querySelectorAll(".modalwindow__close")[0];
+          modalClose?.addEventListener("click", () => {
+            modalWindow.close();
+          });
+        },
+      });
+      modalWindow.setContent(modalTarget?.innerHTML || " ");
+      modalWindow.addFooterBtn(
+        "Chiudi",
+        "btn btn-outline-primary w-100",
+        function () {
+          modalWindow.close();
+        }
+      );
       modalWindow.open();
     }
   );
