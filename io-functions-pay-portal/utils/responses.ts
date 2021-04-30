@@ -8,14 +8,13 @@ import {
   IResponseErrorInternal,
   IResponseErrorNotFound,
   IResponseErrorTooManyRequests,
+  IResponseErrorValidation,
   ResponseErrorForbiddenNotAuthorized,
   ResponseErrorGeneric,
   ResponseErrorInternal,
   ResponseErrorNotFound,
   ResponseErrorTooManyRequests
 } from "italia-ts-commons/lib/responses";
-import { PaymentFaultEnum } from "../generated/pagopa-proxy/PaymentFault";
-import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
 
 export const unhandledResponseStatus = (status: number) =>
   ResponseErrorInternal(`unhandled API response status [${status}]`);
@@ -51,7 +50,8 @@ export type ErrorResponses =
   | IResponseErrorUnauthorized
   | IResponseErrorForbiddenNotAuthorized
   | IResponseErrorInternal
-  | IResponseErrorTooManyRequests;
+  | IResponseErrorTooManyRequests
+  | IResponseErrorValidation;
 
 export const toErrorServerResponse = <S extends number, T>(
   response: IResponseType<S, T>
@@ -65,12 +65,6 @@ export const toErrorServerResponse = <S extends number, T>(
       return ResponseErrorNotFound("Not found", "Resource not found");
     case 429:
       return ResponseErrorTooManyRequests("Too many requests");
-    case 500:
-      return ResponseErrorInternal(
-        PaymentProblemJson.decode(response.value).getOrElse({
-          detail: PaymentFaultEnum.PAYMENT_UNKNOWN
-        }).detail || "Generic Error"
-      );
     default:
       return unhandledResponseStatus(response.status);
   }

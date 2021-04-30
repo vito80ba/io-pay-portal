@@ -23,6 +23,9 @@ import { ErrorResponses } from "../utils/responses";
 
 import { TaskEither } from "fp-ts/lib/TaskEither";
 import { CodiceContestoPagamento } from "../generated/definitions/CodiceContestoPagamento";
+import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
+import { ProblemJson } from "../generated/pagopa-proxy/ProblemJson";
+import { toErrorPagopaProxyResponse } from "../utils/pagopaProxyUtil";
 
 type IGetActivationStatusHandler = (
   context: Context,
@@ -38,13 +41,17 @@ const GetActivationStatusTask = (
   apiClient: IApiClient,
   codiceContestoPagamento: CodiceContestoPagamento
 ): TaskEither<ErrorResponses, PaymentActivationsGetResponse> =>
-  withApiRequestWrapper<PaymentActivationsGetResponse>(
+  withApiRequestWrapper<
+    PaymentActivationsGetResponse,
+    ProblemJson | PaymentProblemJson
+  >(
     logger,
     () =>
       apiClient.getActivationStatus({
         codice_contesto_pagamento: codiceContestoPagamento
       }),
-    200
+    200,
+    toErrorPagopaProxyResponse
   );
 
 export function GetActivationStatusHandler(

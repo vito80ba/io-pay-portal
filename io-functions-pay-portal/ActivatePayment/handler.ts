@@ -24,6 +24,9 @@ import { ErrorResponses } from "../utils/responses";
 import { TaskEither } from "fp-ts/lib/TaskEither";
 import { PaymentActivationsPostRequest } from "../generated/pagopa-proxy/PaymentActivationsPostRequest";
 import { PaymentActivationsPostResponse } from "../generated/pagopa-proxy/PaymentActivationsPostResponse";
+import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
+import { ProblemJson } from "../generated/pagopa-proxy/ProblemJson";
+import { toErrorPagopaProxyResponse } from "../utils/pagopaProxyUtil";
 
 type IActivatePaymentHandler = (
   context: Context,
@@ -39,10 +42,14 @@ const activatePaymentTask = (
   apiClient: IApiClient,
   paymentRequest: PaymentActivationsPostRequest
 ): TaskEither<ErrorResponses, PaymentActivationsPostResponse> =>
-  withApiRequestWrapper<PaymentActivationsPostResponse>(
+  withApiRequestWrapper<
+    PaymentActivationsPostResponse,
+    ProblemJson | PaymentProblemJson
+  >(
     logger,
     () => apiClient.activatePayment({ body: paymentRequest }),
-    200
+    200,
+    toErrorPagopaProxyResponse
   );
 
 export function ActivatePaymentHandler(
