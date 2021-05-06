@@ -35,12 +35,21 @@ import {
 } from "./util/mixpanelHelperInit";
 
 export enum PaymentFaultEnum {
-  "PAYMENT_DUPLICATED" = "PAGAMENTO DUPLICATO",
-  "INVALID_AMOUNT" = "IMPORTO NON VALIDO",
-  "PAYMENT_ONGOING" = "PAGAMENTO GIA' IN CORSO",
-  "PAYMENT_EXPIRED" = "SESSIONE DI PAGAMENTO SCADUTA",
-  "PAYMENT_UNAVAILABLE" = "PAGAMENTO NON DISPONIBILE",
-  "PAYMENT_UNKNOWN" = "PAGAMENTO SCONOSCIUTO",
+  "PAYMENT_DUPLICATED" = "Questo avviso è stato già pagato!",
+  "INVALID_AMOUNT" = "Importo non valido",
+  "PAYMENT_ONGOING" = "Pagamento già in corso",
+  "PAYMENT_EXPIRED" = "Avviso scaduto",
+  "PAYMENT_UNAVAILABLE" = "Avviso non disponibile",
+  "PAYMENT_UNKNOWN" = "Avviso non riconosciuto",
+}
+
+export enum PaymentFaultEnumBody {
+  "PAYMENT_DUPLICATED" = "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento",
+  "INVALID_AMOUNT" = "Rivolgiti all'ente che ha emesso l'avviso, oppure contatta l'assistenza di pagoPA per risolvere il problema.",
+  "PAYMENT_ONGOING" = "Un pagamento per questo avviso è già in corso, riprova più tardi. Se continui ad avere problemi, contatta l'ente che ha emesso l'avviso.",
+  "PAYMENT_EXPIRED" = "Spiacenti, non è possibile proseguire con il pagamento perché l'avviso è scaduto.",
+  "PAYMENT_UNAVAILABLE" = "Spiacenti, in questo momento non è possibile proseguire con il pagamento. <a href='https://www.google.it'>Riprova più tardi</a>.",
+  "PAYMENT_UNKNOWN" = "Spiacenti, in questo momento non è possibile proseguire con il pagamento perché l'avviso non è stato riconosciuto dall'ente che lo ha emesso.",
 }
 
 export const PayDetail: ReadonlyArray<string> = [
@@ -252,14 +261,6 @@ export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
   }
 };
 
-export const showPaymentInfoError = () => {
-  modalWindowWithText(
-    "Non riusciamo a trovare un avviso di pagamento con i dati da te inseriti",
-    "Dati non corretti",
-    "Riprova"
-  );
-};
-
 export const showActivationError = () => {
   modalWindowWithText(
     "Non riesco ad attivare il pagamento, per favore riprova"
@@ -282,7 +283,7 @@ export const modalWindowWithText = (
   }
   if (modalTargetParagraph) {
     // eslint-disable-next-line functional/immutable-data
-    modalTargetParagraph.innerText = text;
+    modalTargetParagraph.innerHTML = text;
   }
   const modalWindow = new Tingle.modal({
     closeLabel: closebtn,
@@ -323,5 +324,24 @@ export function getErrorMessageConv(faultCode: string): PaymentFaultEnum {
       return PaymentFaultEnum.PAYMENT_UNKNOWN;
     default:
       return PaymentFaultEnum.PAYMENT_UNAVAILABLE;
+  }
+}
+
+export function getErrorMessageConvBody(
+  faultCode: string
+): PaymentFaultEnumBody {
+  switch (faultCode) {
+    case "INVALID_AMOUNT":
+      return PaymentFaultEnumBody.INVALID_AMOUNT;
+    case "PAYMENT_DUPLICATED":
+      return PaymentFaultEnumBody.PAYMENT_DUPLICATED;
+    case "PAYMENT_ONGOING":
+      return PaymentFaultEnumBody.PAYMENT_ONGOING;
+    case "PAYMENT_EXPIRED":
+      return PaymentFaultEnumBody.PAYMENT_EXPIRED;
+    case "PAYMENT_UNKNOWN":
+      return PaymentFaultEnumBody.PAYMENT_UNKNOWN;
+    default:
+      return PaymentFaultEnumBody.PAYMENT_UNAVAILABLE;
   }
 }

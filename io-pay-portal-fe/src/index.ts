@@ -5,6 +5,7 @@ import { RptId } from "../generated/RptId";
 import {
   activePaymentTask,
   getErrorMessageConv,
+  getErrorMessageConvBody,
   getPaymentInfoTask,
   modalWindowWithText,
   pollingActivationStatus,
@@ -63,6 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
       el.classList.add("is-invalid");
       el.removeAttribute("data-checked");
     }
+  }
+
+  function showErrorMessage(r: string): void {
+    modalWindowWithText(getErrorMessageConvBody(r), getErrorMessageConv(r));
   }
 
   if (inputFields) {
@@ -191,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       await getPaymentInfoTask(rptId, recaptchaResponse)
         .fold(
-          (r) => modalWindowWithText(getErrorMessageConv(r)),
+          (r) => showErrorMessage(r),
           (paymentInfo) => {
             sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
             sessionStorage.setItem("rptId", rptId);
@@ -239,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
             rptId
           )
             .fold(
-              (r) => modalWindowWithText(getErrorMessageConv(r)),
+              (r) => showErrorMessage(r),
               (_) =>
                 pollingActivationStatus(
                   paymentInfo.codiceContestoPagamento,
