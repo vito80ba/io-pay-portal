@@ -3,6 +3,7 @@ html(lang='it')
     - var languages = [{'label':'IT', 'full':'Italiano'},{'label':'EN', 'full':'English'}];
     head
         title Paga un avviso – IO, l’app dei servizi pubblici
+        meta(robots="noindex, nofollow")
         link(href="scss/style.scss",rel="stylesheet")
         script(src="../node_modules/promise-polyfill/dist/polyfill.min.js")
         script(src="../node_modules/whatwg-fetch/dist/fetch.umd.js")
@@ -29,7 +30,7 @@ html(lang='it')
                         .firstindexform 
                             form.my-5(id="firstindexform")
                                 .form-group.my-2
-                                    input.form-control(type="text", placeholder="", name="paymentNoticeCode",  id="paymentNoticeCode", required)
+                                    input.form-control(type="text", inputmode="numeric", placeholder="", name="paymentNoticeCode",  id="paymentNoticeCode", required)
                                     label(for="paymentNoticeCode") Codice Avviso
                                     .reset-flex-flow.text-muted.mt-1.custom-label--error Inserisci 18 cifre
                                 .py-2
@@ -39,7 +40,7 @@ html(lang='it')
                                     .reset-flex-flow.text-muted.mt-1.custom-label--error Inserisci almeno 11 caratteri
                                 .my-5.reset-font-size
                                     p Premendo 'Continua' dichiari di aver letto e compreso l'
-                                        a(href="#", id="privacy") Informativa Privacy
+                                        a(href="#", id="privacy") Informativa Privacy e i Termini e condizioni d’uso del servizio
                                 .windowcont__bottom
                                     .container
                                         .windowcont__bottom__wrap.d-flex
@@ -56,7 +57,7 @@ html(lang='it')
                                 div.font-weight-bold(id="ec") 
                             .windowcont__caus.py-2.mt-2.border-bottom.border-bottom-gray.reset-font-size
                                 div.text-muted Causale
-                                div.font-weight-bold(id="causale") 
+                                div.font-weight-bold.text-break(id="causale") 
                             .windowcont__cfec.py-2.mt-2.border-bottom.border-bottom-gray.reset-font-size.d-flex
                                 div.text-muted Codice Fiscale Ente Creditore
                                 div.font-weight-bold.ml-auto(id="cf-pa")

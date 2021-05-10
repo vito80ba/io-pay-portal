@@ -5,6 +5,7 @@ import { RptId } from "../generated/RptId";
 import {
   activePaymentTask,
   getErrorMessageConv,
+  getErrorMessageConvBody,
   getPaymentInfoTask,
   modalWindowWithText,
   pollingActivationStatus,
@@ -65,6 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function showErrorMessage(r: string): void {
+    modalWindowWithText(getErrorMessageConvBody(r), getErrorMessageConv(r));
+  }
+
   if (inputFields) {
     for (const inputEl of Array.from(inputFields)) {
       (inputEl as HTMLInputElement).addEventListener("focus", (evt: Event) => {
@@ -75,13 +80,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   paymentNoticeCodeEl?.addEventListener(
-    "keyup",
+    "input",
     async (evt): Promise<void> => {
       const inputel = evt?.target as HTMLInputElement;
+      // eslint-disable-next-line functional/immutable-data
+      inputel.value = inputel.value.replace(/\s/g, "");
       // only 18 numbers
       const regexTest = new RegExp(/^[0-9]{18}$/);
-      // eslint-disable-next-line functional/immutable-data
-      inputel.value = inputel.value.trim();
       if (regexTest.test(inputel.value) === true) {
         toggleValid(inputel, true);
       } else {
@@ -92,13 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   organizationIdEl?.addEventListener(
-    "keyup",
+    "input",
     async (evt): Promise<void> => {
       const inputel = evt?.target as HTMLInputElement;
+      // eslint-disable-next-line functional/immutable-data
+      inputel.value = inputel.value.replace(/\s/g, "");
       // only chars& numbers, min 11 max 16
       const regexTest = new RegExp(/^[a-zA-Z0-9]{11,16}$/);
-      // eslint-disable-next-line functional/immutable-data
-      inputel.value = inputel.value.trim();
       if (regexTest.test(inputel.value) === true) {
         toggleValid(inputel, true);
       } else {
@@ -191,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       await getPaymentInfoTask(rptId, recaptchaResponse)
         .fold(
-          (r) => modalWindowWithText(getErrorMessageConv(r)),
+          (r) => showErrorMessage(r),
           (paymentInfo) => {
             sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
             sessionStorage.setItem("rptId", rptId);
@@ -239,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
             rptId
           )
             .fold(
-              (r) => modalWindowWithText(getErrorMessageConv(r)),
+              (r) => showErrorMessage(r),
               (_) =>
                 pollingActivationStatus(
                   paymentInfo.codiceContestoPagamento,
