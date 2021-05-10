@@ -45,10 +45,10 @@ export enum PaymentFaultEnum {
 
 export enum PaymentFaultEnumBody {
   "PAYMENT_DUPLICATED" = "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento",
-  "INVALID_AMOUNT" = "Rivolgiti all'ente che ha emesso l'avviso, oppure contatta l'assistenza di pagoPA per risolvere il problema.",
+  "INVALID_AMOUNT" = "Rivolgiti all'ente che ha emesso l'avviso, oppure <a href=\"https://www.pagopa.gov.it/it/pagopa/helpdesk/\" title=\"Contatta l'assistenza\">contatta l'assistenza</a> di pagoPA per risolvere il problema.",
   "PAYMENT_ONGOING" = "Un pagamento per questo avviso è già in corso, riprova più tardi. Se continui ad avere problemi, contatta l'ente che ha emesso l'avviso.",
   "PAYMENT_EXPIRED" = "Spiacenti, non è possibile proseguire con il pagamento perché l'avviso è scaduto.",
-  "PAYMENT_UNAVAILABLE" = "Spiacenti, in questo momento non è possibile proseguire con il pagamento. <a href='https://www.google.it'>Riprova più tardi</a>.",
+  "PAYMENT_UNAVAILABLE" = "Spiacenti, in questo momento non è possibile proseguire con il pagamento. Riprova più tardi.",
   "PAYMENT_UNKNOWN" = "Spiacenti, in questo momento non è possibile proseguire con il pagamento perché l'avviso non è stato riconosciuto dall'ente che lo ha emesso.",
 }
 
