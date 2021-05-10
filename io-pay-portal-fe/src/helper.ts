@@ -239,9 +239,9 @@ export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
     const prettifiedImporto =
       parseInt(paymentInfo.importoSingoloVersamento.toString(), 10) / 100;
     // eslint-disable-next-line functional/immutable-data
-    importo.innerText = `€ ${Intl.NumberFormat("it-IT", { minimumFractionDigits: 2 }).format(
-      prettifiedImporto
-    )}`;
+    importo.innerText = `€ ${Intl.NumberFormat("it-IT", {
+      minimumFractionDigits: 2,
+    }).format(prettifiedImporto)}`;
   }
   if (cfpa) {
     // eslint-disable-next-line functional/immutable-data
