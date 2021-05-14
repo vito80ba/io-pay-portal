@@ -184,7 +184,9 @@ $text-color: #17324d;
 
 // CUSTOM
 // ------------------
-
+.grecaptcha-badge {
+  display: none;
+}
 .text-primary {
   color: $primary !important;
 }
