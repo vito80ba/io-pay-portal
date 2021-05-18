@@ -92,12 +92,13 @@ export const getPaymentInfoTask = (
       errorOrResponse.fold(
         () => fromLeft("Errore recupero pagamento"),
         (responseType) => {
+          const reason =
+            responseType.status === 200 ? "" : responseType.value?.detail;
           const EVENT_ID: string =
             responseType.status === 200
               ? PAYMENT_VERIFY_SUCCESS.value
               : PAYMENT_VERIFY_RESP_ERR.value;
-          mixpanel.track(EVENT_ID, { EVENT_ID });
-
+          mixpanel.track(EVENT_ID, { EVENT_ID, reason });
           return responseType.status !== 200
             ? fromLeft(
                 fromNullable(responseType.value?.detail).getOrElse(
