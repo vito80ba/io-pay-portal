@@ -14,8 +14,9 @@ app.get("/api/payportal/v1/payment-requests/:rptId", (_, res) => {
   // test scenario for an error message
   if (_.params.rptId == "00000000000000000000000000000" ) {
     res.status(500).send("Error!");
-  }
-  else {
+  } else if (_.params.rptId == "00000000000000000000000000009" ) {
+    res.status(400).send( { detail: "PAYMENT_DUPLICATED" } );
+  } else {
     res.send({
       importoSingoloVersamento: 1100,
       codiceContestoPagamento: "6f69d150541e11ebb70c7b05c53756dd",
