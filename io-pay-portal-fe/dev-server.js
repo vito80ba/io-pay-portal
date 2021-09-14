@@ -15,8 +15,15 @@ app.get("/api/payportal/v1/payment-requests/:rptId", (_, res) => {
   if (_.params.rptId == "00000000000000000000000000000" ) {
     res.status(500).send("Error!");
   } else if (_.params.rptId == "00000000000000000000000000009" ) {
-    res.status(400).send( { detail: "PAYMENT_DUPLICATED" } );
-  } else {
+    res.status(400).send( { detail: "PAA_PAGAMENTO_DUPLICATO" } );
+  } else if (_.params.rptId == "00000000000000000000000000008" ) {
+    res.status(400).send( { detail: "PAA_PAGAMENTO_IN_CORSO" } );
+  } else if (_.params.rptId == "00000000000000000000000000007" ) {
+    res.status(400).send( { detail: "PAA_PAGAMENTO_SCADUTO" } );
+  } else if (_.params.rptId == "00000000000000000000000000006" ) {
+    res.status(400).send( { detail: "PPT_DOMINIO_SCONOSCIUTO" } );
+  }
+  else {
     res.send({
       importoSingoloVersamento: 1100,
       codiceContestoPagamento: "6f69d150541e11ebb70c7b05c53756dd",
