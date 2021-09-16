@@ -41,23 +41,23 @@ stages:
   # - is on branch master 
   # - is a tag in the form v{version}-RELEASE
   - stage: Release
-    condition:
-      and(
-        succeeded(),
-        or(
-          eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-          and(
-            startsWith(variables['Build.SourceBranch'], 'refs/tags'),
-            endsWith(variables['Build.SourceBranch'], '-RELEASE')
-          )
-        )
-      )
+    # condition:
+    #   and(
+    #     succeeded(),
+    #     or(
+    #       eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+    #       and(
+    #         startsWith(variables['Build.SourceBranch'], 'refs/tags'),
+    #         endsWith(variables['Build.SourceBranch'], '-RELEASE')
+    #       )
+    #     )
+    #   )
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
       - job: make_release
         steps:
-        - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+        # - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - template: azure-templates/node-github-release.yaml 
             parameters:
               release_branch: 'main'
@@ -70,7 +70,7 @@ stages:
               pkg_cache_version_id: $(CACHE_VERSION_ID)
               pkg_cache_folder: $(YARN_CACHE_FOLDER)
 
-        - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+        # - ${{ if ne(variables['Build.SourceBranch'], 'refs/heads/main') }}:
           - script: |
               echo "We assume this reference to be a valid release: $(Build.SourceBranch). Therefore, there is no need to bundle a new release."
             displayName: 'Skip release bundle'
@@ -124,48 +124,48 @@ stages:
                 !tsconfig.json
             displayName: 'Copy deploy files'
             
-          - task: AzureFunctionApp@1  
-            inputs:
-              azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
-              resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
-              appType: 'functionApp'
-              appName: '$(PRODUCTION_APP_NAME)'
-              package: '$(Build.ArtifactStagingDirectory)/'
-              deploymentMethod: 'auto'
-              deployToSlotOrASE: true
-              slotName: 'staging'
-            displayName: Deploy to staging slot
+  #         - task: AzureFunctionApp@1  
+  #           inputs:
+  #             azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
+  #             resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
+  #             appType: 'functionApp'
+  #             appName: '$(PRODUCTION_APP_NAME)'
+  #             package: '$(Build.ArtifactStagingDirectory)/'
+  #             deploymentMethod: 'auto'
+  #             deployToSlotOrASE: true
+  #             slotName: 'staging'
+  #           displayName: Deploy to staging slot
 
-  # Check that the staging instance is healthy
-  - stage: Healthcheck
-    dependsOn:
-      - Deploy_staging
-    jobs:
-      - job: 'do_healthcheck'       
-        steps:  
-          - template: templates/rest-healthcheck/template.yaml@pagopaCommons 
-            parameters:
-              azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
-              appName: '$(PRODUCTION_APP_NAME)'
-              endpoint: 'https://$(PRODUCTION_APP_NAME)-staging.azurewebsites.net/info'
-              endpointType: 'private'
-              containerInstanceResourceGroup: 'io-p-rg-common'
-              containerInstanceVNet: 'io-p-vnet-common'
-              containerInstanceSubnet: 'azure-devops' 
+  # # Check that the staging instance is healthy
+  # - stage: Healthcheck
+  #   dependsOn:
+  #     - Deploy_staging
+  #   jobs:
+  #     - job: 'do_healthcheck'       
+  #       steps:  
+  #         - template: templates/rest-healthcheck/template.yaml@pagopaCommons 
+  #           parameters:
+  #             azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
+  #             appName: '$(PRODUCTION_APP_NAME)'
+  #             endpoint: 'https://$(PRODUCTION_APP_NAME)-staging.azurewebsites.net/info'
+  #             endpointType: 'private'
+  #             containerInstanceResourceGroup: 'io-p-rg-common'
+  #             containerInstanceVNet: 'io-p-vnet-common'
+  #             containerInstanceSubnet: 'azure-devops' 
 
-  # Promote the staging instance to production
-  - stage: Deploy_production
-    dependsOn:
-      - Healthcheck
-      - Deploy_staging
-    jobs:
-      - job: 'do_deploy'       
-        steps:  
-          - task: AzureAppServiceManage@0   
-            inputs:
-              azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
-              resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
-              webAppName: '$(PRODUCTION_APP_NAME)'
-              sourceSlot: staging
-              swapWithProduction: true
-            displayName: Swap with production slot
+  # # Promote the staging instance to production
+  # - stage: Deploy_production
+  #   dependsOn:
+  #     - Healthcheck
+  #     - Deploy_staging
+  #   jobs:
+  #     - job: 'do_deploy'       
+  #       steps:  
+  #         - task: AzureAppServiceManage@0   
+  #           inputs:
+  #             azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
+  #             resourceGroupName: '$(PRODUCTION_RESOURCE_GROUP_NAME)'
+  #             webAppName: '$(PRODUCTION_APP_NAME)'
+  #             sourceSlot: staging
+  #             swapWithProduction: true
+  #           displayName: Swap with production slot
