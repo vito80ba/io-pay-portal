@@ -28,7 +28,11 @@ export const toErrorPagopaProxyResponse = <S extends number, T>(
     case 500:
       return PaymentProblemJson.decode(response.value).fold<ErrorResponses>(
         _ => ResponseErrorInternal("Generic Error"),
-        result => ResponseErrorValidation("Validation Error", result.detail)
+        result =>
+          ResponseErrorValidation(
+            "Validation Error",
+            result.detail_v2 ? result.detail_v2 : result.detail
+          )
       );
     default:
       return unhandledResponseStatus(response.status);
