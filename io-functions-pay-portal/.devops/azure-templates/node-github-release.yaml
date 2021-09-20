@@ -83,14 +83,14 @@ steps:
   - script: |
       npm version ${{ parameters.semver }} -m "Bump version to %s [skip ci]"
       NEXT_VERSION=$(node -p "require('./${{ parameters.project_folder }}/package.json').version")
-      RELEASE_TAG="be/v$NEXT_VERSION"
+      RELEASE_TAG="be/v$NEXT_VERSION-RELEASE"
       git tag $RELEASE_TAG
     displayName: 'Version bump and tag'
   - script: |
       NEXT_VERSION=$(node -p "require('./${{ parameters.project_folder }}/package.json').version")
       HEAD_SHA=$(git rev-parse HEAD)
       TITLE="Release $NEXT_VERSION"
-      TAG="be/v$NEXT_VERSION"
+      TAG="be/v$NEXT_VERSION-RELEASE"
       echo "##vso[task.setvariable variable=title]$TITLE"
       echo "##vso[task.setvariable variable=sha]$HEAD_SHA"
       echo "##vso[task.setvariable variable=tag]$TAG"
