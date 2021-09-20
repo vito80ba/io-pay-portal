@@ -16,7 +16,7 @@ parameters:
   # Basically, this variable is used to enforce the fact that we use the very same branch in different steps
   - name: 'release_branch'
     type: string
-    default: master
+    default: main
 
   # This is the project folder where yarn.lock is present
   # (in case of multiple project under the same repo)
@@ -83,14 +83,14 @@ steps:
   - script: |
       npm version ${{ parameters.semver }} -m "Bump version to %s [skip ci]"
       NEXT_VERSION=$(node -p "require('./${{ parameters.project_folder }}/package.json').version")
-      RELEASE_TAG="be/v$NEXT_VERSION-RELEASE"
+      RELEASE_TAG="be/v$NEXT_VERSION"
       git tag $RELEASE_TAG
     displayName: 'Version bump and tag'
   - script: |
       NEXT_VERSION=$(node -p "require('./${{ parameters.project_folder }}/package.json').version")
       HEAD_SHA=$(git rev-parse HEAD)
       TITLE="Release $NEXT_VERSION"
-      TAG="be/v$NEXT_VERSION-RELEASE"
+      TAG="be/v$NEXT_VERSION"
       echo "##vso[task.setvariable variable=title]$TITLE"
       echo "##vso[task.setvariable variable=sha]$HEAD_SHA"
       echo "##vso[task.setvariable variable=tag]$TAG"
