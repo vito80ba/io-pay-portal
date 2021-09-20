@@ -16,7 +16,7 @@ parameters:
   # Basically, this variable is used to enforce the fact that we use the very same branch in different steps
   - name: 'release_branch'
     type: string
-    default: master
+    default: main
 
   # This is the project folder where yarn.lock is present
   # (in case of multiple project under the same repo)
@@ -75,13 +75,13 @@ steps:
       path: '${{ parameters.pkg_cache_folder }}'
     displayName: 'Cache yarn packages'
   - script: |
-      yarn install --frozen-lockfile --no-progress --non-interactive --network-concurrency 1
+      yarn install --cwd ${{ parameters.project_folder }} --frozen-lockfile --no-progress --non-interactive --network-concurrency 1
     displayName: 'Install node modules'
     condition: ne(variables.CACHE_RESTORED, 'true')
     
   # bump version
   - script: |
-      npm version ${{ parameters.semver }} -m "Bump version to %s [skip ci]"
+      npm --prefix ${{ parameters.project_folder }} version ${{ parameters.semver }} -m "Bump version to %s [skip ci]"
       NEXT_VERSION=$(node -p "require('./${{ parameters.project_folder }}/package.json').version")
       RELEASE_TAG="fe/v$NEXT_VERSION-RELEASE"
       git tag $RELEASE_TAG
