@@ -22,6 +22,10 @@ app.get("/api/payportal/v1/payment-requests/:rptId", (_, res) => {
     res.status(400).send( { detail: "PAA_PAGAMENTO_SCADUTO" } );
   } else if (_.params.rptId == "00000000000000000000000000006" ) {
     res.status(400).send( { detail: "PPT_DOMINIO_SCONOSCIUTO" } );
+  } else if (_.params.rptId == "00000000000000000000000000005" ) {
+    res.status(400).send( { detail: "PPT_SINTASSI_EXTRAXSD" } );
+  } else if (_.params.rptId == "00000000000000000000000000004" ) {
+    res.status(400).send( { detail: "UNKNOWN_ERROR" } );
   }
   else {
     res.send({

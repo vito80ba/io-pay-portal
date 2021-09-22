@@ -181,7 +181,6 @@ $text-color: #17324d;
       format("ttf");
 }
 
-
 // CUSTOM
 // ------------------
 .grecaptcha-badge {
@@ -618,12 +617,22 @@ body {
 }
 
 // MODAL
-
+#copy {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
 .modalwindow {
   display: none;
 
+  & > p:empty {
+    display: none;
+  }
+
   &__title {
     color: #17324d;
+    font-size: 1.2rem;
+    font-weight: 600;
   }
   &__desc {
     color: #5c6f82;
@@ -631,6 +640,17 @@ body {
   }
   &__content {
     margin-top: 1rem;
+  }
+  &__detail {
+    font-size: 0.9rem;
+    display: none;
+    &.active {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__code {
+    font-weight: 600;
   }
 }
 
@@ -651,7 +671,7 @@ body {
   align-items: center;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
-  background: rgba(0,0,0,.54);
+  background: rgba(0, 0, 0, 0.54);
   opacity: 0;
   user-select: none;
   cursor: pointer;
