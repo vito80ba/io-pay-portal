@@ -98,7 +98,7 @@ export const modalWindowError = (modalData: ErrorModal) => {
     );
   } else {
     modalData.buttons.forEach((button) => {
-      modalWindow.addFooterBtn(button.title, button.style, (evt) =>
+      modalWindow.addFooterBtn(button.title, button.style, () =>
         button.action(modalWindow)
       );
     });
