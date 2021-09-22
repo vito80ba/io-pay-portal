@@ -119,8 +119,7 @@ export const PaymentCategoryResponses: Record<
   NOTLISTED: {
     title: "Spiacenti, si è verificato un errore imprevisto",
     detail: false,
-    body:
-      "Prova di nuovo o contattaci per ricevere assistenza.",
+    body: "Prova di nuovo o contattaci per ricevere assistenza.",
     buttons: [
       {
         title: "Chiudi",
