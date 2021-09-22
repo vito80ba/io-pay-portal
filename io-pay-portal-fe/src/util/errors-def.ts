@@ -120,7 +120,7 @@ export const PaymentCategoryResponses: Record<
     title: "Spiacenti, si è verificato un errore imprevisto",
     detail: false,
     body:
-      "Riprova il pagamento, oppure aprire una segnalazione per ricevere assistenza.",
+      "Prova di nuovo o contattaci per ricevere assistenza.",
     buttons: [
       {
         title: "Chiudi",
