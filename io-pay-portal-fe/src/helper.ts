@@ -5,7 +5,6 @@ import {
   tryCatch,
 } from "fp-ts/lib/TaskEither";
 import { fromNullable } from "fp-ts/lib/Option";
-import Tingle from "tingle.js";
 import { Millisecond } from "italia-ts-commons/lib/units";
 import { CodiceContestoPagamento } from "../generated/CodiceContestoPagamento";
 import { ImportoEuroCents } from "../generated/ImportoEuroCents";
@@ -33,33 +32,7 @@ import {
   PAYMENT_VERIFY_SUCCESS,
   PAYMENT_VERIFY_SVR_ERR,
 } from "./util/mixpanelHelperInit";
-
-export enum PaymentFaultEnum {
-  "PAYMENT_DUPLICATED" = "Questo avviso è stato già pagato!",
-  "INVALID_AMOUNT" = "Importo non valido",
-  "PAYMENT_ONGOING" = "Pagamento già in corso",
-  "PAYMENT_EXPIRED" = "Avviso scaduto",
-  "PAYMENT_UNAVAILABLE" = "Avviso non disponibile",
-  "PAYMENT_UNKNOWN" = "Avviso non riconosciuto",
-}
-
-export enum PaymentFaultEnumBody {
-  "PAYMENT_DUPLICATED" = "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento",
-  "INVALID_AMOUNT" = "Rivolgiti all'ente che ha emesso l'avviso, oppure <a href=\"https://www.pagopa.gov.it/it/pagopa/helpdesk/\" title=\"Contatta l'assistenza\">contatta l'assistenza</a> di pagoPA per risolvere il problema.",
-  "PAYMENT_ONGOING" = "Un pagamento per questo avviso è già in corso, riprova più tardi. Se continui ad avere problemi, contatta l'ente che ha emesso l'avviso.",
-  "PAYMENT_EXPIRED" = "Spiacenti, non è possibile proseguire con il pagamento perché l'avviso è scaduto.",
-  "PAYMENT_UNAVAILABLE" = "Spiacenti, in questo momento non è possibile proseguire con il pagamento. Riprova più tardi.",
-  "PAYMENT_UNKNOWN" = "Spiacenti, in questo momento non è possibile proseguire con il pagamento perché l'avviso non è stato riconosciuto dall'ente che lo ha emesso.",
-}
-
-export const PayDetail: ReadonlyArray<string> = [
-  "importoSingoloVersamento",
-  "codiceContestoPagamento",
-  "ibanAccredito",
-  "causaleVersamento",
-  "enteBeneficiario",
-  "spezzoniCausaleVersamento",
-];
+import { showActivationError } from "./util/errors";
 
 export const getPaymentInfoTask = (
   rptId: RptId,
@@ -259,88 +232,3 @@ export const showPaymentInfo = (paymentInfo: PaymentRequestsGetResponse) => {
       paymentInfo.enteBeneficiario?.identificativoUnivocoBeneficiario;
   }
 };
-
-export const showActivationError = () => {
-  modalWindowWithText(
-    "Non riesco ad attivare il pagamento, per favore riprova"
-  );
-  document.body.classList.remove("loading");
-};
-
-export const modalWindowWithText = (
-  text: string = "",
-  title: string = "Errore",
-  closebtn: string = "Chiudi"
-) => {
-  const modalTarget = document.getElementById("modal-error") || null;
-  const modalTargetTitle =
-    modalTarget && modalTarget.querySelector(".modalwindow__title");
-  const modalTargetParagraph = modalTarget && modalTarget.querySelector("p");
-  if (modalTargetTitle) {
-    // eslint-disable-next-line functional/immutable-data
-    (modalTargetTitle as HTMLElement).innerText = title;
-  }
-  if (modalTargetParagraph) {
-    // eslint-disable-next-line functional/immutable-data
-    modalTargetParagraph.innerHTML = text;
-  }
-  const modalWindow = new Tingle.modal({
-    closeLabel: closebtn,
-    footer: true,
-    stickyFooter: false,
-    closeMethods: ["overlay", "button", "escape"],
-    onOpen: () => {
-      const modalClose = modalWindow
-        .getContent()
-        .querySelector(".modalwindow__close");
-      modalClose?.addEventListener("click", () => {
-        modalWindow.close();
-      });
-    },
-  });
-  modalWindow.addFooterBtn(
-    closebtn,
-    "btn btn-outline-primary w-100",
-    function () {
-      modalWindow.close();
-    }
-  );
-  modalWindow.setContent(modalTarget?.innerHTML || "");
-  modalWindow.open();
-};
-
-export function getErrorMessageConv(faultCode: string): PaymentFaultEnum {
-  switch (faultCode) {
-    case "INVALID_AMOUNT":
-      return PaymentFaultEnum.INVALID_AMOUNT;
-    case "PAYMENT_DUPLICATED":
-      return PaymentFaultEnum.PAYMENT_DUPLICATED;
-    case "PAYMENT_ONGOING":
-      return PaymentFaultEnum.PAYMENT_ONGOING;
-    case "PAYMENT_EXPIRED":
-      return PaymentFaultEnum.PAYMENT_EXPIRED;
-    case "PAYMENT_UNKNOWN":
-      return PaymentFaultEnum.PAYMENT_UNKNOWN;
-    default:
-      return PaymentFaultEnum.PAYMENT_UNAVAILABLE;
-  }
-}
-
-export function getErrorMessageConvBody(
-  faultCode: string
-): PaymentFaultEnumBody {
-  switch (faultCode) {
-    case "INVALID_AMOUNT":
-      return PaymentFaultEnumBody.INVALID_AMOUNT;
-    case "PAYMENT_DUPLICATED":
-      return PaymentFaultEnumBody.PAYMENT_DUPLICATED;
-    case "PAYMENT_ONGOING":
-      return PaymentFaultEnumBody.PAYMENT_ONGOING;
-    case "PAYMENT_EXPIRED":
-      return PaymentFaultEnumBody.PAYMENT_EXPIRED;
-    case "PAYMENT_UNKNOWN":
-      return PaymentFaultEnumBody.PAYMENT_UNKNOWN;
-    default:
-      return PaymentFaultEnumBody.PAYMENT_UNAVAILABLE;
-  }
-}

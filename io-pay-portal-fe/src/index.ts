@@ -1,18 +1,21 @@
 import { fromNullable } from "fp-ts/lib/Option";
-import Tingle from "tingle.js";
+import Tingle, { modal } from "tingle.js";
 import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import { RptId } from "../generated/RptId";
 import {
   activePaymentTask,
-  getErrorMessageConv,
-  getErrorMessageConvBody,
   getPaymentInfoTask,
-  modalWindowWithText,
   pollingActivationStatus,
-  showActivationError,
   showPaymentInfo,
 } from "./helper";
 import { getConfig } from "./util/config";
+import {
+  getErrorMessageConv,
+  modalWindowError,
+  showActivationError,
+} from "./util/errors";
+import { ErrorModal } from "./util/errors-def";
+
 declare const grecaptcha: any;
 
 /**
@@ -37,6 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
     (document.getElementById("helpmodal") as HTMLInputElement) || null;
   const privacybtn: HTMLAnchorElement | null =
     (document.getElementById("privacy") as HTMLAnchorElement) || null;
+  const copyBtn: HTMLInputElement | null =
+    (document.getElementById("copy") as HTMLInputElement) || null;
 
   // check if all fields are OK
   function fieldsCheck() {
@@ -67,7 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showErrorMessage(r: string): void {
-    modalWindowWithText(getErrorMessageConvBody(r), getErrorMessageConv(r));
+    const errorMessage: ErrorModal = getErrorMessageConv(r);
+    modalWindowError(errorMessage);
   }
 
   if (inputFields) {
