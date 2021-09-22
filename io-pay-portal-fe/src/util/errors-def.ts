@@ -120,7 +120,7 @@ export const PaymentCategoryResponses: Record<
     title: "Spiacenti, si è verificato un errore imprevisto",
     detail: false,
     body:
-      "Riprova il pagamento, oppure aprire una segnalazione per ricevere assistenza.",
+      "Prova di nuovo o contattaci per ricevere assistenza.",
     buttons: [
       {
         title: "Chiudi",
@@ -242,22 +242,6 @@ export const PaymentResponses: Record<string, PaymentFaultErrorMessage> = {
     body:
       "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento.",
     category: PaymentFaultCategory.CUSTOM,
-    buttons: [
-      {
-        title: "Contatta l'assistenza",
-        style: "btn btn-primary w-100 mb-2",
-        action: () => {
-          window.open(HELPDESK_URL, "_blank")?.focus();
-        },
-      },
-      {
-        title: "Chiudi",
-        style: "btn btn-outline-primary w-100",
-        action: (modalWindow: Tingle.modal) => {
-          modalWindow.close();
-        },
-      },
-    ],
   },
   PAA_PAGAMENTO_IN_CORSO: {
     title: "Il pagamento è già in corso, riprova tra qualche minuto",
