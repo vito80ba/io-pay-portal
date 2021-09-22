@@ -11,7 +11,10 @@ describe("pagopaProxyUtil", () => {
     const error: ErrorResponses = toErrorPagopaProxyResponse({
       headers: {},
       status: 500,
-      value: { detail: "PAYMENT_DUPLICATED" }
+      value: {
+        detail: "PAYMENT_DUPLICATED",
+        detail_v2: "PAA_PAGAMENTO_DUPLICATO"
+      }
     });
 
     expect(error.kind).toBe("IResponseErrorValidation");

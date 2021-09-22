@@ -198,7 +198,8 @@ it("should return IResponseErrorValidation response when pagopa proxy return 500
         right({
           status: 500,
           value: {
-            detail: "PAYMENT_ONGOING"
+            detail: "PAYMENT_ONGOING",
+            detail_v2: "PAA_PAGAMENTO_IN_CORSO"
           }
         })
       );
