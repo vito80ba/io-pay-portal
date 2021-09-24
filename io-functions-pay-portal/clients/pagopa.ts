@@ -4,7 +4,7 @@ import { fetchApi } from "./fetchApi";
 
 const config = getConfigOrThrow();
 
-const prodBaseUrl = config.IO_PAGOPA_PROXY_PROD_BASE_URL; // TODO : DID IT CONFIGURABLE !
+const prodBaseUrl = config.IO_PAGOPA_PROXY_TEST_BASE_URL; // TODO : DID IT CONFIGURABLE !
 
 export const apiClient = createClient({
   basePath: "",
