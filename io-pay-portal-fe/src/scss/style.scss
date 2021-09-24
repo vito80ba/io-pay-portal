@@ -352,15 +352,22 @@ body {
     box-shadow: $box-shadow;
     padding: 1rem;
     background-color: #fff;
+    @include media-breakpoint-up(md) {
+      position: relative;
+      padding: 0;
+      box-shadow: none;
+      margin-top: 2rem;
+    }
+
+    & > .container {
+      @include media-breakpoint-up(md) {
+        padding: 0;
+      }
+    }
 
     &__wrap {
       @include media-breakpoint-up(md) {
         margin: 0 auto;
-        @include make-col(6);
-      }
-
-      @include media-breakpoint-up(lg) {
-        @include make-col(4);
       }
     }
   }
