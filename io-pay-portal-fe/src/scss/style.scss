@@ -181,7 +181,6 @@ $text-color: #17324d;
       format("ttf");
 }
 
-
 // CUSTOM
 // ------------------
 .grecaptcha-badge {
@@ -353,15 +352,22 @@ body {
     box-shadow: $box-shadow;
     padding: 1rem;
     background-color: #fff;
+    @include media-breakpoint-up(md) {
+      position: relative;
+      padding: 0;
+      box-shadow: none;
+      margin-top: 2rem;
+    }
+
+    & > .container {
+      @include media-breakpoint-up(md) {
+        padding: 0;
+      }
+    }
 
     &__wrap {
       @include media-breakpoint-up(md) {
         margin: 0 auto;
-        @include make-col(6);
-      }
-
-      @include media-breakpoint-up(lg) {
-        @include make-col(4);
       }
     }
   }
@@ -651,7 +657,7 @@ body {
   align-items: center;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
-  background: rgba(0,0,0,.54);
+  background: rgba(0, 0, 0, 0.54);
   opacity: 0;
   user-select: none;
   cursor: pointer;
