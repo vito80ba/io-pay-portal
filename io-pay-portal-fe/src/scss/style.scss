@@ -792,6 +792,24 @@ body {
   filter: none;
 }
 
+.modal-wheredata {
+  padding-top: inherit;
+  overflow-y: hidden;
+  .facsimile {
+    height: 70vh;
+    width: auto;
+    display: block;
+    @include media-breakpoint-up(md) {
+      height: 80vh;
+    }
+  }
+  .tingle-modal-box {
+    @include media-breakpoint-up(md) {
+      width: auto;
+    }
+  }
+}
+
 // MODAL animations
 
 @keyframes scale {

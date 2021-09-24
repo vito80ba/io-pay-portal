@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const modalWindow = new Tingle.modal({
         footer: false,
         stickyFooter: false,
-        cssClass: ["xl"],
+        cssClass: ["modal-wheredata"],
         onOpen: () => {
           const modalClose = modalWindow
             .getContent()
