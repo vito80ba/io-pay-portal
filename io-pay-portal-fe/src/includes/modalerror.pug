@@ -2,11 +2,12 @@
     .d-flex
         h4.modalwindow__title Errore
         svg.icon.ml-auto.modalwindow__close.cursor-pointer
+            title Chiudi
             use(href="/assets/icons/sprite.svg#it-close")
     .modalwindow__content.mb-3
-        p 
+        p(tab-index="1") 
         .modalwindow__detail
-            div Codice di errore per l’assistenza:
+            div(tab-index="2") Codice di errore per l’assistenza:
                 br
                 b.modalwindow__code 
-            button.btn.btn-outline-primary.ml-auto(id="copy", data-code="") copia
+            button.btn.btn-outline-primary.ml-auto(id="copy", data-code="", aria-label="Copia codice di errore") copia

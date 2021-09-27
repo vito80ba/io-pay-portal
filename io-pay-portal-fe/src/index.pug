@@ -30,14 +30,14 @@ html(lang='it')
                         .firstindexform 
                             form.my-5(id="firstindexform", role="form", aria-label="Cosa devi pagare?")
                                 .form-group.my-2
-                                    input.form-control(type="text", inputmode="numeric", placeholder="", name="paymentNoticeCode",  id="paymentNoticeCode", required,  aria-label="Codice Avviso")
+                                    input.form-control(type="text", inputmode="numeric", placeholder="", name="paymentNoticeCode",  id="paymentNoticeCode", required,  aria-label="Codice Avviso, Inserisci 18 cifre", aria-invalid="false" )
                                     label(for="paymentNoticeCode") Codice Avviso
-                                    .reset-flex-flow.text-muted.mt-1.custom-label--error Inserisci 18 cifre
+                                    .reset-flex-flow.text-muted.mt-1.custom-label--error(id="paymentNoticeCodeDesc", aria-hidden="true", tabindex="-1") Inserisci 18 cifre
                                 .py-2
                                 .form-group.my-2
-                                    input.form-control(type="text", placeholder="", name="organizationId",  id="organizationId", required, aria-label="Codice Fiscale Ente Creditore")
+                                    input.form-control(type="text", placeholder="", name="organizationId",  id="organizationId", required, aria-label="Codice Fiscale Ente Creditore, Inserisci almeno 11 caratteri", aria-invalid="false")
                                     label(for="organizationId") Codice Fiscale Ente Creditore
-                                    .reset-flex-flow.text-muted.mt-1.custom-label--error Inserisci almeno 11 caratteri
+                                    .reset-flex-flow.text-muted.mt-1.custom-label--error(id="organizationIdDesc", aria-hidden="true", tabindex="-1") Inserisci almeno 11 caratteri
                                 .my-5.reset-font-size.text-muted
                                     p.mb-0 Premendo 'Continua' dichiari di aver letto e compreso l'
                                         a(href="#", id="privacy") Informativa Privacy e i Termini e condizioni d’uso del servizi.
