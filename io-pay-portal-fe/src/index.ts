@@ -1,5 +1,5 @@
 import { fromNullable } from "fp-ts/lib/Option";
-import Tingle, { modal } from "tingle.js";
+import Tingle from "tingle.js";
 import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
 import { RptId } from "../generated/RptId";
 import {
@@ -239,8 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.body.classList.remove("loading");
       if (stateCard) {
-        // eslint-disable-next-line functional/immutable-data
-        stateCard.ariaHidden = "false";
+        stateCard.setAttribute("aria-hidden", "false");
       }
       active?.focus();
     }
