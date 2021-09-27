@@ -10,6 +10,8 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json()) 
+
 app.get("/api/payportal/v1/payment-requests/:rptId", (_, res) => {
   // test scenario for an error message
   if (_.params.rptId == "00000000000000000000000000000" ) {
@@ -42,16 +44,22 @@ app.get("/api/payportal/v1/payment-requests/:rptId", (_, res) => {
 });
 
 app.post("/api/payportal/v1/payment-activations", (_, res) => {
-  res.send({
-    codiceContestoPagamento: "6f69d150541e11ebb70c7b05c53756dd",
-    ibanAccredito: "IT21Q0760101600000000546200",
-    causaleVersamento: "Retta asilo [demo]",
-    enteBeneficiario: {
-      identificativoUnivocoBeneficiario: "01199250158",
-      denominazioneBeneficiario: "Comune di Milano",
-    },
-    importoSingoloVersamento: 1100,
-  });
+
+  if (_.body.rptId == "00000000000000000000000000099" ) {
+    res.status(400).send( { detail: "PAA_PAGAMENTO_DUPLICATO" } );
+  } else {
+    res.send({
+      codiceContestoPagamento: "6f69d150541e11ebb70c7b05c53756dd",
+      ibanAccredito: "IT21Q0760101600000000546200",
+      causaleVersamento: "Retta asilo [demo]",
+      enteBeneficiario: {
+        identificativoUnivocoBeneficiario: "01199250158",
+        denominazioneBeneficiario: "Comune di Milano",
+      },
+      importoSingoloVersamento: 1100,
+    });
+  }
+
 });
 
 app.get(
