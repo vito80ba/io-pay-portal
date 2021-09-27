@@ -118,14 +118,20 @@ export const activePaymentTask = (
       errorOrResponse.fold(
         () => fromLeft("Errore attivazione pagamento"),
         (responseType) => {
+          const reason =
+            responseType.status === 200 ? "" : responseType.value?.detail;
           const EVENT_ID: string =
             responseType.status === 200
               ? PAYMENT_ACTIVATE_SUCCESS.value
               : PAYMENT_ACTIVATE_RESP_ERR.value;
-          mixpanel.track(EVENT_ID, { EVENT_ID });
+          mixpanel.track(EVENT_ID, { EVENT_ID, reason });
 
           return responseType.status !== 200
-            ? fromLeft(`Errore attivazione pagamento : ${responseType.status}`)
+            ? fromLeft(
+                fromNullable(responseType.value?.detail).getOrElse(
+                  `Errore attivazione pagamento : ${responseType.status}`
+                )
+              )
             : taskEither.of(responseType.value);
         }
       )
