@@ -280,7 +280,10 @@ document.addEventListener("DOMContentLoaded", () => {
             rptId
           )
             .fold(
-              (r) => showErrorMessage(r),
+              (r) => {
+                document.body.classList.remove("loading");
+                showErrorMessage(r);
+              },
               (_) =>
                 pollingActivationStatus(
                   paymentInfo.codiceContestoPagamento,
