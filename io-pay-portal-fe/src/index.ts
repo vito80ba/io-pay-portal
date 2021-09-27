@@ -210,6 +210,11 @@ document.addEventListener("DOMContentLoaded", () => {
         .run();
 
       document.body.classList.remove("loading");
+      if (stateCard) {
+        // eslint-disable-next-line functional/immutable-data
+        stateCard.ariaHidden = "false";
+      }
+      active?.focus();
     }
   );
 

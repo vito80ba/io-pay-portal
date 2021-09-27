@@ -23,19 +23,19 @@ html(lang='it')
                 .row.justify-content-md-center
                     div(id="error").d-none 
                     div(id="activationError").d-none 
-                    div(id="initCard").windowcont.px-4.px-md-0
+                    div(id="initCard", tabindex="0").windowcont.px-4.px-md-0
                         h1.h2 Cosa devi pagare?
                         p.reset-font-size.text-muted Inserisci i dati come riportato sull'avviso di pagamento
                         a(href="#", id="helpmodal").reset-font-size.text-decoration-none.font-weight-bold Dove trovo i dati?
                         .firstindexform 
-                            form.my-5(id="firstindexform")
+                            form.my-5(id="firstindexform", role="form", aria-label="Cosa devi pagare?")
                                 .form-group.my-2
-                                    input.form-control(type="text", inputmode="numeric", placeholder="", name="paymentNoticeCode",  id="paymentNoticeCode", required)
+                                    input.form-control(type="text", inputmode="numeric", placeholder="", name="paymentNoticeCode",  id="paymentNoticeCode", required,  aria-label="Codice Avviso")
                                     label(for="paymentNoticeCode") Codice Avviso
                                     .reset-flex-flow.text-muted.mt-1.custom-label--error Inserisci 18 cifre
                                 .py-2
                                 .form-group.my-2
-                                    input.form-control(type="text", placeholder="", name="organizationId",  id="organizationId", required)
+                                    input.form-control(type="text", placeholder="", name="organizationId",  id="organizationId", required, aria-label="Codice Fiscale Ente Creditore")
                                     label(for="organizationId") Codice Fiscale Ente Creditore
                                     .reset-flex-flow.text-muted.mt-1.custom-label--error Inserisci almeno 11 caratteri
                                 .my-5.reset-font-size.text-muted
@@ -50,7 +50,7 @@ html(lang='it')
                                     .container
                                         .windowcont__bottom__wrap.d-flex
                                             button.btn.btn-primary.btn-sm.flex-grow-1(type="submit", data-lang="cta.continue", id="verify", disabled) Continua
-                    div(id="stateCard").windowcont.px-4.px-md-0.d-none
+                    div(id="stateCard", tabindex="1", aria-hidden="true", aria-live="polite").windowcont.px-4.px-md-0.d-none
                         .h2 Avviso di pagamento
                         p.reset-font-size.text-muted pagoPA aggiorna automaticamente l’importo per assicurarti di aver pagato esattamente quanto dovuto ed evitarti così more o altri interessi.
                         .stateCard__detail.check
