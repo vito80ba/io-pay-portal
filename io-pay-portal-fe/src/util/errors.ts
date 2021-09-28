@@ -58,13 +58,15 @@ export const modalWindowError = (modalData: ErrorModal) => {
     stickyFooter: false,
     closeMethods: ["overlay", "button", "escape"],
     onOpen: () => {
-      const modalClose = modalWindow
-        .getContent()
-        .querySelector(".modalwindow__close");
+      const modalContent = modalWindow.getContent();
+      modalContent.setAttribute("tab-index", "-1");
+      modalContent.setAttribute("aria-live", "polite");
+      modalContent.focus();
+      const modalClose = modalContent.querySelector(".modalwindow__close");
       modalClose?.addEventListener("click", () => {
         modalWindow.close();
       });
-      const copyBtn = modalWindow.getContent().querySelector("#copy");
+      const copyBtn = modalContent.querySelector("#copy");
       copyBtn?.addEventListener(
         "click",
         async (evt): Promise<void> => {

@@ -83,6 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // function to check errors when user leave input
+  function checkValidityWhenLeave(inputel: HTMLInputElement): void {
+    const inputElId = inputel.id;
+    if (inputel.classList.contains("is-invalid")) {
+      const descEl = document.getElementById(inputElId + "Desc");
+      inputel.setAttribute("aria-invalid", "true");
+      descEl?.focus();
+    }
+  }
+
   paymentNoticeCodeEl?.addEventListener(
     "input",
     async (evt): Promise<void> => {
@@ -97,6 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleValid(inputel, false);
       }
       fieldsCheck();
+    }
+  );
+  paymentNoticeCodeEl?.addEventListener(
+    "focusout",
+    async (evt): Promise<void> => {
+      checkValidityWhenLeave(evt?.target as HTMLInputElement);
     }
   );
 
@@ -116,6 +132,12 @@ document.addEventListener("DOMContentLoaded", () => {
       fieldsCheck();
     }
   );
+  organizationIdEl?.addEventListener(
+    "focusout",
+    async (evt): Promise<void> => {
+      checkValidityWhenLeave(evt?.target as HTMLInputElement);
+    }
+  );
 
   helpmodal?.addEventListener(
     "click",
@@ -125,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const modalWindow = new Tingle.modal({
         footer: false,
         stickyFooter: false,
+        closeLabel: "Chiudi",
         cssClass: ["modal-wheredata"],
         onOpen: () => {
           const modalClose = modalWindow
@@ -149,10 +172,15 @@ document.addEventListener("DOMContentLoaded", () => {
         footer: true,
         stickyFooter: false,
         cssClass: ["xl"],
+        closeLabel: "Chiudi",
         onOpen: () => {
-          const modalClose = modalWindow
-            .getContent()
-            .querySelectorAll(".modalwindow__close")[0];
+          const modalContent = modalWindow.getContent();
+          modalContent.setAttribute("tab-index", "-1");
+          modalContent.setAttribute("aria-live", "polite");
+          modalContent.focus();
+          const modalClose = modalContent.querySelectorAll(
+            ".modalwindow__close"
+          )[0];
           modalClose?.addEventListener("click", () => {
             modalWindow.close();
           });
@@ -210,6 +238,10 @@ document.addEventListener("DOMContentLoaded", () => {
         .run();
 
       document.body.classList.remove("loading");
+      if (stateCard) {
+        stateCard.setAttribute("aria-hidden", "false");
+      }
+      active?.focus();
     }
   );
 
