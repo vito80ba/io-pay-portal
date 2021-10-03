@@ -16,6 +16,9 @@ import {
 } from "./util/errors";
 import { ErrorModal } from "./util/errors-def";
 
+import * as ZXingBrowser from "@zxing/browser";
+import { getRptidFromQrcode } from "./util/qrcodeDecoding";
+
 declare const grecaptcha: any;
 
 /**
@@ -23,8 +26,12 @@ declare const grecaptcha: any;
  * */
 sessionStorage.clear();
 
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+
+  
   const inputFields = document.getElementsByTagName("input") || null;
   const stateCard = document.getElementById("stateCard") || null;
   const initCard = document.getElementById("initCard") || null;
@@ -40,6 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
     (document.getElementById("helpmodal") as HTMLInputElement) || null;
   const privacybtn: HTMLAnchorElement | null =
     (document.getElementById("privacy") as HTMLAnchorElement) || null;
+  const enableqrcode : HTMLInputElement | null =
+    (document.getElementById("enableqrcode") as HTMLInputElement) || null;
+
+  document.body.classList.remove("#qrcodereader");
 
   // check if all fields are OK
   function fieldsCheck() {
@@ -292,6 +303,69 @@ document.addEventListener("DOMContentLoaded", () => {
             )
             .run()
       );
+    }
+  );
+
+  enableqrcode?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+
+      document.body.classList.add("#qrcodereader");
+
+      const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+      const videoInputDevices = await ZXingBrowser.BrowserCodeReader.listVideoInputDevices();
+
+      // choose your media device (webcam, frontal camera, back camera, etc.)
+      const selectedDeviceId = videoInputDevices[0].deviceId;
+
+      console.log(`Started decode from camera with id ${selectedDeviceId}`);
+
+      const previewElem : HTMLVideoElement | null = document.querySelector('#qrcodereader');
+
+      if (previewElem && selectedDeviceId){
+
+        // you can use the controls to stop() the scan or switchTorch() if available
+        await codeReader.decodeFromVideoDevice(selectedDeviceId, previewElem, async (qrcodeValue, _, controls) => {
+
+          if (qrcodeValue){
+
+            controls.stop();
+
+            const rptId = getRptidFromQrcode(qrcodeValue.getText());
+              
+            const token: string = await grecaptcha
+              .execute("6Ld3RKsaAAAAAAGZXFcPvzdl_lcTKKCv9SiIBtHX", {
+                action: "submit",
+              })
+              .then((token: string) => token);
+
+            error?.classList.add("d-none");
+            document.body.classList.add("loading");
+
+            const recaptchaResponse: string = token;
+
+            await getPaymentInfoTask(rptId, recaptchaResponse)
+              .fold(
+                (r) => showErrorMessage(r),
+                (paymentInfo) => {
+                  sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
+                  sessionStorage.setItem("rptId", rptId);
+                  showPaymentInfo(paymentInfo);
+                 }
+               )
+               .run();
+
+            document.body.classList.remove("loading");
+            
+            if (stateCard) {
+              stateCard.setAttribute("aria-hidden", "false");
+            }
+          
+            active?.focus();
+          }
+        });
+      }
     }
   );
 });

@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@types/mixpanel-browser": "^2.35.6",
+    "@zxing/browser": "^0.0.9",
+    "@zxing/library": "^0.18.6",
     "abort-controller": "^3.0.0",
     "jquery": "^3.5.1",
     "mixpanel-browser": "^2.41.0",
