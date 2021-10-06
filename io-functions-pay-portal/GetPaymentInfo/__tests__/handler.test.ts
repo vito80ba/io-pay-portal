@@ -74,8 +74,7 @@ it("should return a payment info KO response", async () => {
   };
 
   const handler = handlers.GetPaymentInfoHandler(
-    apiClientMock as any,
-    "recaptchaSecret"
+    apiClientMock as any
   );
 
   const response = await handler(
@@ -88,8 +87,7 @@ it("should return a payment info KO response", async () => {
         checkDigit: paymentInfo.checkDigit,
         iuv13: paymentInfo.iuv13
       }
-    } as RptIdFromString,
-    "recaptchaResponse"
+    } as RptIdFromString
   );
 
   expect(response.kind).toBe("IResponseErrorInternal");
@@ -121,8 +119,7 @@ it("should return a payment info OK response PaymentRequestsGetResponse", async 
   };
 
   const handler = handlers.GetPaymentInfoHandler(
-    apiClientMock as any,
-    "captchaSecret"
+    apiClientMock as any
   );
 
   const response = await handler(
@@ -135,8 +132,7 @@ it("should return a payment info OK response PaymentRequestsGetResponse", async 
         checkDigit: paymentInfo.checkDigit,
         iuv13: paymentInfo.iuv13
       }
-    } as RptIdFromString,
-    "captchaResponse"
+    } as RptIdFromString
   );
 
   expect(response.kind).toBe("IResponseSuccessJson");
@@ -207,8 +203,7 @@ it("should return IResponseErrorValidation response when pagopa proxy return 500
   };
 
   const handler = handlers.GetPaymentInfoHandler(
-    apiClientMock as any,
-    "recaptchaSecret"
+    apiClientMock as any
   );
 
   const response = await handler(
@@ -221,8 +216,7 @@ it("should return IResponseErrorValidation response when pagopa proxy return 500
         checkDigit: paymentInfo.checkDigit,
         iuv13: paymentInfo.iuv13
       }
-    } as RptIdFromString,
-    "recaptchaResponse"
+    } as RptIdFromString
   );
 
   expect(response.kind).toBe("IResponseErrorValidation");
@@ -248,8 +242,7 @@ it("should return IResponseErrorInternal response when pagopa proxy return 500 w
   };
 
   const handler = handlers.GetPaymentInfoHandler(
-    apiClientMock as any,
-    "recaptchaSecret"
+    apiClientMock as any
   );
 
   const response = await handler(
@@ -262,8 +255,7 @@ it("should return IResponseErrorInternal response when pagopa proxy return 500 w
         checkDigit: paymentInfo.checkDigit,
         iuv13: paymentInfo.iuv13
       }
-    } as RptIdFromString,
-    "recaptchaResponse"
+    } as RptIdFromString
   );
 
   expect(response.kind).toBe("IResponseErrorInternal");
