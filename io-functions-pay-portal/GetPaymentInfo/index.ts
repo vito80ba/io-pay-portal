@@ -11,9 +11,6 @@ import createAzureFunctionHandler from "io-functions-express/dist/src/createAzur
 import { GetPaymentInfoCtrl } from "./handler";
 
 import { apiClient } from "../clients/pagopa";
-import { getConfigOrThrow } from "../utils/config";
-
-const config = getConfigOrThrow();
 
 // tslint:disable-next-line: no-let
 let logger: Context["log"] | undefined;
@@ -27,10 +24,7 @@ const app = express();
 secureExpressApp(app);
 
 // Add express route
-app.get(
-  "/api/v1/payment-requests/:rptId",
-  GetPaymentInfoCtrl(apiClient, config.PAY_PORTAL_RECAPTCHA_SECRET)
-);
+app.get("/api/v1/payment-requests/:rptId", GetPaymentInfoCtrl(apiClient));
 
 const azureFunctionHandler = createAzureFunctionHandler(app);
 

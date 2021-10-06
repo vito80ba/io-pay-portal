@@ -8,7 +8,6 @@ import { identity } from "fp-ts/lib/function";
 import { IApiClient } from "../clients/pagopa";
 
 import { RequiredParamMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_param";
-import { RequiredQueryParamMiddleware } from "io-functions-commons/dist/src/utils/middlewares/required_query_param";
 
 import {
   withRequestMiddlewares,
@@ -22,7 +21,7 @@ import {
 import { PaymentRequestsGetResponse } from "../generated/definitions/PaymentRequestsGetResponse";
 import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
-import { ErrorResponses, ResponseErrorUnauthorized } from "../utils/responses";
+import { ErrorResponses } from "../utils/responses";
 
 import {
   fromEither,
@@ -39,8 +38,7 @@ import { toErrorPagopaProxyResponse } from "../utils/pagopaProxyUtil";
 
 type IGetPaymentInfoHandler = (
   context: Context,
-  rptId: RptIdFromString,
-  recaptchaResponse: string
+  rptId: RptIdFromString
 ) => Promise<IResponseSuccessJson<PaymentRequestsGetResponse> | ErrorResponses>;
 
 /**
@@ -132,21 +130,14 @@ export const recaptchaCheckTask = (
     );
 
 export function GetPaymentInfoHandler(
-  pagoPaClient: IApiClient,
-  recaptchaSecret: string
+  pagoPaClient: IApiClient
 ): IGetPaymentInfoHandler {
-  return (context, rptId, recaptchaResponse) =>
-    recaptchaCheckTask(recaptchaResponse, recaptchaSecret)
-      .mapLeft<ErrorResponses>(e =>
-        ResponseErrorUnauthorized("Unauthorized", e.message)
-      )
-      .chain(() =>
-        getPaymentInfoTask(
-          getLogger(context, logPrefix, "GetPaymentInfo"),
-          pagoPaClient,
-          rptId
-        )
-      )
+  return (context, rptId) =>
+    getPaymentInfoTask(
+      getLogger(context, logPrefix, "GetPaymentInfo"),
+      pagoPaClient,
+      rptId
+    )
       .fold<IResponseSuccessJson<PaymentRequestsGetResponse> | ErrorResponses>(
         identity,
         myPayment => ResponseSuccessJson(myPayment)
@@ -155,14 +146,12 @@ export function GetPaymentInfoHandler(
 }
 
 export function GetPaymentInfoCtrl(
-  pagoPaClient: IApiClient,
-  recaptchaSecret: string
+  pagoPaClient: IApiClient
 ): express.RequestHandler {
-  const handler = GetPaymentInfoHandler(pagoPaClient, recaptchaSecret);
+  const handler = GetPaymentInfoHandler(pagoPaClient);
   const middlewaresWrap = withRequestMiddlewares(
     ContextMiddleware(),
-    RequiredParamMiddleware("rptId", RptIdFromString),
-    RequiredQueryParamMiddleware("recaptchaResponse", t.string)
+    RequiredParamMiddleware("rptId", RptIdFromString)
   );
 
   return wrapRequestHandler(middlewaresWrap(handler));
