@@ -15,17 +15,36 @@ import {
   showActivationError,
 } from "./util/errors";
 import { ErrorModal } from "./util/errors-def";
+import { mixpanelInit } from "./util/mixpanelHelperInit";
 
 declare const grecaptcha: any;
+declare const OneTrust: any;
+declare const OnetrustActiveGroups: string;
+const mxPanelCookieCategory: string = "C0004";
 
 /**
  * Init
  * */
 sessionStorage.clear();
 
+// listen the OK button clicked on the cookie banner
+window.addEventListener("load", () => {
+  // test consent when is the first visit EVENT
+  OneTrust.OnConsentChanged(() => {
+    if (OnetrustActiveGroups.includes(mxPanelCookieCategory)) {
+      mixpanelInit();
+    }
+  });
+  // test consent at load
+  if (OnetrustActiveGroups.includes(mxPanelCookieCategory)) {
+    mixpanelInit();
+  }
+});
+
 // eslint-disable-next-line sonarjs/cognitive-complexity
 document.addEventListener("DOMContentLoaded", () => {
-  const inputFields = document.getElementsByTagName("input") || null;
+  const inputFields =
+    document.querySelectorAll("#firstindexform input") || null;
   const stateCard = document.getElementById("stateCard") || null;
   const initCard = document.getElementById("initCard") || null;
   const verify = document.getElementById("verify") || null;
@@ -44,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // check if all fields are OK
   function fieldsCheck() {
     const checkedFields = document.querySelectorAll("input[data-checked]");
-
     if (checkedFields?.length === inputFields?.length) {
       verify?.removeAttribute("disabled");
     } else {

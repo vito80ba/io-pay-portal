@@ -64,19 +64,20 @@ export type PAYMENT_ACTIVATION_STATUS_SUCCESS = t.TypeOf<
 
 const ENV = getConfig("IO_PAY_PORTAL_ENV");
 
-// ini MIX TODO: enable on deploy
-if (ENV === "develop") {
-  // eslint-disable-next-line no-console
-  console.log(
-    `Mixpanel events mock on console log. See IO_PAY_PORTAL_ENV=${process.env.IO_PAY_PORTAL_ENV}`
-  );
-} else {
-  init("c3db8f517102d7a7ebd670c9da3e05c4", {
-    api_host: "https://api-eu.mixpanel.com",
-    cross_site_cookie: true,
-    persistence: "localStorage",
-  });
-}
+export const mixpanelInit = function (): void {
+  if (ENV === "develop") {
+    // eslint-disable-next-line no-console
+    console.log(
+      `Mixpanel events mock on console log. See IO_PAY_PORTAL_ENV=${process.env.IO_PAY_PORTAL_ENV}`
+    );
+  } else {
+    init("c3db8f517102d7a7ebd670c9da3e05c4", {
+      api_host: "https://api-eu.mixpanel.com",
+      cross_site_cookie: true,
+      persistence: "localStorage",
+    });
+  }
+};
 
 export const mixpanel = {
   track(event_name: string, properties?: any): void {
