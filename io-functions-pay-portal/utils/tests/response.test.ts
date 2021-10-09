@@ -6,7 +6,6 @@ afterEach(() => {
 });
 
 describe("response", () => {
-
   it("should return IResponseErrorInternal with 500 status code", () => {
     const error: ErrorResponses = toErrorServerResponse({
       headers: {},
