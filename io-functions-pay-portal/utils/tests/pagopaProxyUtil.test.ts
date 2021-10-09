@@ -69,4 +69,14 @@ describe("pagopaProxyUtil", () => {
 
     expect(error429.kind).toBe("IResponseErrorTooManyRequests");
   });
+
+  it("should return IResponseErrorInternal if response status is not handle", () => {
+    const error503: ErrorResponses = toErrorPagopaProxyResponse({
+      headers: {},
+      status: 503,
+      value: {}
+    });
+
+    expect(error503.kind).toBe("IResponseErrorInternal");
+  });
 });
