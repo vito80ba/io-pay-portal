@@ -2,7 +2,7 @@ doctype html
 html(lang='it')
     - var languages = [{'label':'IT', 'full':'Italiano'},{'label':'EN', 'full':'English'}];
     head
-        title Paga un avviso – IO, l’app dei servizi pubblici
+        include includes/head.pug
         meta(robots="noindex, nofollow")
         link(href="scss/style.scss",rel="stylesheet")
         script(src="../node_modules/promise-polyfill/dist/polyfill.min.js")
@@ -11,9 +11,6 @@ html(lang='it')
         script(src="https://www.google.com/recaptcha/api.js?render=6Ld3RKsaAAAAAAGZXFcPvzdl_lcTKKCv9SiIBtHX", async, defer)
         script(src="env-config.js")
         script(src="index.ts")
-        meta(charset="utf-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
-        meta(version=version)
         include includes/favicons.pug
     body.page--index
         .main-wrapper.d-flex.flex-column
