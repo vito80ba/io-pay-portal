@@ -19,7 +19,7 @@ html(lang='it')
         .main-wrapper.d-flex.flex-column
             // HEADER
             include includes/header.pug
-            .main.flex-fill.container
+            .main.container
                 .row.justify-content-md-center
                     div(id="error").d-none 
                     div(id="activationError").d-none 
@@ -71,10 +71,6 @@ html(lang='it')
                                     .windowcont__bottom__wrap.d-flex
                                         a.btn.btn-outline-primary.btn-sm.mr-2(href="#", data-lang="cta.cancel", id="back") Indietro
                                         button.btn.btn-primary.btn-sm.flex-grow-1(type="submit", data-lang="cta.continue", id="active") Paga questo avviso
-
-                                        
-
-                                        
 
             // FOOTER
             include includes/footer.pug
