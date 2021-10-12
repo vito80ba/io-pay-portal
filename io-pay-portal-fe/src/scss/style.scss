@@ -225,11 +225,11 @@ $text-color: #17324d;
 }
 
 .main-footer {
-  margin: 3rem 0;
+  margin: 3rem 0 0 0;
   font-size: 0.875rem;
-  background-color: #f5f6f7;
   @include media-breakpoint-up(md) {
-    margin-bottom: 3rem;
+    background-color: #f5f6f7;
+    margin-top: auto;
   }
   &__list {
     margin: 0;
@@ -251,6 +251,7 @@ $text-color: #17324d;
 .main-footer-trick {
   width: 100%;
   height: 5rem;
+  padding: 1.5rem 0;
 }
 body {
   &.dropdown-opened,
@@ -315,7 +316,6 @@ body {
 
 .windowcont {
   margin-top: 3rem;
-  margin-bottom: 5rem;
 
   body.page--inputcard,
   body.page--index & {
