@@ -81,8 +81,7 @@ stages:
           displayName: 'Unit tests exec'
 
         - task: PublishCodeCoverageResults@1
-          workingDirectory: io-pay-portal-fe
           inputs:
             codeCoverageTool: 'Cobertura'
-            summaryFileLocation: 'coverage/cobertura-coverage.xml'
+            summaryFileLocation: 'io-pay-portal-fe/coverage/cobertura-coverage.xml'
           displayName: 'Publish Code Coverage'
