@@ -79,9 +79,9 @@ stages:
         - script: yarn test:coverage
           workingDirectory: io-pay-portal-fe
           displayName: 'Unit tests exec'
-
-        - task: PublishCodeCoverageResults@1
+        
+        - task: PublishTestResults@2
           inputs:
-            codeCoverageTool: 'Cobertura'
-            summaryFileLocation: 'io-pay-portal-fe/coverage/cobertura-coverage.xml'
-          displayName: 'Publish Code Coverage'
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/*-TEST.xml' 
+            searchFolder: '$(System.DefaultWorkingDirectory)'  
