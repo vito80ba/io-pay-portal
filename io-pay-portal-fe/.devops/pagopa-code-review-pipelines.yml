@@ -84,4 +84,12 @@ stages:
           inputs:
             testResultsFormat: 'JUnit'
             testResultsFiles: '**/*-TEST.xml' 
-            searchFolder: '$(System.DefaultWorkingDirectory)'  
+            searchFolder: '$(System.DefaultWorkingDirectory)'
+            failTaskOnFailedTests: true
+
+        - task: PublishCodeCoverageResults@1
+          displayName: 'Publish code coverage from Jest tests'
+          inputs:
+            codeCoverageTool: Cobertura
+            summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+            failIfCoverageEmpty: true

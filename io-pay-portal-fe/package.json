@@ -15,7 +15,7 @@
     "dev:server": "node dev-server.js",
     "dev:proxy": "node dev-proxy-server.js",
     "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html",
     "preversion": "auto-changelog  --config .auto-changelog.json --unreleased --commit-limit false --stdout --template preview.hbs",
     "version": "auto-changelog -p --config .auto-changelog.json --unreleased && git add CHANGELOG.md"
   },
