@@ -91,5 +91,5 @@ stages:
           displayName: 'Publish code coverage from Jest tests'
           inputs:
             codeCoverageTool: Cobertura
-            summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+            summaryFileLocation: 'io-pay-portal-fe/coverage/cobertura-coverage.xml'
             failIfCoverageEmpty: true
