@@ -129,14 +129,12 @@ stages:
           - download: current
             artifact: Bundle
 
-          - task: AzureFileCopy@4
-            inputs:
-              sourcePath: '$(Pipeline.Workspace)/Bundle/*'
-              azureSubscription: '${{ parameters.UAT_AZURE_SUBSCRIPTION}}'
-              destination: 'AzureBlob'
-              storage: 'pagopaucheckoutsa'
-              containerName: '$web'
-            displayName: Deploy to container blob
+          - task: AzureCLI@1
+            displayName: 'Sync Storage'
+            scriptLocation: inlineScript
+            inlineScript: |
+                call az storage blob sync --container $web --account-name pagopaucheckoutsa --source "$(Pipeline.Workspace)\Bundle\dist"
+    
 
           - task: AzureCLI@1
             displayName: 'Purge CDN'
