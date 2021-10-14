@@ -131,15 +131,17 @@ stages:
 
           - task: AzureCLI@1
             displayName: 'Sync Storage'
-            scriptLocation: inlineScript
-            inlineScript: |
+            inputs:
+              azureSubscription: '${{parameters.UAT_AZURE_SUBSCRIPTION}}'
+              scriptLocation: inlineScript
+              inlineScript: |
                 call az storage blob sync --container $web --account-name pagopaucheckoutsa --source "$(Pipeline.Workspace)\Bundle\dist"
     
 
           - task: AzureCLI@1
             displayName: 'Purge CDN'
             inputs:
-              azureSubscription: '${{ parameters.UAT_AZURE_SUBSCRIPTION}}'
+              azureSubscription: '${{parameters.UAT_AZURE_SUBSCRIPTION}}'
               scriptLocation: inlineScript
               inlineScript: |
                 call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-p-checkout-cdn-e --profile-name pagopa-u-checkout-cdn-p --content-paths "/*"
