@@ -96,7 +96,6 @@ stages:
       - Prepare_artifact
     jobs:
     - deployment: 'DeployToUAT'
-      environment: 'UAT'
       strategy:
           runOnce:
             deploy:
@@ -128,7 +127,6 @@ stages:
       - Prepare_artifact
     jobs:
     - deployment: 'DeployToPROD'
-      environment: 'PROD'
       strategy:
           runOnce:
             deploy:
