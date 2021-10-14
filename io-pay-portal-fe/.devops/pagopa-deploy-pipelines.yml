@@ -135,7 +135,7 @@ stages:
               azureSubscription: '${{parameters.UAT_AZURE_SUBSCRIPTION}}'
               scriptLocation: inlineScript
               inlineScript: |
-                call az storage blob sync --container $web --account-name pagopaucheckoutsa --source "$(Pipeline.Workspace)\Bundle\dist"
+                call az storage blob sync --container $web --account-name pagopaucheckoutsa -s "$(Pipeline.Workspace)\Bundle"
     
 
           - task: AzureCLI@1
