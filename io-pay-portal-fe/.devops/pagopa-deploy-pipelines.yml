@@ -118,8 +118,8 @@ stages:
               inlineScript: |
                 call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
 
-  # PROD approval
-  - stage: PROD_Approval
+  # PROD promotion
+  - stage: UAT_TO_PROD_PROMOTION
     dependsOn:
       - Deploy_UAT
     jobs:
