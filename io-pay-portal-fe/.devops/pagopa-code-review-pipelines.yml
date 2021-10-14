@@ -15,7 +15,6 @@ variables:
 trigger:
   branches:
     include:
-    - master
     - main
   paths:
     include:
@@ -40,10 +39,9 @@ stages:
           workingDirectory: io-pay-portal-fe
           displayName: 'Build'
   
-  - stage: Static_analysis
+  - stage: Static_Analysis
     dependsOn: []
     jobs:
-
       - job: lint     
         steps:
         - template: azure-templates/setup-project.yml
@@ -81,6 +79,7 @@ stages:
           displayName: 'Unit tests exec'
         
         - task: PublishTestResults@2
+          displayName: 'Publish test results from Jest tests'
           inputs:
             testResultsFormat: 'JUnit'
             testResultsFiles: '**/junit.xml' 
@@ -92,4 +91,3 @@ stages:
           inputs:
             codeCoverageTool: Cobertura
             summaryFileLocation: 'io-pay-portal-fe/coverage/cobertura-coverage.xml'
-            #failIfCoverageEmpty: true
