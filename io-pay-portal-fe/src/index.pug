@@ -32,7 +32,7 @@ html(lang='it')
                                     .reset-flex-flow.text-muted.mt-1.custom-label--error(id="paymentNoticeCodeDesc", aria-hidden="true", tabindex="-1") Inserisci 18 cifre
                                 .py-2
                                 .form-group.my-2
-                                    input.form-control(type="text", placeholder="", name="organizationId",  id="organizationId", required, aria-label="Codice Fiscale Ente Creditore, Inserisci almeno 11 caratteri", aria-invalid="false")
+                                    input.form-control(type="text", inputmode="numeric", placeholder="", name="organizationId",  id="organizationId", required, aria-label="Codice Fiscale Ente Creditore, Inserisci almeno 11 caratteri", aria-invalid="false")
                                     label(for="organizationId") Codice Fiscale Ente Creditore
                                     .reset-flex-flow.text-muted.mt-1.custom-label--error(id="organizationIdDesc", aria-hidden="true", tabindex="-1") Inserisci almeno 11 caratteri
                                 .my-5.text-muted
