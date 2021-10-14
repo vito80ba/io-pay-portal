@@ -90,8 +90,8 @@ stages:
           - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
             artifact: Bundle
 
-  # Deploy bundle to the UAT/PROD
-  - stage: Deploy
+  # Deploy bundle to the UAT
+  - stage: Deploy_UAT
     dependsOn:
       - Prepare_artifact
     jobs:
@@ -118,6 +118,11 @@ stages:
               inlineScript: |
                 call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
 
+  # PROD approval
+  - stage: PROD_Approval
+    dependsOn:
+      - Deploy_UAT
+    jobs:
       - job: Deploy_PROD_WaitForApproval
         displayName: Wait for PROD approval
         pool: server
@@ -126,9 +131,12 @@ stages:
         - task: ManualValidation@0
           timeoutInMinutes: 1440 # task times out in 1 day
 
+  # PROD deploy
+  - stage: Deploy_PROD
+    dependsOn:
+      - PROD_Approval
+    jobs:
       - job: 'Deploy_PROD'
-        dependsOn:   
-          - Deploy_PROD_WaitForApproval    
         steps:
           - checkout: none
 
