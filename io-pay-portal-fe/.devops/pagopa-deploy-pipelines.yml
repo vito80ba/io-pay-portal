@@ -90,64 +90,61 @@ stages:
           - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
             artifact: Bundle
 
-  # Deploy bundle to the UAT
-  - stage: 'Deploy_UAT'
+  # Deploy bundle to the UAT/PROD
+  - stage: Deploy
     dependsOn:
       - Prepare_artifact
     jobs:
-    - deployment: 'DeployToUAT'
-      strategy:
-          runOnce:
-            deploy:
-              steps:
-              - checkout: none
+      - job: 'Deploy_UAT'       
+        steps:
+          - checkout: none
 
-              - download: current
-                artifact: Bundle
+          - download: current
+            artifact: Bundle
 
-              - task: AzureCLI@1
-                displayName: 'Sync checkout storage'
-                inputs:
-                  azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
-                  scriptLocation: inlineScript
-                  inlineScript: |
-                    call az storage blob sync --container $web --account-name pagopaucheckoutsa -s "$(Pipeline.Workspace)\Bundle" --exclude-path p
+          - task: AzureCLI@1
+            displayName: 'Sync checkout storage'
+            inputs:
+              azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
+              scriptLocation: inlineScript
+              inlineScript: |
+                call az storage blob sync --container $web --account-name pagopaucheckoutsa -s "$(Pipeline.Workspace)\Bundle" --exclude-path p
 
-              - task: AzureCLI@1
-                displayName: 'Purge CDN endpoint'
-                inputs:
-                  azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
-                  scriptLocation: inlineScript
-                  inlineScript: |
-                    call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
+          - task: AzureCLI@1
+            displayName: 'Purge CDN endpoint'
+            inputs:
+              azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
+              scriptLocation: inlineScript
+              inlineScript: |
+                call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
 
-  # Deploy bundle to the PROD
-  - stage: 'Deploy_PROD'
-    dependsOn:
-      - Prepare_artifact
-    jobs:
-    - deployment: 'DeployToPROD'
-      strategy:
-          runOnce:
-            deploy:
-              steps:
-              - checkout: none
+      - job: Deploy_PROD_WaitForApproval
+        displayName: Wait for approval
+        pool: server
+        timeoutInMinutes: 4320 # job times out in 3 days
+        steps:
+        - task: ManualValidation@0
+          timeoutInMinutes: 1440 # task times out in 1 day
 
-              - download: current
-                artifact: Bundle
+      - job: 'Deploy_PROD'       
+        steps:
+          - checkout: none
 
-              - task: AzureCLI@1
-                displayName: 'Sync checkout storage'
-                inputs:
-                  azureSubscription: 'PROD-PAGOPA-SERVICE-CONN'
-                  scriptLocation: inlineScript
-                  inlineScript: |
-                    call az storage blob sync --container $web --account-name pagopapcheckoutsa -s "$(Pipeline.Workspace)\Bundle" --exclude-path p
+          - download: current
+            artifact: Bundle
 
-              - task: AzureCLI@1
-                displayName: 'Purge CDN endpoint'
-                inputs:
-                  azureSubscription: 'PROD-PAGOPA-SERVICE-CONN'
-                  scriptLocation: inlineScript
-                  inlineScript: |
-                    call az cdn endpoint purge -g pagopa-p-checkout-fe-rg -n pagopa-p-checkout-cdn-endpoint --profile-name pagopa-p-checkout-cdn-profile --content-paths "/*"
+          - task: AzureCLI@1
+            displayName: 'Sync checkout storage'
+            inputs:
+              azureSubscription: 'PROD-PAGOPA-SERVICE-CONN'
+              scriptLocation: inlineScript
+              inlineScript: |
+                call az storage blob sync --container $web --account-name pagopapcheckoutsa -s "$(Pipeline.Workspace)\Bundle" --exclude-path p
+
+          - task: AzureCLI@1
+            displayName: 'Purge CDN endpoint'
+            inputs:
+              azureSubscription: 'PROD-PAGOPA-SERVICE-CONN'
+              scriptLocation: inlineScript
+              inlineScript: |
+                call az cdn endpoint purge -g pagopa-p-checkout-fe-rg -n pagopa-p-checkout-cdn-endpoint --profile-name pagopa-p-checkout-cdn-profile --content-paths "/*"
