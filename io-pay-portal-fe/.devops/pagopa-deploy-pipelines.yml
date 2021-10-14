@@ -93,28 +93,28 @@ stages:
             
 
   # Deploy bundle to the staging container
-  - stage: Deploy_staging
-    dependsOn:
-      - Prepare_artifact
-    jobs:
-      - job: 'deploy_to_container'       
-        steps:
-          - checkout: none
+  # - stage: Deploy_staging
+  #   dependsOn:
+  #     - Prepare_artifact
+  #   jobs:
+  #     - job: 'deploy_to_container'       
+  #       steps:
+  #         - checkout: none
   
-          - download: current
-            artifact: Bundle
+  #         - download: current
+  #           artifact: Bundle
 
-          - task: AzureFileCopy@4
-            inputs:
-              sourcePath: '$(Pipeline.Workspace)/Bundle/*'
-              azureSubscription: '$(STAGING_AZURE_SUBSCRIPTION)'
-              destination: 'AzureBlob'
-              storage: '$(STORAGE_ACCOUNT_NAME)'
-              containerName: '$web'
-            displayName: Deploy to container blob
+  #         - task: AzureFileCopy@4
+  #           inputs:
+  #             sourcePath: '$(Pipeline.Workspace)/Bundle/*'
+  #             azureSubscription: '$(STAGING_AZURE_SUBSCRIPTION)'
+  #             destination: 'AzureBlob'
+  #             storage: '$(STORAGE_ACCOUNT_NAME)'
+  #             containerName: '$web'
+  #           displayName: Deploy to container blob
 
   # Deploy bundle to the production container
-  - stage: Deploy_production
+  - stage: Deploy_UAT
     dependsOn:
       - Prepare_artifact
     jobs:
@@ -128,17 +128,17 @@ stages:
           - task: AzureFileCopy@4
             inputs:
               sourcePath: '$(Pipeline.Workspace)/Bundle/*'
-              azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
+              azureSubscription: '$(UAT_AZURE_SUBSCRIPTION)'
               destination: 'AzureBlob'
-              storage: '$(STORAGE_ACCOUNT_NAME)'
+              storage: 'pagopaucheckoutsa'
               containerName: '$web'
             displayName: Deploy to container blob
 
           - task: AzureCLI@1
             displayName: 'Purge CDN'
             inputs:
-              azureSubscription: '$(PRODUCTION_AZURE_SUBSCRIPTION)'
+              azureSubscription: '$(UAT_AZURE_SUBSCRIPTION)'
               scriptLocation: inlineScript
               inlineScript: |
-                call az cdn endpoint purge -g $(RESOURCE_GROUP_AZURE) -n $(ENDPOINT_AZURE) --profile-name $(PROFILE_NAME_CDN_AZURE) --content-paths "/*"
+                call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-p-checkout-cdn-e --profile-name pagopa-u-checkout-cdn-p --content-paths "/*"
                 
