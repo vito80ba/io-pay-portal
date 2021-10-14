@@ -132,7 +132,7 @@ stages:
           - task: AzureFileCopy@4
             inputs:
               sourcePath: '$(Pipeline.Workspace)/Bundle/*'
-              azureSubscription: '$(UAT_AZURE_SUBSCRIPTION)'
+              azureSubscription: '${{ parameters.UAT_AZURE_SUBSCRIPTION}}'
               destination: 'AzureBlob'
               storage: 'pagopaucheckoutsa'
               containerName: '$web'
@@ -141,7 +141,7 @@ stages:
           - task: AzureCLI@1
             displayName: 'Purge CDN'
             inputs:
-              azureSubscription: '$(UAT_AZURE_SUBSCRIPTION)'
+              azureSubscription: '${{ parameters.UAT_AZURE_SUBSCRIPTION}}'
               scriptLocation: inlineScript
               inlineScript: |
                 call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-p-checkout-cdn-e --profile-name pagopa-u-checkout-cdn-p --content-paths "/*"
