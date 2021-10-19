@@ -20,7 +20,7 @@ import { mixpanelInit } from "./util/mixpanelHelperInit";
 declare const grecaptcha: any;
 declare const OneTrust: any;
 declare const OnetrustActiveGroups: string;
-const mxPanelCookieCategory: string = "C0002"; //C0002 performance cookies category
+const mxPanelCookieCategory: string = "C0002"; // C0002 performance cookies category
 
 /**
  * Init
