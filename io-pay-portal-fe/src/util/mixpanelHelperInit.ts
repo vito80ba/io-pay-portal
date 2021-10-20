@@ -81,7 +81,7 @@ export const mixpanelInit = function (): void {
 
 export const mixpanel = {
   track(event_name: string, properties?: any): void {
-    if (ENV === "develop") {
+    if (ENV === "develop" || track === undefined) {
       // eslint-disable-next-line no-console
       console.log(event_name, properties);
     } else {
