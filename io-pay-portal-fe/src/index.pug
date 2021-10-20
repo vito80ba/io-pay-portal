@@ -5,7 +5,7 @@ html(lang='it')
         title Paga un avviso – IO, l’app dei servizi pubblici
         meta(robots="noindex, nofollow")
         link(href="scss/style.scss",rel="stylesheet")
-        if process.env.NODE_ENV=='production'
+        if process.env.IO_PAY_PORTAL_ENV=='production'
             include includes/onetrust.html
         else 
             include includes/onetrust-dev.html
