@@ -67,9 +67,7 @@ const ENV = getConfig("IO_PAY_PORTAL_ENV");
 export const mixpanelInit = function (): void {
   if (ENV === "develop") {
     // eslint-disable-next-line no-console
-    console.log(
-      `Mixpanel events mock on console log. See IO_PAY_PORTAL_ENV=${process.env.IO_PAY_PORTAL_ENV}`
-    );
+    console.log("Mixpanel events mock on console log.");
   } else {
     init("c3db8f517102d7a7ebd670c9da3e05c4", {
       api_host: "https://api-eu.mixpanel.com",
@@ -81,11 +79,16 @@ export const mixpanelInit = function (): void {
 
 export const mixpanel = {
   track(event_name: string, properties?: any): void {
-    if (ENV === "develop" || track === undefined) {
+    if (ENV === "develop") {
       // eslint-disable-next-line no-console
       console.log(event_name, properties);
     } else {
-      track(event_name, properties);
+      try {
+        track(event_name, properties);
+      } catch (_) {
+        // eslint-disable-next-line no-console
+        console.log("mixpanel disabled");
+      }
     }
   },
 };
