@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
       evt.preventDefault();
 
       const token: string = await grecaptcha
-        .execute("6Ld3RKsaAAAAAAGZXFcPvzdl_lcTKKCv9SiIBtHX", {
+        .execute(getConfig("IO_PAY_PORTAL_SITE_KEY"), {
           action: "submit",
         })
         .then((token: string) => token);
