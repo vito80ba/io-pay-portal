@@ -95,7 +95,7 @@ stages:
   # Deploy bundle to the UAT
   - stage: Deploy_UAT
     dependsOn:
-      - Prepare_artifact
+      - Prepare_artifact_UAT
     jobs:
       - job: 'Deploy_UAT'       
         steps:
