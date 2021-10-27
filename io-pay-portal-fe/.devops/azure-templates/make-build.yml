@@ -3,6 +3,7 @@ parameters:
 
   - name: 'site_key'
     type: string
+    default: ''
 
 steps:
 - bash: |
