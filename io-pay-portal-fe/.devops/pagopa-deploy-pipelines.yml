@@ -4,6 +4,14 @@ variables:
   NODE_VERSION: '12.19.1'
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/io-pay-portal-fe/.yarn
 
+resources:
+  repositories:
+    - repository: e2e_test
+      type: github
+      name: pagopa/pagopa-checkout-tests
+      ref: main
+      endpoint: 'io-azure-devops-github-ro'
+
 parameters:
   - name: 'RELEASE_SEMVER'
     displayName: 'When packing a release, define the version bump to apply'
@@ -128,7 +136,7 @@ stages:
     jobs:
       - job: e2e_tests
         steps:
-          - checkout: https://github.com/pagopa/pagopa-checkout-tests.git
+          - checkout: e2e_test
             displayName: 'Checkout tests'
           - script: |
              docker build -t e2e_test pagopa-checkout-tests/e2e-tests
