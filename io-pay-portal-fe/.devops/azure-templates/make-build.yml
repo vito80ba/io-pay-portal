@@ -5,6 +5,9 @@ parameters:
     type: string
     default: ''
 
+  - name: 'api_host'
+    type: string
+    default: ''
 steps:
 - bash: |
     echo 'IO_PAY_PORTAL_API_HOST: $IO_PAY_PORTAL_API_HOST'
@@ -17,7 +20,7 @@ steps:
     yarn build
   workingDirectory: io-pay-portal-fe
   env:
-    IO_PAY_PORTAL_API_HOST: $(IO_PAY_PORTAL_API_HOST)
+    IO_PAY_PORTAL_API_HOST: ${{ parameters.api_host }}
     IO_PAY_PORTAL_API_REQUEST_TIMEOUT: $(IO_PAY_PORTAL_API_REQUEST_TIMEOUT)
     IO_PAY_PORTAL_PAY_WL_POLLING_INTERVAL: $(IO_PAY_PORTAL_PAY_WL_POLLING_INTERVAL)
     IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS: $(IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS)
