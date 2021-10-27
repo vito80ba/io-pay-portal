@@ -41,17 +41,17 @@ stages:
   # - is on branch master 
   # - is a tag in the form v{version}-RELEASE
   - stage: Release
-    # condition:
-    #   and(
-    #     succeeded(),
-    #     or(
-    #       eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-    #       and(
-    #         startsWith(variables['Build.SourceBranch'], 'refs/tags'),
-    #         endsWith(variables['Build.SourceBranch'], '-RELEASE')
-    #       )
-    #     )
-    #   )
+    condition:
+      and(
+        succeeded(),
+        or(
+          eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+          and(
+            startsWith(variables['Build.SourceBranch'], 'refs/tags'),
+            endsWith(variables['Build.SourceBranch'], '-RELEASE')
+          )
+        )
+      )
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
@@ -101,36 +101,36 @@ stages:
             artifact: BundleUAT
 
   # Deploy bundle to the UAT
-  # - stage: Deploy_UAT
-  #   dependsOn:
-  #     - Prepare_artifact_UAT
-  #   jobs:
-  #     - job: 'Deploy_UAT'       
-  #       steps:
-  #         - checkout: none
+  - stage: Deploy_UAT
+    dependsOn:
+      - Prepare_artifact_UAT
+    jobs:
+      - job: 'Deploy_UAT'       
+        steps:
+          - checkout: none
 
-  #         - download: current
-  #           artifact: BundleUAT
+          - download: current
+            artifact: BundleUAT
 
-  #         - task: AzureCLI@1
-  #           displayName: 'Sync checkout storage'
-  #           inputs:
-  #             azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
-  #             scriptLocation: inlineScript
-  #             inlineScript: |
-  #               call az storage blob sync --container $web --account-name pagopaucheckoutsa -s "$(Pipeline.Workspace)\BundleUAT" --exclude-path p
+          - task: AzureCLI@1
+            displayName: 'Sync checkout storage'
+            inputs:
+              azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
+              scriptLocation: inlineScript
+              inlineScript: |
+                call az storage blob sync --container $web --account-name pagopaucheckoutsa -s "$(Pipeline.Workspace)\BundleUAT" --exclude-path p
 
-  #         - task: AzureCLI@1
-  #           displayName: 'Purge CDN endpoint'
-  #           inputs:
-  #             azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
-  #             scriptLocation: inlineScript
-  #             inlineScript: |
-  #               call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
+          - task: AzureCLI@1
+            displayName: 'Purge CDN endpoint'
+            inputs:
+              azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
+              scriptLocation: inlineScript
+              inlineScript: |
+                call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
 
   - stage: E2E_Tests
-    # dependsOn:
-    #   - Deploy_UAT
+    dependsOn:
+      - Deploy_UAT
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
