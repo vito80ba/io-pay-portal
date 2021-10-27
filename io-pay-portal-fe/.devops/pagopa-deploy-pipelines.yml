@@ -131,7 +131,9 @@ stages:
         timeoutInMinutes: 4320 # job times out in 3 days
         steps:
         - task: ManualValidation@0
-          timeoutInMinutes: 1440 # task times out in 1 day
+          timeoutInMinutes: 4320 # job times out in 3 days
+          inputs:
+            onTimeout: 'skip'
 
 # Prepare Artifact PROD with application bundle
   - stage: Prepare_artifact_PROD
