@@ -71,8 +71,8 @@ export const mixpanelInit = function (): void {
   } else {
     init("c3db8f517102d7a7ebd670c9da3e05c4", {
       api_host: "https://api-eu.mixpanel.com",
-      cross_site_cookie: true,
       persistence: "localStorage",
+      ip: false,
     });
   }
 };
