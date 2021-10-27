@@ -26,20 +26,8 @@ const mxPanelCookieCategory: string = "C0002"; // C0002 performance cookies cate
  * Init
  * */
 sessionStorage.clear();
+mixpanelInit();
 
-// listen the OK button clicked on the cookie banner
-window.addEventListener("load", () => {
-  // test consent when is the first visit EVENT
-  OneTrust.OnConsentChanged(() => {
-    if (OnetrustActiveGroups.includes(mxPanelCookieCategory)) {
-      mixpanelInit();
-    }
-  });
-  // test consent at load
-  if (OnetrustActiveGroups.includes(mxPanelCookieCategory)) {
-    mixpanelInit();
-  }
-});
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 document.addEventListener("DOMContentLoaded", () => {
