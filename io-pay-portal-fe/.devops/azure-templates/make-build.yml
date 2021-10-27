@@ -1,5 +1,9 @@
 # Azure DevOps pipeline template used to build bundle.
-  
+parameters:
+
+  - name: 'site_key'
+    type: string
+
 steps:
 - bash: |
     echo 'IO_PAY_PORTAL_API_HOST: $IO_PAY_PORTAL_API_HOST'
@@ -17,6 +21,6 @@ steps:
     IO_PAY_PORTAL_PAY_WL_POLLING_INTERVAL: $(IO_PAY_PORTAL_PAY_WL_POLLING_INTERVAL)
     IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS: $(IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS)
     IO_PAY_PORTAL_ENV: $(IO_PAY_PORTAL_ENV)
-    IO_PAY_PORTAL_SITE_KEY: $(IO_PAY_PORTAL_SITE_KEY)
+    IO_PAY_PORTAL_SITE_KEY: ${{ parameters.site_key }}
   displayName: 'Build files'
   

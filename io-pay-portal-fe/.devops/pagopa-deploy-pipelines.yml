@@ -85,9 +85,9 @@ stages:
               #  ex: Build.SourceBranch=refs/tags/v1.2.3-RELEASE --> v1.2.3-RELEASE
               gitReference: ${{ replace(replace(variables['Build.SourceBranch'], 'refs/tags/', ''), 'refs/heads/', '') }}
           
-          - env:
-              IO_PAY_PORTAL_SITE_KEY: $(CHECKOUT_CAPTCHA_ID_UAT)
-            template: azure-templates/make-build.yml
+          - template: azure-templates/make-build.yml
+            parameters:
+              site_key: $(CHECKOUT_CAPTCHA_ID_UAT)
 
           - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
             artifact: BundleUAT
@@ -152,9 +152,9 @@ stages:
               #  ex: Build.SourceBranch=refs/tags/v1.2.3-RELEASE --> v1.2.3-RELEASE
               gitReference: ${{ replace(replace(variables['Build.SourceBranch'], 'refs/tags/', ''), 'refs/heads/', '') }}
           
-          - env:
-              IO_PAY_PORTAL_SITE_KEY: $(CHECKOUT_CAPTCHA_ID_PROD)
-            template: azure-templates/make-build.yml
+          - template: azure-templates/make-build.yml
+            parameters:
+              site_key: $(CHECKOUT_CAPTCHA_ID_PROD)
 
           - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
             artifact: BundlePROD
