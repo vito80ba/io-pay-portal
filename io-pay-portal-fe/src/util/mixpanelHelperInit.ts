@@ -1,5 +1,5 @@
 import * as t from "io-ts";
-import { init, track } from "mixpanel-browser";
+import { init, track, Mixpanel } from "mixpanel-browser";
 import { getConfig } from "./config";
 export const PAYMENT_VERIFY_INIT = t.literal("PAYMENT_VERIFY_INIT");
 export type PAYMENT_VERIFY_INIT = t.TypeOf<typeof PAYMENT_VERIFY_INIT>;
@@ -73,6 +73,10 @@ export const mixpanelInit = function (): void {
       api_host: "https://api-eu.mixpanel.com",
       persistence: "localStorage",
       ip: false,
+      loaded(mixpanel: Mixpanel) {
+        // this is useful to obtain a new distinct_id every session
+        mixpanel.reset();
+      }
     });
   }
 };
