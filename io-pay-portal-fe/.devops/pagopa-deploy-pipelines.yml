@@ -139,10 +139,7 @@ stages:
           - checkout: e2e_test
             displayName: 'Checkout tests'
           - script: |
-             ls && pwd
-            displayName: 'Build test image'
-          - script: |
-             docker build -t e2e_test pagopa-checkout-tests/e2e-tests
+             docker build -t e2e_test e2e-tests
             displayName: 'Build test image'
           - script: |
               docker run --name=e2e_test e2e_test
