@@ -20,14 +20,12 @@ import { mixpanelInit } from "./util/mixpanelHelperInit";
 declare const grecaptcha: any;
 declare const OneTrust: any;
 declare const OnetrustActiveGroups: string;
-const mxPanelCookieCategory: string = "C0002"; // C0002 performance cookies category
 
 /**
  * Init
  * */
 sessionStorage.clear();
 mixpanelInit();
-
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 document.addEventListener("DOMContentLoaded", () => {

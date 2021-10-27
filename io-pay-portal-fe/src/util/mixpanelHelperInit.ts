@@ -76,7 +76,7 @@ export const mixpanelInit = function (): void {
       loaded(mixpanel: Mixpanel) {
         // this is useful to obtain a new distinct_id every session
         mixpanel.reset();
-      }
+      },
     });
   }
 };
