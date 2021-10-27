@@ -129,7 +129,7 @@ stages:
       - job: e2e_tests
         steps:
           - script: |
-              git checkout https://github.com/pagopa/pagopa-checkout-tests.git
+              git clone https://github.com/pagopa/pagopa-checkout-tests.git
           - script: |
              docker build -t e2e_test pagopa-checkout-tests/e2e-tests
             displayName: 'Build test image'
