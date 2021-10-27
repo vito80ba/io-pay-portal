@@ -33,17 +33,17 @@ stages:
   # - is on branch master 
   # - is a tag in the form v{version}-RELEASE
   - stage: Release
-    condition:
-      and(
-        succeeded(),
-        or(
-          eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-          and(
-            startsWith(variables['Build.SourceBranch'], 'refs/tags'),
-            endsWith(variables['Build.SourceBranch'], '-RELEASE')
-          )
-        )
-      )
+    # condition:
+    #   and(
+    #     succeeded(),
+    #     or(
+    #       eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+    #       and(
+    #         startsWith(variables['Build.SourceBranch'], 'refs/tags'),
+    #         endsWith(variables['Build.SourceBranch'], '-RELEASE')
+    #       )
+    #     )
+    #   )
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
@@ -68,8 +68,8 @@ stages:
             displayName: 'Skip release bundle'
 
 
-  # Prepare Artifact with application bundle
-  - stage: Prepare_artifact
+  # Prepare Artifact UAT with application bundle
+  - stage: Prepare_artifact_UAT
     dependsOn:
       - Release
     jobs:
@@ -85,10 +85,12 @@ stages:
               #  ex: Build.SourceBranch=refs/tags/v1.2.3-RELEASE --> v1.2.3-RELEASE
               gitReference: ${{ replace(replace(variables['Build.SourceBranch'], 'refs/tags/', ''), 'refs/heads/', '') }}
           
-          - template: azure-templates/make-build.yml
+          - env:
+              IO_PAY_PORTAL_SITE_KEY: $(CHECKOUT_CAPTCHA_ID_UAT)
+            template: azure-templates/make-build.yml
 
           - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
-            artifact: Bundle
+            artifact: BundleUAT
 
   # Deploy bundle to the UAT
   - stage: Deploy_UAT
@@ -100,7 +102,7 @@ stages:
           - checkout: none
 
           - download: current
-            artifact: Bundle
+            artifact: BundleUAT
 
           - task: AzureCLI@1
             displayName: 'Sync checkout storage'
@@ -131,17 +133,41 @@ stages:
         - task: ManualValidation@0
           timeoutInMinutes: 1440 # task times out in 1 day
 
+# Prepare Artifact PROD with application bundle
+  - stage: Prepare_artifact_PROD
+    dependsOn:
+      - UAT_TO_PROD_PROMOTION
+    jobs:
+      - job: 'make_build'
+        steps:
+          # Build application
+          - template: azure-templates/setup-project.yml
+            parameters:
+              # On the assumption that this stage is executed only when Relase stage is,
+              #  with this parameter we set the reference the deploy script must pull changes from.
+              # The branch/tag name is calculated from the source branch
+              #  ex: Build.SourceBranch=refs/heads/master --> master
+              #  ex: Build.SourceBranch=refs/tags/v1.2.3-RELEASE --> v1.2.3-RELEASE
+              gitReference: ${{ replace(replace(variables['Build.SourceBranch'], 'refs/tags/', ''), 'refs/heads/', '') }}
+          
+          - env:
+              IO_PAY_PORTAL_SITE_KEY: $(CHECKOUT_CAPTCHA_ID_PROD)
+            template: azure-templates/make-build.yml
+
+          - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
+            artifact: BundlePROD
+
   # PROD deploy
   - stage: Deploy_PROD
     dependsOn:
-      - UAT_TO_PROD_PROMOTION
+      - Prepare_artifact_PROD
     jobs:
       - job: 'Deploy_PROD'
         steps:
           - checkout: none
 
           - download: current
-            artifact: Bundle
+            artifact: BundlePROD
 
           - task: AzureCLI@1
             displayName: 'Sync checkout storage'
