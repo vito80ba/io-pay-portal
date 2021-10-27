@@ -93,43 +93,43 @@ stages:
             artifact: BundleUAT
 
   # Deploy bundle to the UAT
-  - stage: Deploy_UAT
-    dependsOn:
-      - Prepare_artifact_UAT
-    jobs:
-      - job: 'Deploy_UAT'       
-        steps:
-          - checkout: none
+  # - stage: Deploy_UAT
+  #   dependsOn:
+  #     - Prepare_artifact_UAT
+  #   jobs:
+  #     - job: 'Deploy_UAT'       
+  #       steps:
+  #         - checkout: none
 
-          - download: current
-            artifact: BundleUAT
+  #         - download: current
+  #           artifact: BundleUAT
 
-          - task: AzureCLI@1
-            displayName: 'Sync checkout storage'
-            inputs:
-              azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
-              scriptLocation: inlineScript
-              inlineScript: |
-                call az storage blob sync --container $web --account-name pagopaucheckoutsa -s "$(Pipeline.Workspace)\BundleUAT" --exclude-path p
+  #         - task: AzureCLI@1
+  #           displayName: 'Sync checkout storage'
+  #           inputs:
+  #             azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
+  #             scriptLocation: inlineScript
+  #             inlineScript: |
+  #               call az storage blob sync --container $web --account-name pagopaucheckoutsa -s "$(Pipeline.Workspace)\BundleUAT" --exclude-path p
 
-          - task: AzureCLI@1
-            displayName: 'Purge CDN endpoint'
-            inputs:
-              azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
-              scriptLocation: inlineScript
-              inlineScript: |
-                call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
+  #         - task: AzureCLI@1
+  #           displayName: 'Purge CDN endpoint'
+  #           inputs:
+  #             azureSubscription: 'UAT-PAGOPA-SERVICE-CONN'
+  #             scriptLocation: inlineScript
+  #             inlineScript: |
+  #               call az cdn endpoint purge -g pagopa-u-checkout-fe-rg -n pagopa-u-checkout-cdn-endpoint --profile-name pagopa-u-checkout-cdn-profile --content-paths "/*"
 
   - stage: E2E_Tests
-    dependsOn:
-      - Deploy_UAT
+    # dependsOn:
+    #   - Deploy_UAT
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
       - job: e2e_tests
         steps:
-          - script: |
-              git clone https://github.com/pagopa/pagopa-checkout-tests.git
+          - checkout: https://github.com/pagopa/pagopa-checkout-tests.git
+            displayName: 'Checkout tests'
           - script: |
              docker build -t e2e_test pagopa-checkout-tests/e2e-tests
             displayName: 'Build test image'
