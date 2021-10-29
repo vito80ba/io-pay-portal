@@ -57,10 +57,6 @@ steps:
       git checkout ${{ parameters.release_branch }}
     displayName: 'Checkout release branch'
 
-  # Go to project folder (in case of multiple project under the same repo)
-  # - script: |
-  #     cd ${{ parameters.project_folder }}
-  #   displayName: "Go to project folder"
         
   # setup Node runtime
   - task: UseNode@1
@@ -81,11 +77,10 @@ steps:
     
   # bump version
   - script: |
-      npm --prefix ${{ parameters.project_folder }} version ${{ parameters.semver }} -m "Bump version to %s [skip ci]"
+      npm --prefix ${{ parameters.project_folder }} version ${{ parameters.semver }} --git-tag-version -m "Bump version to %s [skip ci]"
       NEXT_VERSION=$(node -p "require('./${{ parameters.project_folder }}/package.json').version")
       RELEASE_TAG="fe/v$NEXT_VERSION-RELEASE"
       git add ${{ parameters.project_folder }}/package.json
-      git commit -m "Update app version"
       git tag $RELEASE_TAG
     displayName: 'Version bump and tag'
   - script: |
