@@ -238,8 +238,7 @@ export const PaymentResponses: Record<string, PaymentFaultErrorMessage> = {
   },
   PAA_PAGAMENTO_DUPLICATO: {
     title: "Questo avviso è stato già pagato!",
-    body:
-      "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento.",
+    body: "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento.",
     category: PaymentFaultCategory.CUSTOM,
   },
   PAA_PAGAMENTO_IN_CORSO: {
