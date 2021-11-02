@@ -8,7 +8,7 @@
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx",
     "lint-autofix": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "prebuild": "npm-run-all generate type-check",
-    "build": "parcel build src/index.ts src/index.pug --public-url / ",
+    "build": "parcel build src/index.ts src/index.pug --no-minify --public-url / ",
     "dev": "npm-run-all generate type-check dev:env dev:server",
     "proxy": "npm-run-all generate type-check dev:env dev:proxy",
     "dev:env": "export $(grep -v '^#' .env.io-pay-portal.development | xargs) && chmod +x env.sh && source env.sh",
