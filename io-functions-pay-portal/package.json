@@ -63,12 +63,15 @@
     "io-ts": "1.8.5",
     "italia-pagopa-commons": "^1.0.0",
     "italia-ts-commons": "^8.5.0",
+    "merge": "^2.1.1",
     "winston": "^3.2.1"
   },
   "resolutions": {
     "handlebars": "^4.7.7",
     "underscore": "^1.12.1",
     "set-value": "^4.0.1",
+    "glob-parent": "^5.1.2",
+    "trim": "^0.0.3",
     "fp-ts": "1.17.4"
   }
 }
