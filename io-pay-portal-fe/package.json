@@ -68,7 +68,8 @@
     "handlebars": "^4.7.7",
     "node-forge": "^0.10.0",
     "underscore": "^1.12.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "set-value": "^4.0.1"
   },
   "jest": {
     "testEnvironment": "node",
