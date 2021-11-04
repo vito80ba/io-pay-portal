@@ -97,19 +97,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  paymentNoticeCodeEl?.addEventListener("input", async (evt): Promise<void> => {
-    const inputel = evt?.target as HTMLInputElement;
-    // eslint-disable-next-line functional/immutable-data
-    inputel.value = inputel.value.replace(/\s/g, "");
-    // only 18 numbers
-    const regexTest = new RegExp(/^[0-9]{18}$/);
-    if (regexTest.test(inputel.value) === true) {
-      toggleValid(inputel, true);
-    } else {
-      toggleValid(inputel, false);
+  paymentNoticeCodeEl?.addEventListener(
+    "input",
+    async (evt): Promise<void> => {
+      const inputel = evt?.target as HTMLInputElement;
+      // eslint-disable-next-line functional/immutable-data
+      inputel.value = inputel.value.replace(/\s/g, "");
+      // only 18 numbers
+      const regexTest = new RegExp(/^[0-9]{18}$/);
+      if (regexTest.test(inputel.value) === true) {
+        toggleValid(inputel, true);
+      } else {
+        toggleValid(inputel, false);
+      }
+      fieldsCheck();
     }
-    fieldsCheck();
-  });
+  );
   paymentNoticeCodeEl?.addEventListener(
     "focusout",
     async (evt): Promise<void> => {
@@ -117,161 +120,182 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
-  organizationIdEl?.addEventListener("input", async (evt): Promise<void> => {
-    const inputel = evt?.target as HTMLInputElement;
-    // eslint-disable-next-line functional/immutable-data
-    inputel.value = inputel.value.replace(/\s/g, "");
-    // only chars& numbers, min 11 max 16
-    const regexTest = new RegExp(/^[a-zA-Z0-9]{11,16}$/);
-    if (regexTest.test(inputel.value) === true) {
-      toggleValid(inputel, true);
-    } else {
-      toggleValid(inputel, false);
-    }
-    fieldsCheck();
-  });
-  organizationIdEl?.addEventListener("focusout", async (evt): Promise<void> => {
-    checkValidityWhenLeave(evt?.target as HTMLInputElement);
-  });
-
-  helpmodal?.addEventListener("click", async (evt): Promise<void> => {
-    evt.preventDefault();
-    const modalTarget = document.getElementById("modal-wheredata") || null;
-    const modalWindow = new Tingle.modal({
-      footer: false,
-      stickyFooter: false,
-      closeLabel: "Chiudi",
-      cssClass: ["modal-wheredata"],
-      onOpen: () => {
-        const modalClose = modalWindow
-          .getContent()
-          .querySelector(".modalwindow__close");
-        modalClose?.addEventListener("click", () => {
-          modalWindow.close();
-        });
-      },
-    });
-    modalWindow.setContent(modalTarget?.innerHTML || " ");
-    modalWindow.open();
-  });
-
-  privacybtn?.addEventListener("click", async (evt): Promise<void> => {
-    evt.preventDefault();
-    const modalTarget = document.getElementById("modal-privacy") || null;
-    const modalWindow = new Tingle.modal({
-      footer: true,
-      stickyFooter: false,
-      cssClass: ["xl"],
-      closeLabel: "Chiudi",
-      onOpen: () => {
-        const modalContent = modalWindow.getContent();
-        modalContent.setAttribute("tab-index", "-1");
-        modalContent.setAttribute("aria-live", "polite");
-        modalContent.focus();
-        const modalClose = modalContent.querySelectorAll(
-          ".modalwindow__close"
-        )[0];
-        modalClose?.addEventListener("click", () => {
-          modalWindow.close();
-        });
-      },
-    });
-    modalWindow.setContent(modalTarget?.innerHTML || " ");
-    modalWindow.addFooterBtn(
-      "Chiudi",
-      "btn btn-outline-primary w-100",
-      function () {
-        modalWindow.close();
+  organizationIdEl?.addEventListener(
+    "input",
+    async (evt): Promise<void> => {
+      const inputel = evt?.target as HTMLInputElement;
+      // eslint-disable-next-line functional/immutable-data
+      inputel.value = inputel.value.replace(/\s/g, "");
+      // only chars& numbers, min 11 max 16
+      const regexTest = new RegExp(/^[a-zA-Z0-9]{11,16}$/);
+      if (regexTest.test(inputel.value) === true) {
+        toggleValid(inputel, true);
+      } else {
+        toggleValid(inputel, false);
       }
-    );
-    modalWindow.open();
-  });
+      fieldsCheck();
+    }
+  );
+  organizationIdEl?.addEventListener(
+    "focusout",
+    async (evt): Promise<void> => {
+      checkValidityWhenLeave(evt?.target as HTMLInputElement);
+    }
+  );
+
+  helpmodal?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+      const modalTarget = document.getElementById("modal-wheredata") || null;
+      const modalWindow = new Tingle.modal({
+        footer: false,
+        stickyFooter: false,
+        closeLabel: "Chiudi",
+        cssClass: ["modal-wheredata"],
+        onOpen: () => {
+          const modalClose = modalWindow
+            .getContent()
+            .querySelector(".modalwindow__close");
+          modalClose?.addEventListener("click", () => {
+            modalWindow.close();
+          });
+        },
+      });
+      modalWindow.setContent(modalTarget?.innerHTML || " ");
+      modalWindow.open();
+    }
+  );
+
+  privacybtn?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+      const modalTarget = document.getElementById("modal-privacy") || null;
+      const modalWindow = new Tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        cssClass: ["xl"],
+        closeLabel: "Chiudi",
+        onOpen: () => {
+          const modalContent = modalWindow.getContent();
+          modalContent.setAttribute("tab-index", "-1");
+          modalContent.setAttribute("aria-live", "polite");
+          modalContent.focus();
+          const modalClose = modalContent.querySelectorAll(
+            ".modalwindow__close"
+          )[0];
+          modalClose?.addEventListener("click", () => {
+            modalWindow.close();
+          });
+        },
+      });
+      modalWindow.setContent(modalTarget?.innerHTML || " ");
+      modalWindow.addFooterBtn(
+        "Chiudi",
+        "btn btn-outline-primary w-100",
+        function () {
+          modalWindow.close();
+        }
+      );
+      modalWindow.open();
+    }
+  );
 
   /**
    * Verify and show payment info
    * */
-  verify?.addEventListener("click", async (evt): Promise<void> => {
-    evt.preventDefault();
+  verify?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
 
-    const token: string = await grecaptcha
-      .execute(getConfig("IO_PAY_PORTAL_SITE_KEY"), {
-        action: "submit",
-      })
-      .then((token: string) => token);
+      const token: string = await grecaptcha
+        .execute(getConfig("IO_PAY_PORTAL_SITE_KEY"), {
+          action: "submit",
+        })
+        .then((token: string) => token);
 
-    error?.classList.add("d-none");
-    document.body.classList.add("loading");
+      error?.classList.add("d-none");
+      document.body.classList.add("loading");
 
-    const paymentNoticeCode: string = fromNullable(
-      paymentNoticeCodeEl?.value
-    ).getOrElse("");
-    const organizationId: string = fromNullable(
-      organizationIdEl?.value
-    ).getOrElse("");
+      const paymentNoticeCode: string = fromNullable(
+        paymentNoticeCodeEl?.value
+      ).getOrElse("");
+      const organizationId: string = fromNullable(
+        organizationIdEl?.value
+      ).getOrElse("");
 
-    const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
+      const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
 
-    const recaptchaResponse: string = token;
+      const recaptchaResponse: string = token;
 
-    await getPaymentInfoTask(rptId, recaptchaResponse)
-      .fold(
-        (r) => showErrorMessage(r),
-        (paymentInfo) => {
-          sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
-          sessionStorage.setItem("rptId", rptId);
-          showPaymentInfo(paymentInfo);
-        }
-      )
-      .run();
+      await getPaymentInfoTask(rptId, recaptchaResponse)
+        .fold(
+          (r) => showErrorMessage(r),
+          (paymentInfo) => {
+            sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
+            sessionStorage.setItem("rptId", rptId);
+            showPaymentInfo(paymentInfo);
+          }
+        )
+        .run();
 
-    document.body.classList.remove("loading");
-    if (stateCard) {
-      stateCard.setAttribute("aria-hidden", "false");
+      document.body.classList.remove("loading");
+      if (stateCard) {
+        stateCard.setAttribute("aria-hidden", "false");
+      }
+      active?.focus();
     }
-    active?.focus();
-  });
+  );
 
-  back?.addEventListener("click", async (evt): Promise<void> => {
-    evt.preventDefault();
-    stateCard?.classList.add("d-none");
-    initCard?.classList.remove("d-none");
-  });
+  back?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+      stateCard?.classList.add("d-none");
+      initCard?.classList.remove("d-none");
+    }
+  );
 
   /**
    * Active Payment
    * */
-  active?.addEventListener("click", async (evt): Promise<void> => {
-    evt.preventDefault();
-    document.body.classList.add("loading");
+  active?.addEventListener(
+    "click",
+    async (evt): Promise<void> => {
+      evt.preventDefault();
+      document.body.classList.add("loading");
 
-    const paymentInfo: string = fromNullable(
-      sessionStorage.getItem("paymentInfo")
-    ).getOrElse("");
+      const paymentInfo: string = fromNullable(
+        sessionStorage.getItem("paymentInfo")
+      ).getOrElse("");
 
-    const rptId: RptId = fromNullable(
-      sessionStorage.getItem("rptId")
-    ).getOrElse("");
+      const rptId: RptId = fromNullable(
+        sessionStorage.getItem("rptId")
+      ).getOrElse("");
 
-    PaymentRequestsGetResponse.decode(JSON.parse(paymentInfo)).fold(
-      () => showActivationError(),
-      async (paymentInfo) =>
-        await activePaymentTask(
-          paymentInfo.importoSingoloVersamento,
-          paymentInfo.codiceContestoPagamento,
-          rptId
-        )
-          .fold(
-            (r) => {
-              document.body.classList.remove("loading");
-              showErrorMessage(r);
-            },
-            (_) =>
-              pollingActivationStatus(
-                paymentInfo.codiceContestoPagamento,
-                getConfig("IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS") as number
-              )
+      PaymentRequestsGetResponse.decode(JSON.parse(paymentInfo)).fold(
+        () => showActivationError(),
+        async (paymentInfo) =>
+          await activePaymentTask(
+            paymentInfo.importoSingoloVersamento,
+            paymentInfo.codiceContestoPagamento,
+            rptId
           )
-          .run()
-    );
-  });
+            .fold(
+              (r) => {
+                document.body.classList.remove("loading");
+                showErrorMessage(r);
+              },
+              (_) =>
+                pollingActivationStatus(
+                  paymentInfo.codiceContestoPagamento,
+                  getConfig("IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS") as number
+                )
+            )
+            .run()
+      );
+    }
+  );
 });

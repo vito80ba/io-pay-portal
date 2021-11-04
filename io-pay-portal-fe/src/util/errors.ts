@@ -67,22 +67,27 @@ export const modalWindowError = (modalData: ErrorModal) => {
         modalWindow.close();
       });
       const copyBtn = modalContent.querySelector("#copy");
-      copyBtn?.addEventListener("click", async (evt): Promise<void> => {
-        const code =
-          (evt.target as HTMLElement).getAttribute("data-code") || "";
-        navigator.clipboard.writeText(code).then(
-          function () {
-            (evt.target as HTMLElement).classList.remove("btn-outline-primary");
-            (evt.target as HTMLElement).classList.add("btn-primary");
-            // eslint-disable-next-line functional/immutable-data
-            (evt.target as HTMLElement).innerHTML = "copiato!";
-          },
-          function () {
-            // eslint-disable-next-line functional/immutable-data
-            (evt.target as HTMLElement).innerHTML = "copia non abilitata";
-          }
-        );
-      });
+      copyBtn?.addEventListener(
+        "click",
+        async (evt): Promise<void> => {
+          const code =
+            (evt.target as HTMLElement).getAttribute("data-code") || "";
+          navigator.clipboard.writeText(code).then(
+            function () {
+              (evt.target as HTMLElement).classList.remove(
+                "btn-outline-primary"
+              );
+              (evt.target as HTMLElement).classList.add("btn-primary");
+              // eslint-disable-next-line functional/immutable-data
+              (evt.target as HTMLElement).innerHTML = "copiato!";
+            },
+            function () {
+              // eslint-disable-next-line functional/immutable-data
+              (evt.target as HTMLElement).innerHTML = "copia non abilitata";
+            }
+          );
+        }
+      );
     },
   });
   if (!modalData.buttons) {

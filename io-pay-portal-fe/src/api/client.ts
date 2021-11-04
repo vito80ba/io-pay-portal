@@ -18,8 +18,7 @@ const fetchWithTimeout = toFetch(
   )
 );
 // tslint:disable-next-line: no-any
-const fetchApi: typeof fetchWithTimeout =
-  fetch as any as typeof fetchWithTimeout;
+const fetchApi: typeof fetchWithTimeout = (fetch as any) as typeof fetchWithTimeout;
 
 export const apiClient = createClient({
   baseUrl: getConfig("IO_PAY_PORTAL_API_HOST") as string,
