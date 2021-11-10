@@ -263,6 +263,33 @@ export const PaymentResponses: Record<string, PaymentFaultErrorMessage> = {
       },
     ],
   },
+  PPT_PAGAMENTO_DUPLICATO: {
+    title: "Questo avviso è stato già pagato!",
+    body:
+      "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento.",
+    category: PaymentFaultCategory.CUSTOM,
+  },
+  PPT_PAGAMENTO_IN_CORSO: {
+    title: "Il pagamento è già in corso, riprova tra qualche minuto",
+    body: "Se è passato troppo tempo, segnalacelo!",
+    category: PaymentFaultCategory.CUSTOM,
+    buttons: [
+      {
+        title: "Chiudi",
+        style: "btn btn-primary w-100 mb-2",
+        action: (modalWindow: Tingle.modal) => {
+          modalWindow.close();
+        },
+      },
+      {
+        title: "Contatta l'assistenza",
+        style: "btn btn-outline-primary w-100",
+        action: () => {
+          window.open(HELPDESK_URL, "_blank")?.focus();
+        },
+      },
+    ],
+  },
   PAA_PAGAMENTO_ANNULLATO: {
     title: "Spiacenti, l’Ente Creditore ha revocato questo avviso",
     body: "Contatta l’Ente per maggiori informazioni.",
