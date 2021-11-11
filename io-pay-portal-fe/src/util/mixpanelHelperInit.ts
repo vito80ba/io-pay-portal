@@ -73,6 +73,7 @@ export const mixpanelInit = function (): void {
       api_host: "https://api-eu.mixpanel.com",
       persistence: "localStorage",
       ip: false,
+      property_blacklist: ['$current_url', '$initial_referrer'],
       loaded(mixpanel: Mixpanel) {
         // this is useful to obtain a new distinct_id every session
         mixpanel.reset();
