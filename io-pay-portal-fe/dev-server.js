@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.json()) 
 
-app.get("/api/payportal/v1/payment-requests/:rptId", (_, res) => {
+app.get("/api/checkout/payments/v1/payment-requests/:rptId", (_, res) => {
   // test scenario for an error message
   if (_.params.rptId == "00000000000000000000000000000" ) {
     res.status(500).send("Error!");
@@ -28,6 +28,10 @@ app.get("/api/payportal/v1/payment-requests/:rptId", (_, res) => {
     res.status(400).send( { detail: "PPT_SINTASSI_EXTRAXSD" } );
   } else if (_.params.rptId == "00000000000000000000000000004" ) {
     res.status(400).send( { detail: "UNKNOWN_ERROR" } );
+  } else if (_.params.rptId == "00000000000000000000000000010") {
+    res.status(400).send( { detail: "PPT_PAGAMENTO_DUPLICATO" } );
+  }else if (_.params.rptId == "00000000000000000000000000011") {
+    res.status(400).send( { detail: "PPT_PAGAMENTO_IN_CORSO" } );
   }
   else {
     res.send({
