@@ -210,11 +210,8 @@ document.addEventListener("DOMContentLoaded", () => {
     async (evt): Promise<void> => {
       evt.preventDefault();
 
-      const token: string = await grecaptcha
-        .execute(getConfig("IO_PAY_PORTAL_SITE_KEY"), {
-          action: "submit",
-        })
-        .then((token: string) => token);
+      const token = await grecaptcha
+        .execute()
 
       error?.classList.add("d-none");
       document.body.classList.add("loading");
