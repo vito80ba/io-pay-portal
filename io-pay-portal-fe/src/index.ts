@@ -209,41 +209,49 @@ document.addEventListener("DOMContentLoaded", () => {
     "click",
     async (evt): Promise<void> => {
       evt.preventDefault();
-
-      const token = await grecaptcha.execute();
-
-      error?.classList.add("d-none");
       document.body.classList.add("loading");
-
-      const paymentNoticeCode: string = fromNullable(
-        paymentNoticeCodeEl?.value
-      ).getOrElse("");
-      const organizationId: string = fromNullable(
-        organizationIdEl?.value
-      ).getOrElse("");
-
-      const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
-
-      const recaptchaResponse: string = token;
-
-      await getPaymentInfoTask(rptId, recaptchaResponse)
-        .fold(
-          (r) => showErrorMessage(r),
-          (paymentInfo) => {
-            sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
-            sessionStorage.setItem("rptId", rptId);
-            showPaymentInfo(paymentInfo);
-          }
-        )
-        .run();
-
-      document.body.classList.remove("loading");
-      if (stateCard) {
-        stateCard.setAttribute("aria-hidden", "false");
-      }
-      active?.focus();
+      /**
+       * recaptcha challenge: get token running recaptchaCallback()
+       */
+      await grecaptcha.execute();
     }
   );
+
+  /**
+   * recaptchaCallback: call api to verify payment
+   */
+  // eslint-disable-next-line functional/immutable-data
+  (window as any).recaptchaCallback = async (recaptchaResponse: string) => {
+    error?.classList.add("d-none");
+    const paymentNoticeCode: string = fromNullable(
+      paymentNoticeCodeEl?.value
+    ).getOrElse("");
+    const organizationId: string = fromNullable(
+      organizationIdEl?.value
+    ).getOrElse("");
+    const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
+
+    // recaptcha reset
+    await grecaptcha.reset();
+
+    // api veryfy payment
+    await getPaymentInfoTask(rptId, recaptchaResponse)
+      .fold(
+        (r) => showErrorMessage(r),
+        (paymentInfo) => {
+          sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
+          sessionStorage.setItem("rptId", rptId);
+          showPaymentInfo(paymentInfo);
+        }
+      )
+      .run();
+
+    document.body.classList.remove("loading");
+    if (stateCard) {
+      stateCard.setAttribute("aria-hidden", "false");
+    }
+    active?.focus();
+  };
 
   back?.addEventListener(
     "click",
