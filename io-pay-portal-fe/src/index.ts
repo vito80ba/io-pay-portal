@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
       organizationIdEl?.value
     ).getOrElse("");
     const rptId: RptId = `${organizationId}${paymentNoticeCode}`;
-   
+
     // recaptcha reset
     await grecaptcha.reset();
 
