@@ -92,7 +92,7 @@ export const mixpanel = {
         track(event_name, properties);
       } catch (_) {
         // eslint-disable-next-line no-console
-        console.log("mixpanel disabled");
+        console.log(event_name, properties);
       }
     }
   },
