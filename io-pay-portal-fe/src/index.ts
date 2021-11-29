@@ -21,23 +21,30 @@ declare const grecaptcha: any;
 declare const OneTrust: any;
 declare const OnetrustActiveGroups: string;
 const global = window as any;
+// target cookies (Mixpanel)
+const targCookiesGroup = "C0004";
 
 /**
  * Init
  * */
 sessionStorage.clear();
 
-// OneTrust callback
+// OneTrust callback at first time
 // eslint-disable-next-line functional/immutable-data
 global.OptanonWrapper = function () {
   OneTrust.OnConsentChanged(function () {
-    const targCookiesGroup = "C0004";
     const activeGroups = OnetrustActiveGroups;
     if (activeGroups.indexOf(targCookiesGroup) > -1) {
       mixpanelInit();
     }
   });
 };
+// check mixpanel cookie consent in cookie
+const OTCookieValue: string = document.cookie.split('; ').find(row => row.startsWith('OptanonConsent=')) || "";
+const checkValue = `${targCookiesGroup}%3A1`;
+if (OTCookieValue.indexOf(checkValue) > -1) {
+  mixpanelInit();
+}
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 document.addEventListener("DOMContentLoaded", () => {
