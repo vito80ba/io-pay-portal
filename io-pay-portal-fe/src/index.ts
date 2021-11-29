@@ -20,15 +20,24 @@ import { mixpanelInit } from "./util/mixpanelHelperInit";
 declare const grecaptcha: any;
 declare const OneTrust: any;
 declare const OnetrustActiveGroups: string;
+const global = window as any;
 
 /**
  * Init
  * */
 sessionStorage.clear();
 
-const global = window as any;
+// OneTrust callback
 // eslint-disable-next-line functional/immutable-data
-global.mp = mixpanelInit;
+global.OptanonWrapper = function() {
+  OneTrust.OnConsentChanged( function() {
+    var targCookiesGroup = "C0004";
+    var activeGroups = OnetrustActiveGroups;
+    if (activeGroups.indexOf(targCookiesGroup) > -1 ) {
+        mixpanelInit();
+    }
+  });
+};
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 document.addEventListener("DOMContentLoaded", () => {
