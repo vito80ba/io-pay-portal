@@ -29,12 +29,12 @@ sessionStorage.clear();
 
 // OneTrust callback
 // eslint-disable-next-line functional/immutable-data
-global.OptanonWrapper = function() {
-  OneTrust.OnConsentChanged( function() {
-    var targCookiesGroup = "C0004";
-    var activeGroups = OnetrustActiveGroups;
-    if (activeGroups.indexOf(targCookiesGroup) > -1 ) {
-        mixpanelInit();
+global.OptanonWrapper = function () {
+  OneTrust.OnConsentChanged(function () {
+    const targCookiesGroup = "C0004";
+    const activeGroups = OnetrustActiveGroups;
+    if (activeGroups.indexOf(targCookiesGroup) > -1) {
+      mixpanelInit();
     }
   });
 };
