@@ -220,6 +220,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
+  (window as any).onpopstate = function() {
+    stateCard?.classList.add("d-none");
+    initCard?.classList.remove("d-none");
+  };
+
   /**
    * recaptchaCallback: call api to verify payment
    */
@@ -244,6 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
         (paymentInfo) => {
           sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
           sessionStorage.setItem("rptId", rptId);
+          history.pushState(null, "", "/#stateCard");
           showPaymentInfo(paymentInfo);
         }
       )
