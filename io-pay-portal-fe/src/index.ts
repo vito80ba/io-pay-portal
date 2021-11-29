@@ -228,8 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
       await grecaptcha.execute();
     }
   );
-
-  (window as any).onpopstate = function() {
+  // eslint-disable-next-line functional/immutable-data
+  (window as any).onpopstate = function () {
     stateCard?.classList.add("d-none");
     initCard?.classList.remove("d-none");
   };
