@@ -1,6 +1,14 @@
-<!-- Inizio informativa di consenso dei cookie OneTrust per uat.checkout.pagopa.it -->
-<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="bb6f9f05-06ab-49fd-a98d-949db34bf22e-test" ></script>
+<!-- Inizio informativa di consenso dei cookie OneTrust per checkout.pagopa.it -->
+<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="c4394b6a-86ce-428c-a3d3-5b81cabbfed4-test" ></script>
 <script type="text/javascript">
-function OptanonWrapper() { }
+function OptanonWrapper() {
+    window.OneTrust.OnConsentChanged( function() {
+        var targCookiesGroup = "C0004";
+        var activeGroups = window.OnetrustActiveGroups;
+        if (activeGroups.indexOf(targCookiesGroup) > -1 ) {
+            window.mp();
+        }
+    })
+ }
 </script>
-<!-- Fine informativa di consenso dei cookie OneTrust per uat.checkout.pagopa.it -->
+<!-- Fine informativa di consenso dei cookie OneTrust per checkout.pagopa.it -->

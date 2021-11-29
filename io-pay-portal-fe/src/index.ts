@@ -25,7 +25,10 @@ declare const OnetrustActiveGroups: string;
  * Init
  * */
 sessionStorage.clear();
-mixpanelInit();
+
+const global = window as any;
+// eslint-disable-next-line functional/immutable-data
+global.mp = mixpanelInit;
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 document.addEventListener("DOMContentLoaded", () => {
