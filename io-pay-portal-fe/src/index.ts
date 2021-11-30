@@ -242,6 +242,8 @@ document.addEventListener("DOMContentLoaded", () => {
   (window as any).onpopstate = function () {
     stateCard?.classList.add("d-none");
     initCard?.classList.remove("d-none");
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
 
   /**
@@ -269,6 +271,8 @@ document.addEventListener("DOMContentLoaded", () => {
           sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
           sessionStorage.setItem("rptId", rptId);
           history.pushState(null, "", "/#stateCard");
+          document.body.scrollTop = 0; // For Safari
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
           showPaymentInfo(paymentInfo);
         }
       )
