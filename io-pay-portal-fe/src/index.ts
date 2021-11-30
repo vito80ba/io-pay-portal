@@ -242,7 +242,9 @@ document.addEventListener("DOMContentLoaded", () => {
   (window as any).onpopstate = function () {
     stateCard?.classList.add("d-none");
     initCard?.classList.remove("d-none");
+    // eslint-disable-next-line functional/immutable-data
     document.body.scrollTop = 0; // For Safari
+    // eslint-disable-next-line functional/immutable-data
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   };
 
@@ -271,7 +273,9 @@ document.addEventListener("DOMContentLoaded", () => {
           sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
           sessionStorage.setItem("rptId", rptId);
           history.pushState(null, "", "/#stateCard");
+          // eslint-disable-next-line functional/immutable-data
           document.body.scrollTop = 0; // For Safari
+          // eslint-disable-next-line functional/immutable-data
           document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
           showPaymentInfo(paymentInfo);
         }
