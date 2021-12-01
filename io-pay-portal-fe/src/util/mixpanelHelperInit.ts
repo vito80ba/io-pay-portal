@@ -89,8 +89,8 @@ export const mixpanel = {
       console.log(event_name, properties);
     } else {
       try {
-        if (ENV === 'UAT') {
-          track(event_name, { ...properties, ...{ environment: 'UAT' } });
+        if (ENV === "UAT") {
+          track(event_name, { ...properties, ...{ environment: "UAT" } });
         } else {
           track(event_name, properties);
         }
