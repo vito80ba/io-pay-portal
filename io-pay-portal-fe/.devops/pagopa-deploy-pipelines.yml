@@ -97,6 +97,7 @@ stages:
             parameters:
               site_key: $(CHECKOUT_CAPTCHA_ID_UAT)
               api_host: $(CHECKOUT_API_HOST_UAT)
+              env:  'UAT'
               
           - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
             artifact: BundleUAT
@@ -192,6 +193,7 @@ stages:
             parameters:
               site_key: $(CHECKOUT_CAPTCHA_ID_PROD)
               api_host: $(CHECKOUT_API_HOST_PROD)
+              env: 'PROD'
 
           - publish: $(System.DefaultWorkingDirectory)/io-pay-portal-fe/dist
             artifact: BundlePROD
