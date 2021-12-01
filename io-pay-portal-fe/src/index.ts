@@ -20,15 +20,34 @@ import { mixpanelInit } from "./util/mixpanelHelperInit";
 declare const grecaptcha: any;
 declare const OneTrust: any;
 declare const OnetrustActiveGroups: string;
+const global = window as any;
+// target cookies (Mixpanel)
+const targCookiesGroup = "C0004";
 
 /**
  * Init
  * */
 sessionStorage.clear();
 
-const global = window as any;
+// OneTrust callback at first time
 // eslint-disable-next-line functional/immutable-data
-global.mp = mixpanelInit;
+global.OptanonWrapper = function () {
+  OneTrust.OnConsentChanged(function () {
+    const activeGroups = OnetrustActiveGroups;
+    if (activeGroups.indexOf(targCookiesGroup) > -1) {
+      mixpanelInit();
+    }
+  });
+};
+// check mixpanel cookie consent in cookie
+const OTCookieValue: string =
+  document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("OptanonConsent=")) || "";
+const checkValue = `${targCookiesGroup}%3A1`;
+if (OTCookieValue.indexOf(checkValue) > -1) {
+  mixpanelInit();
+}
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 document.addEventListener("DOMContentLoaded", () => {
@@ -219,6 +238,15 @@ document.addEventListener("DOMContentLoaded", () => {
       await grecaptcha.execute();
     }
   );
+  // eslint-disable-next-line functional/immutable-data
+  (window as any).onpopstate = function () {
+    stateCard?.classList.add("d-none");
+    initCard?.classList.remove("d-none");
+    // eslint-disable-next-line functional/immutable-data
+    document.body.scrollTop = 0; // For Safari
+    // eslint-disable-next-line functional/immutable-data
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  };
 
   /**
    * recaptchaCallback: call api to verify payment
@@ -244,6 +272,11 @@ document.addEventListener("DOMContentLoaded", () => {
         (paymentInfo) => {
           sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
           sessionStorage.setItem("rptId", rptId);
+          history.pushState(null, "", "/#stateCard");
+          // eslint-disable-next-line functional/immutable-data
+          document.body.scrollTop = 0; // For Safari
+          // eslint-disable-next-line functional/immutable-data
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
           showPaymentInfo(paymentInfo);
         }
       )
