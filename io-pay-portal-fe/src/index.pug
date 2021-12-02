@@ -5,7 +5,7 @@ html(lang='it')
         include includes/head.pug
         meta(robots="noindex, nofollow")
         link(href="scss/style.scss",rel="stylesheet")
-        if process.env.IO_PAY_PORTAL_ENV=='production'
+        if process.env.IO_PAY_PORTAL_ENV=='PROD'
             script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="c4394b6a-86ce-428c-a3d3-5b81cabbfed4-test")
         else 
             script(src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js", type="text/javascript", charset="UTF-8", data-domain-script="c4394b6a-86ce-428c-a3d3-5b81cabbfed4-test")
