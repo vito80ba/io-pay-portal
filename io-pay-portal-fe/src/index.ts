@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const inputel = evt?.target as HTMLInputElement;
       // eslint-disable-next-line functional/immutable-data
       inputel.value = inputel.value.replace(/\s/g, "");
-      // only chars& numbers, min 11 max 16
+      // only 11 numbers
       const regexTest = new RegExp(/^[0-9]{11}$/);
       if (regexTest.test(inputel.value) === true) {
         toggleValid(inputel, true);
