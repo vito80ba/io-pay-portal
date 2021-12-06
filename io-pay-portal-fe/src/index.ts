@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // eslint-disable-next-line functional/immutable-data
       inputel.value = inputel.value.replace(/\s/g, "");
       // only chars& numbers, min 11 max 16
-      const regexTest = new RegExp(/^[a-zA-Z0-9]{11,16}$/);
+      const regexTest = new RegExp(/^[0-9]{11}$/);
       if (regexTest.test(inputel.value) === true) {
         toggleValid(inputel, true);
       } else {
