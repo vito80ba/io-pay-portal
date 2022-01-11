@@ -69,6 +69,8 @@ In order to run the application on a local dev server with mock API responses:
 -  ```sh
    yarn dev
    ```
+the application is available at http://localhost:1234
+
 To run the application on a local dev server with real API:
 -  ```sh
    yarn dev:proxy

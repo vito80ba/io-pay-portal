@@ -5,6 +5,7 @@ import theme from "@pagopa/mui-italia/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Layout } from "./components/commons/Layout";
 import FirstChoose from "./routes/firstchoose";
+import "./translations/i18n";
 
 export function App() {
   return (
