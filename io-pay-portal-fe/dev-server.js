@@ -75,7 +75,7 @@ app.get(
   }
 );
 
-const bundler = new Bundler("src/*.pug");
+const bundler = new Bundler("src/*.html");
 app.use(bundler.middleware());
 
 app.listen(Number(1234));
