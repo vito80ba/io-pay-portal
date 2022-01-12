@@ -5,5 +5,13 @@ export const TRANSLATIONS_IT = {
     helpLink: "Dove trovo i dati?",
     privacyDesc: "Premendo 'Continua' dichiari di aver letto e compreso l'",
     privacy: "informativa privacy",
+    formFields: {
+      billCode: "Codice Avviso",
+      cf: "Codice Fiscale Ente Creditore",
+    },
+    formButtons: {
+      cancel: "Annulla",
+      submit: "Continua",
+    },
   },
 };

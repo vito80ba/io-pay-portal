@@ -20,14 +20,16 @@ export function FormButtons(props: {
           className="cancelButton"
           variant="outlined"
           onClick={props.handleCancel}
+          style={{ marginRight: 10, minWidth: 119 }}
         >
           {t(props.cancelTitle)}
         </Button>
         <Button
-          className="cancelButton"
+          className="submitButton"
           variant="contained"
           onClick={props.handleSubmit}
           disabled={props.disabled}
+          style={{ minWidth: 247 }}
         >
           {t(props.submitTitle)}
         </Button>
@@ -39,7 +41,7 @@ export function FormButtons(props: {
 FormButtons.defaultProps = {
   style: {
     display: "flex",
-    justifyContent: "flex-end",
-    padding: "12px 0 10px 0",
+    justifyContent: "center",
+    padding: "16px 0 10px 0",
   },
 };

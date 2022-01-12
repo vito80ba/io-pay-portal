@@ -1,16 +1,22 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Formik, FormikProps } from "formik";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
+import InformationModal from "../../../../components/InformationModal/InformationModal";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import {
   PaymentFormErrors,
   PaymentFormFields,
 } from "../../models/paymentModel";
+import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 
 export function PaymentForm() {
+  const { t } = useTranslation();
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
+  const [modalOpen, setModalOpen] = React.useState(false);
+
   const validate = (values: PaymentFormFields) => {
     const errors: PaymentFormErrors = {
       ...(values.billCode ? {} : { billCode: "checkout.formErrors.required" }),
@@ -47,20 +53,23 @@ export function PaymentForm() {
               <div className="tenantsFormRow">
                 <TextFormField
                   fullWidth
+                  variant="standard"
                   errorText={errors.billCode}
                   error={!!(errors.billCode && touched.billCode)}
-                  label="checkout.formFields.billCode"
+                  label="checkoutForm.formFields.billCode"
                   id="billCode"
                   type="billCode"
                   value={values.billCode}
                   handleChange={handleChange}
                   handleBlur={handleBlur}
+                  style={{ marginBottom: 16 }}
                 />
                 <TextFormField
                   fullWidth
+                  variant="standard"
                   errorText={errors.cf}
                   error={Boolean(errors.cf && touched.cf)}
-                  label="checkout.formFields.cf"
+                  label="checkoutForm.formFields.cf"
                   id="cf"
                   type="cf"
                   value={values.cf}
@@ -68,9 +77,21 @@ export function PaymentForm() {
                   handleBlur={handleBlur}
                 />
               </div>
+              <div style={{ marginTop: 32 }}>
+                <p>
+                  {t("checkoutForm.privacyDesc")}
+                  <a
+                    href="#"
+                    style={{ fontWeight: 600, textDecoration: "none" }}
+                    onClick={() => setModalOpen(true)}
+                  >
+                    {t("checkoutForm.privacy")}
+                  </a>
+                </p>
+              </div>
               <FormButtons
-                submitTitle="checkout.formButtons.submit"
-                cancelTitle="checkout.formButtons.cancel"
+                submitTitle="checkoutForm.formButtons.submit"
+                cancelTitle="checkoutForm.formButtons.cancel"
                 disabled={disabled}
                 handleSubmit={handleSubmit}
                 handleCancel={() => {}}
@@ -79,6 +100,14 @@ export function PaymentForm() {
           );
         }}
       </Formik>
+      <InformationModal
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      >
+        <PrivacyPolicy />
+      </InformationModal>
     </>
   );
 }

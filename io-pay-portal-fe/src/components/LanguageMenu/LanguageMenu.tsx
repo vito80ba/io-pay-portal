@@ -68,10 +68,15 @@ export default function LanguageMenu() {
         color="inherit"
         style={{ borderRadius: 5 }}
       >
-        <Typography variant="h6" gutterBottom component="div">
+        <Typography
+          variant="h6"
+          gutterBottom
+          component="div"
+          style={{ color: "#0073E6" }}
+        >
           {lang.toUpperCase()}
         </Typography>
-        <KeyboardArrowDownIcon />
+        <KeyboardArrowDownIcon style={{ color: "#0073E6" }} />
       </IconButton>
     </>
   );

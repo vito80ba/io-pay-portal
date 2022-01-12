@@ -10,6 +10,7 @@ interface TextFormFieldProps {
   label: string;
   type: string;
   id: string;
+  variant?: "outlined" | "standard" | "filled" | undefined;
   style?: React.CSSProperties;
   value?: string;
   endAdornment?: React.ReactNode;
@@ -32,7 +33,7 @@ function TextFormField(props: TextFormFieldProps) {
       label={t(props.label)}
       id={props.id}
       name={props.id}
-      variant="outlined"
+      variant={props.variant}
       style={props.style}
       InputProps={{
         name: props.id,
@@ -48,6 +49,7 @@ function TextFormField(props: TextFormFieldProps) {
 }
 
 TextFormField.defaultProps = {
+  variant: "outlined",
   style: undefined,
   endAdornment: undefined,
   disabled: false,
