@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Container, ContainerProps } from "@mui/material";
 import { Box } from "@mui/system";
 import { Header } from "./Header";
-import { Footer } from "./Footer";
+import Footer from "./Footer";
 
 export const Layout: FunctionComponent<ContainerProps> = ({ sx, children }) => (
   <>

@@ -1,4 +1,10 @@
 export const TRANSLATIONS_IT = {
+  mainPage: {
+    footer: {
+      accessibility: "Accessibilità",
+      help: "Aiuto",
+    },
+  },
   checkoutForm: {
     title: "Cosa devi pagare?",
     description: "Inserisci i dati come riportato sull’avviso di pagamento.",
