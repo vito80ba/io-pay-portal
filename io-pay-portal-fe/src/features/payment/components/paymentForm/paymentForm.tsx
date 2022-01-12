@@ -19,8 +19,20 @@ export function PaymentForm() {
 
   const validate = (values: PaymentFormFields) => {
     const errors: PaymentFormErrors = {
-      ...(values.billCode ? {} : { billCode: "checkout.formErrors.required" }),
-      ...(values.cf ? {} : { cf: "checkout.formErrors.required" }),
+      ...(values.billCode
+        ? {
+            ...(/\b\d{18}\b/.test(values.billCode)
+              ? {}
+              : { billCode: t("checkoutForm.formErrors.minCode") }),
+          }
+        : { billCode: t("checkoutForm.formErrors.required") }),
+      ...(values.cf
+        ? {
+            ...(/\b\d{11}\b/.test(values.cf)
+              ? {}
+              : { cf: t("checkoutForm.formErrors.minCf") }),
+          }
+        : { cf: t("checkoutForm.formErrors.required") }),
     };
 
     setDisabled(!!(errors.billCode || errors.cf));

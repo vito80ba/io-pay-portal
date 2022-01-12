@@ -16,6 +16,11 @@ export const TRANSLATIONS_EN = {
       billCode: "Notification Code",
       cf: "Creditor Institution Tax Identification Number",
     },
+    formErrors: {
+      required: "Required field",
+      minCode: "Minimum 18 digits",
+      minCf: "Minimum 11 digits",
+    },
     formButtons: {
       cancel: "Cancel",
       submit: "Continue",

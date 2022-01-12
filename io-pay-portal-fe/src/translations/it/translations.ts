@@ -15,6 +15,11 @@ export const TRANSLATIONS_IT = {
       billCode: "Codice Avviso",
       cf: "Codice Fiscale Ente Creditore",
     },
+    formErrors: {
+      required: "Campo obbligatorio",
+      minCode: "Minimo 18 cifre",
+      minCf: "Minimo 11 cifre",
+    },
     formButtons: {
       cancel: "Annulla",
       submit: "Continua",
