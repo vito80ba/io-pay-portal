@@ -62,7 +62,7 @@ export function PaymentForm() {
           } = formikProps;
           return (
             <form onSubmit={handleSubmit}>
-              <div className="tenantsFormRow">
+              <div>
                 <TextFormField
                   fullWidth
                   variant="standard"
