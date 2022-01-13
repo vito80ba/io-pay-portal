@@ -17,8 +17,8 @@ export const TRANSLATIONS_IT = {
     },
     formErrors: {
       required: "Campo obbligatorio",
-      minCode: "Minimo 18 cifre",
-      minCf: "Minimo 11 cifre",
+      minCode: "Inserisci 18 cifre",
+      minCf: "Inserisci 11 cifre",
     },
     formButtons: {
       cancel: "Annulla",

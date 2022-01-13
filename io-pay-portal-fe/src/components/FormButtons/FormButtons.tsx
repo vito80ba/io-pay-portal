@@ -1,7 +1,8 @@
 /* eslint-disable functional/immutable-data */
+import { Button, Grid } from "@mui/material";
 import { default as React } from "react";
-import { Button, Grid, useMediaQuery } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useSmallDevice } from "../../hooks/useSmallDevice";
 
 export function FormButtons(props: {
   handleSubmit: () => void;
@@ -11,26 +12,31 @@ export function FormButtons(props: {
   cancelTitle: string;
 }) {
   const { t } = useTranslation();
-  const smallDevice = useMediaQuery("(max-width: 382px)");
 
   return (
     <React.Fragment>
       <Grid
-        sx={{ flexGrow: 1, marginTop: "48px" }}
+        sx={
+          useSmallDevice()
+            ? {
+                flexGrow: 1,
+                position: "fixed",
+                zIndex: 1000,
+                bottom: 0,
+                left: 0,
+                padding: "1rem",
+                boxShadow: "0 0.5rem 1rem rgb(0 0 0 / 15%);",
+                backgroundColor: "#fff",
+              }
+            : { flexGrow: 1, marginTop: "48px" }
+        }
         justifyContent="center"
-        flexDirection={smallDevice ? "column" : "row"}
+        flexDirection="row"
         alignItems="center"
         container
         spacing={2}
       >
-        <Grid
-          xs={3}
-          md={3}
-          lg={3}
-          xl={3}
-          style={smallDevice ? { minWidth: 320 } : {}}
-          item
-        >
+        <Grid xs={3} md={3} lg={3} xl={3} item>
           <Button
             className="cancelButton"
             variant="outlined"
@@ -40,14 +46,7 @@ export function FormButtons(props: {
             {t(props.cancelTitle)}
           </Button>
         </Grid>
-        <Grid
-          xs={6}
-          md={6}
-          lg={6}
-          xl={6}
-          style={smallDevice ? { minWidth: 320 } : {}}
-          item
-        >
+        <Grid xs={6} md={6} lg={6} xl={6} item>
           <Button
             className="submitButton"
             variant="contained"

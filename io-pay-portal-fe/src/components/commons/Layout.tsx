@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from "react";
 import { Container, ContainerProps } from "@mui/material";
 import { Box } from "@mui/system";
-import { Header } from "./Header";
+import React, { FunctionComponent } from "react";
+import { useSmallDevice } from "../../hooks/useSmallDevice";
 import Footer from "./Footer";
+import { Header } from "./Header";
 
 export const Layout: FunctionComponent<ContainerProps> = ({ sx, children }) => (
   <>
@@ -14,7 +15,11 @@ export const Layout: FunctionComponent<ContainerProps> = ({ sx, children }) => (
       }}
     >
       <Header />
-      <Container sx={sx} maxWidth={"sm"}>
+      <Container
+        sx={sx}
+        maxWidth={"sm"}
+        style={useSmallDevice() ? { paddingTop: "48px" } : {}}
+      >
         {children}
       </Container>
       <Footer />

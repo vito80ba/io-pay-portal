@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import pagopaLogo from "../../assets/images/logo-pagopa-spa.svg";
+import { useSmallDevice } from "../../hooks/useSmallDevice";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -10,12 +11,12 @@ export default function Footer() {
     <Box
       p={3}
       sx={{
-        bgcolor: "#F5F6F7",
         height: 53,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         padding: "0px 48px",
+        ...(useSmallDevice() ? { margin: "3rem 0 0" } : { bgcolor: "#F5F6F7" }),
       }}
     >
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -37,11 +38,18 @@ export default function Footer() {
           {t("mainPage.footer.help")}
         </a>
       </div>
-      <img
-        src={pagopaLogo}
-        alt="pagoPA"
-        style={{ width: "56px", height: "36px" }}
-      />
+      <a
+        href="https://www.pagopa.it/it/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ display: "flex" }}
+      >
+        <img
+          src={pagopaLogo}
+          alt="pagoPA"
+          style={{ width: "56px", height: "36px" }}
+        />
+      </a>
     </Box>
   );
 }
