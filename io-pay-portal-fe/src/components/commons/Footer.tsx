@@ -16,7 +16,9 @@ export default function Footer() {
         justifyContent: "space-between",
         alignItems: "center",
         padding: "0px 48px",
-        ...(useSmallDevice() ? { margin: "3rem 0 0" } : { bgcolor: "#F5F6F7" }),
+        ...(useSmallDevice()
+          ? { margin: "3rem 0 0", paddingBottom: "120px" }
+          : { bgcolor: "#F5F6F7" }),
       }}
     >
       <div style={{ display: "flex", alignItems: "center" }}>

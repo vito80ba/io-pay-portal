@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
 import InformationModal from "../components/InformationModal/InformationModal";
 import { PaymentForm } from "../features/payment/components/paymentForm/paymentForm";
+import { useSmallDevice } from "../hooks/useSmallDevice";
 
 export default function FirstChoose() {
   const { t } = useTranslation();
@@ -31,7 +32,11 @@ export default function FirstChoose() {
           setModalOpen(false);
         }}
       >
-        <img src={notification} alt="facsimile" style={{ height: "80vh" }} />
+        <img
+          src={notification}
+          alt="facsimile"
+          style={useSmallDevice() ? { width: "100%" } : { height: "80vh" }}
+        />
       </InformationModal>
     </main>
   );
