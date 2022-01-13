@@ -25,7 +25,7 @@ export function FormButtons(props: {
                 bottom: 0,
                 left: 0,
                 padding: "1rem",
-                boxShadow: "0 0.5rem 1rem rgb(0 0 0 / 15%);",
+                boxShadow: "0 0.5rem 1rem rgb(0 0 0 / 15%)",
                 backgroundColor: "#fff",
               }
             : { flexGrow: 1, marginTop: "48px" }
@@ -48,7 +48,12 @@ export function FormButtons(props: {
             className="cancelButton"
             variant="outlined"
             onClick={props.handleCancel}
-            style={{ width: "100%", height: "100%", minHeight: 45 }}
+            style={{
+              width: "100%",
+              height: "100%",
+              minHeight: 45,
+              padding: "10px 24px",
+            }}
           >
             {t(props.cancelTitle)}
           </Button>
@@ -66,7 +71,12 @@ export function FormButtons(props: {
             variant="contained"
             onClick={props.handleSubmit}
             disabled={props.disabled}
-            style={{ width: "100%", height: "100%", minHeight: 45 }}
+            style={{
+              width: "100%",
+              height: "100%",
+              minHeight: 45,
+              padding: "10px 24px",
+            }}
           >
             {t(props.submitTitle)}
           </Button>
