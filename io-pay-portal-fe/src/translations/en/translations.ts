@@ -18,8 +18,8 @@ export const TRANSLATIONS_EN = {
     },
     formErrors: {
       required: "Required field",
-      minCode: "Minimum 18 digits",
-      minCf: "Minimum 11 digits",
+      minCode: "Enter 18 digits",
+      minCf: "Enter 11 digits",
     },
     formButtons: {
       cancel: "Cancel",

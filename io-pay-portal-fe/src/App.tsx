@@ -6,13 +6,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Layout } from "./components/commons/Layout";
 import FirstChoose from "./routes/firstchoose";
 import "./translations/i18n";
+import { useSmallDevice } from "./hooks/useSmallDevice";
 
 export function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <HashRouter>
-        <Layout sx={{ height: "100%" }}>
+        <Layout sx={useSmallDevice() ? {} : { height: "100%" }}>
           <Routes>
             <Route path="/" element={<FirstChoose />} />
           </Routes>

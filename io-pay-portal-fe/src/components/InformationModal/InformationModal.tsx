@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSmallDevice } from "../../hooks/useSmallDevice";
 
 export default function InformationModal(props: {
   open: boolean;
@@ -17,8 +18,8 @@ export default function InformationModal(props: {
       PaperProps={{
         style: {
           borderRadius: 4,
-          width: "auto",
           ...props.style,
+          ...(useSmallDevice() ? {} : { width: "auto" }),
         },
       }}
       fullWidth

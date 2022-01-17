@@ -23,16 +23,16 @@ export function PaymentForm() {
         ? {
             ...(/\b\d{18}\b/.test(values.billCode)
               ? {}
-              : { billCode: t("checkoutForm.formErrors.minCode") }),
+              : { billCode: "checkoutForm.formErrors.minCode" }),
           }
-        : { billCode: t("checkoutForm.formErrors.required") }),
+        : { billCode: "checkoutForm.formErrors.required" }),
       ...(values.cf
         ? {
             ...(/\b\d{11}\b/.test(values.cf)
               ? {}
-              : { cf: t("checkoutForm.formErrors.minCf") }),
+              : { cf: "checkoutForm.formErrors.minCf" }),
           }
-        : { cf: t("checkoutForm.formErrors.required") }),
+        : { cf: "checkoutForm.formErrors.required" }),
     };
 
     setDisabled(!!(errors.billCode || errors.cf));
@@ -62,7 +62,7 @@ export function PaymentForm() {
           } = formikProps;
           return (
             <form onSubmit={handleSubmit}>
-              <div className="tenantsFormRow">
+              <div>
                 <TextFormField
                   fullWidth
                   variant="standard"
