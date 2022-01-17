@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { Button } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import InformationModal from "../../../../components/InformationModal/InformationModal";
+import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
+import { useSmallDevice } from "../../../../hooks/useSmallDevice";
 import {
   PaymentFormErrors,
   PaymentFormFields,
 } from "../../models/paymentModel";
-import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 
 export function PaymentForm() {
   const { t } = useTranslation();
@@ -23,16 +24,16 @@ export function PaymentForm() {
         ? {
             ...(/\b\d{18}\b/.test(values.billCode)
               ? {}
-              : { billCode: "checkoutForm.formErrors.minCode" }),
+              : { billCode: "paymentPage.formErrors.minCode" }),
           }
-        : { billCode: "checkoutForm.formErrors.required" }),
+        : { billCode: "paymentPage.formErrors.required" }),
       ...(values.cf
         ? {
             ...(/\b\d{11}\b/.test(values.cf)
               ? {}
-              : { cf: "checkoutForm.formErrors.minCf" }),
+              : { cf: "paymentPage.formErrors.minCf" }),
           }
-        : { cf: "checkoutForm.formErrors.required" }),
+        : { cf: "paymentPage.formErrors.required" }),
     };
 
     setDisabled(!!(errors.billCode || errors.cf));
@@ -68,7 +69,7 @@ export function PaymentForm() {
                   variant="standard"
                   errorText={errors.billCode}
                   error={!!(errors.billCode && touched.billCode)}
-                  label="checkoutForm.formFields.billCode"
+                  label="paymentPage.formFields.billCode"
                   id="billCode"
                   type="billCode"
                   value={values.billCode}
@@ -81,7 +82,7 @@ export function PaymentForm() {
                   variant="standard"
                   errorText={errors.cf}
                   error={Boolean(errors.cf && touched.cf)}
-                  label="checkoutForm.formFields.cf"
+                  label="paymentPage.formFields.cf"
                   id="cf"
                   type="cf"
                   value={values.cf}
@@ -91,23 +92,68 @@ export function PaymentForm() {
               </div>
               <div style={{ marginTop: 32 }}>
                 <p>
-                  {t("checkoutForm.privacyDesc")}
+                  {t("paymentPage.privacyDesc")}
                   <a
                     href="#"
                     style={{ fontWeight: 600, textDecoration: "none" }}
                     onClick={() => setModalOpen(true)}
                   >
-                    {t("checkoutForm.privacy")}
+                    {t("paymentPage.privacy")}
                   </a>
+                  <br />
+                  {`${t("paymentPage.googleDesc")} (`}
+                  <a
+                    href="#"
+                    style={{ fontWeight: 600, textDecoration: "none" }}
+                    onClick={() => setModalOpen(true)}
+                  >
+                    {t("paymentPage.privacyPolicy")}
+                  </a>
+                  {` ${t("general.and")} `}
+                  <a
+                    href="#"
+                    style={{ fontWeight: 600, textDecoration: "none" }}
+                    onClick={() => setModalOpen(true)}
+                  >
+                    {t("paymentPage.serviceTerms")}
+                  </a>
+                  {")."}
                 </p>
               </div>
-              <FormButtons
-                submitTitle="checkoutForm.formButtons.submit"
-                cancelTitle="checkoutForm.formButtons.cancel"
-                disabled={disabled}
-                handleSubmit={handleSubmit}
-                handleCancel={() => {}}
-              />
+              <div
+                style={
+                  useSmallDevice()
+                    ? {
+                        position: "fixed",
+                        zIndex: 1000,
+                        bottom: 0,
+                        left: 0,
+                        padding: "1rem",
+                        boxShadow: "0 0.5rem 1rem rgb(0 0 0 / 15%)",
+                        backgroundColor: "#fff",
+                        width: "100%",
+                      }
+                    : {
+                        marginTop: "48px",
+                        width: "100%",
+                      }
+                }
+              >
+                <Button
+                  className="submitButton"
+                  variant="contained"
+                  disabled={disabled}
+                  onClick={() => handleSubmit()}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    minHeight: 45,
+                    padding: "10px 24px",
+                  }}
+                >
+                  {t("paymentPage.formButtons.submit")}
+                </Button>
+              </div>
             </form>
           );
         }}

@@ -12,7 +12,7 @@ interface TextFormFieldProps {
   id: string;
   variant?: "outlined" | "standard" | "filled" | undefined;
   style?: React.CSSProperties;
-  value?: string;
+  value?: string | number;
   endAdornment?: React.ReactNode;
   disabled?: boolean;
   readOnly?: boolean;

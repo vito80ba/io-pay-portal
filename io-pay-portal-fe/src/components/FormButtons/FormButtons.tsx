@@ -37,10 +37,10 @@ export function FormButtons(props: {
         spacing={2}
       >
         <Grid
-          xs={3}
-          md={3}
-          lg={3}
-          xl={3}
+          xs={4}
+          md={4}
+          lg={4}
+          xl={4}
           style={useSmallDevice() ? { paddingTop: 0 } : {}}
           item
         >
@@ -59,10 +59,10 @@ export function FormButtons(props: {
           </Button>
         </Grid>
         <Grid
-          xs={6}
-          md={6}
-          lg={6}
-          xl={6}
+          xs={8}
+          md={8}
+          lg={8}
+          xl={8}
           style={useSmallDevice() ? { paddingTop: 0 } : {}}
           item
         >
