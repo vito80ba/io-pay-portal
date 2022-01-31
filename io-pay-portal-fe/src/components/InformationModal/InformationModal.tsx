@@ -19,7 +19,7 @@ export default function InformationModal(props: {
           ...props.style,
         },
         sx: {
-          width: { xs: "auto" },
+          width: "auto",
           borderRadius: 1,
         },
       }}

@@ -102,17 +102,19 @@ export function PaymentForm() {
                   <br />
                   {`${t("paymentPage.googleDesc")} (`}
                   <a
-                    href="#"
+                    href="https://policies.google.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{ fontWeight: 600, textDecoration: "none" }}
-                    onClick={() => setModalOpen(true)}
                   >
                     {t("paymentPage.privacyPolicy")}
                   </a>
                   {` ${t("general.and")} `}
                   <a
-                    href="#"
+                    href="https://policies.google.com/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{ fontWeight: 600, textDecoration: "none" }}
-                    onClick={() => setModalOpen(true)}
                   >
                     {t("paymentPage.serviceTerms")}
                   </a>
@@ -141,7 +143,6 @@ export function PaymentForm() {
                     width: "100%",
                     height: "100%",
                     minHeight: 45,
-                    padding: "10px 24px",
                   }}
                 >
                   {t("paymentPage.formButtons.submit")}
