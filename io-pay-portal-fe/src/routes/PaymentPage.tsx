@@ -1,3 +1,4 @@
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
@@ -10,11 +11,13 @@ export default function PaymentPage() {
   const [modalOpen, setModalOpen] = React.useState(false);
 
   return (
-    <main style={{ padding: "1rem 0" }}>
-      <h1 style={{ marginBottom: 0 }}>{t("paymentPage.title")}</h1>
-      <p style={{ marginTop: 8, marginBottom: 8 }}>
+    <main style={{ padding: "3rem 0" }}>
+      <Typography variant="h2" sx={{ fontSize: "2em" }}>
+        {t("paymentPage.title")}
+      </Typography>
+      <Typography paragraph={true} sx={{ mt: 1, mb: 1 }}>
         {t("paymentPage.description")}
-      </p>
+      </Typography>
       <a
         href="#"
         style={{ fontWeight: 600, textDecoration: "none" }}
@@ -22,9 +25,9 @@ export default function PaymentPage() {
       >
         {t("paymentPage.helpLink")}
       </a>
-      <div style={{ marginTop: 48 }}>
+      <Box sx={{ mt: 6 }}>
         <PaymentForm />
-      </div>
+      </Box>
 
       <InformationModal
         open={modalOpen}

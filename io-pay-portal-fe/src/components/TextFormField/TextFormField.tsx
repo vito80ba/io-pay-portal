@@ -1,5 +1,6 @@
 /* eslint-disable functional/immutable-data */
 import { TextField } from "@mui/material";
+import { SxProps } from "@mui/system";
 import React, { FocusEventHandler, FormEventHandler } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -12,6 +13,7 @@ interface TextFormFieldProps {
   id: string;
   variant?: "outlined" | "standard" | "filled" | undefined;
   style?: React.CSSProperties;
+  sx?: SxProps;
   value?: string | number;
   endAdornment?: React.ReactNode;
   disabled?: boolean;
@@ -35,6 +37,7 @@ function TextFormField(props: TextFormFieldProps) {
       name={props.id}
       variant={props.variant}
       style={props.style}
+      sx={props.sx}
       InputProps={{
         name: props.id,
         type: props.type,
@@ -51,6 +54,7 @@ function TextFormField(props: TextFormFieldProps) {
 TextFormField.defaultProps = {
   variant: "outlined",
   style: undefined,
+  sx: undefined,
   endAdornment: undefined,
   disabled: false,
   readOnly: false,

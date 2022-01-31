@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormButtons } from "../components/FormButtons/FormButtons";
@@ -11,61 +11,61 @@ export default function PaymentSummaryPage() {
     justifyContent: "space-between",
     borderBottom: "1px solid",
     borderBottomColor: "#EFEFEF",
+    pt: 2,
+    pb: 2,
   };
 
   return (
-    <main style={{ padding: "1rem 0" }}>
-      <h1 style={{ marginBottom: 0 }}>{t("paymentSummaryPage.title")}</h1>
-      <p style={{ marginTop: 8, marginBottom: 8 }}>
+    <main style={{ padding: "3rem 0" }}>
+      <Typography variant="h2" sx={{ fontSize: "2em" }}>
+        {t("paymentSummaryPage.title")}
+      </Typography>
+      <Typography paragraph={true} sx={{ mt: 1, mb: 1 }}>
         {t("paymentSummaryPage.description")}
-      </p>
+      </Typography>
       <Typography variant="h5" mt={6}>
-        <div
-          style={{
+        <Box
+          sx={{
             ...defaultStyle,
-            padding: "8px 0",
           }}
         >
-          <div>{t("paymentSummaryPage.amount")}</div>
-          <div>{"€ 100,00"}</div>
-        </div>
+          <Box>{t("paymentSummaryPage.amount")}</Box>
+          <Box>{"€ 100,00"}</Box>
+        </Box>
       </Typography>
       <Typography variant="h6">
-        <div
-          style={{
+        <Box
+          sx={{
             ...defaultStyle,
             flexDirection: "column",
-            padding: "16px 0",
-            gap: 4,
+            gap: 1,
           }}
         >
-          <div>{t("paymentSummaryPage.creditor")}</div>
-          <div style={{ fontWeight: 600 }}>{"Comune di Milano"}</div>
-        </div>
+          <Box>{t("paymentSummaryPage.creditor")}</Box>
+          <Box sx={{ fontWeight: 600 }}>{"Comune di Milano"}</Box>
+        </Box>
       </Typography>
       <Typography variant="h6">
-        <div
-          style={{
+        <Box
+          sx={{
             ...defaultStyle,
             flexDirection: "column",
-            padding: "16px 0",
-            gap: 4,
+            gap: 1,
           }}
         >
-          <div>{t("paymentSummaryPage.causal")}</div>
-          <div style={{ fontWeight: 600 }}>{"TARI 2020 Rata Unica"}</div>
-        </div>
+          <Box>{t("paymentSummaryPage.causal")}</Box>
+          <Box sx={{ fontWeight: 600 }}>{"TARI 2020 Rata Unica"}</Box>
+        </Box>
       </Typography>
       <Typography variant="h6">
-        <div
-          style={{
+        <Box
+          sx={{
             ...defaultStyle,
-            padding: "16px 0",
           }}
         >
-          <div>{t("paymentSummaryPage.cf")}</div>
-          <div style={{ fontWeight: 600 }}>{"77777777777"}</div>
-        </div>
+          <Box>{t("paymentSummaryPage.cf")}</Box>
+          <Box sx={{ fontWeight: 600 }}>{"77777777777"}</Box>
+        </Box>
       </Typography>
       <FormButtons
         submitTitle="paymentSummaryPage.buttons.submit"

@@ -64,7 +64,7 @@ export function PaymentForm() {
           } = formikProps;
           return (
             <form onSubmit={handleSubmit}>
-              <div>
+              <Box>
                 <TextFormField
                   fullWidth
                   variant="standard"
@@ -76,7 +76,7 @@ export function PaymentForm() {
                   value={values.billCode}
                   handleChange={handleChange}
                   handleBlur={handleBlur}
-                  style={{ marginBottom: 16 }}
+                  sx={{ mb: 2 }}
                   endAdornment={
                     <InputAdornment position="end">
                       {getFormValidationIcon(
@@ -103,8 +103,8 @@ export function PaymentForm() {
                     </InputAdornment>
                   }
                 />
-              </div>
-              <div style={{ marginTop: 32 }}>
+              </Box>
+              <Box mt={4}>
                 <p>
                   {t("paymentPage.privacyDesc")}
                   <a
@@ -135,7 +135,7 @@ export function PaymentForm() {
                   </a>
                   {")."}
                 </p>
-              </div>
+              </Box>
               <Box
                 sx={{
                   position: { xs: "fixed", sm: "relative" },

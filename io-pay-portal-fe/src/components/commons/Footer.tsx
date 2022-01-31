@@ -19,7 +19,7 @@ export default function Footer() {
       margin={{ xs: "3rem 0 0", sm: 0 }}
       bgcolor={{ xs: "background.default", sm: "#F5F6F7" }}
     >
-      <Box display={"flex"} alignItems={"center"}>
+      <Box display={"flex"} alignItems={"center"} gap={1}>
         <a
           href="https://form.agid.gov.it/view/7628e161-33c0-420f-8c80-4fe362d2c7c5/"
           target="_blank"
@@ -28,7 +28,7 @@ export default function Footer() {
         >
           {t("mainPage.footer.accessibility")}
         </a>
-        <p style={{ paddingLeft: 8, paddingRight: 8 }}>·</p>
+        <p>·</p>
         <a
           href="https://www.pagopa.gov.it/it/helpdesk/"
           target="_blank"
