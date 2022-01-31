@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import InformationModal from "../../../../components/InformationModal/InformationModal";
 import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
-import { useSmallDevice } from "../../../../hooks/useSmallDevice";
 import {
   PaymentFormErrors,
   PaymentFormFields,
@@ -120,24 +119,18 @@ export function PaymentForm() {
                   {")."}
                 </p>
               </div>
-              <div
-                style={
-                  useSmallDevice()
-                    ? {
-                        position: "fixed",
-                        zIndex: 1000,
-                        bottom: 0,
-                        left: 0,
-                        padding: "1rem",
-                        boxShadow: "0 0.5rem 1rem rgb(0 0 0 / 15%)",
-                        backgroundColor: "#fff",
-                        width: "100%",
-                      }
-                    : {
-                        marginTop: "48px",
-                        width: "100%",
-                      }
-                }
+              <Box
+                sx={{
+                  position: { xs: "fixed", sm: "relative" },
+                  zIndex: { xs: 1000, sm: 0 },
+                  bottom: { xs: 0 },
+                  left: { xs: 0 },
+                  p: { xs: "1rem", sm: 0 },
+                  boxShadow: { xs: "0 0.5rem 1rem rgb(0 0 0 / 15%)", sm: 0 },
+                  bgcolor: { xs: "background.default" },
+                  mt: { sm: 6 },
+                  width: "100%",
+                }}
               >
                 <Button
                   className="submitButton"
@@ -153,7 +146,7 @@ export function PaymentForm() {
                 >
                   {t("paymentPage.formButtons.submit")}
                 </Button>
-              </div>
+              </Box>
             </form>
           );
         }}
