@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Box, Button } from "@mui/material";
+
+import { Box, Button, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import InformationModal from "../../../../components/InformationModal/InformationModal";
 import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
+import { getFormValidationIcon } from "../../../../utils/form/formValidation";
 import {
   PaymentFormErrors,
   PaymentFormFields,
@@ -75,6 +77,14 @@ export function PaymentForm() {
                   handleChange={handleChange}
                   handleBlur={handleBlur}
                   style={{ marginBottom: 16 }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      {getFormValidationIcon(
+                        touched.billCode,
+                        !!errors.billCode
+                      )}
+                    </InputAdornment>
+                  }
                 />
                 <TextFormField
                   fullWidth
@@ -87,6 +97,11 @@ export function PaymentForm() {
                   value={values.cf}
                   handleChange={handleChange}
                   handleBlur={handleBlur}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      {getFormValidationIcon(touched.cf, !!errors.cf)}
+                    </InputAdornment>
+                  }
                 />
               </div>
               <div style={{ marginTop: 32 }}>
