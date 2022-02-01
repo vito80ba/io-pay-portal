@@ -16,34 +16,23 @@ export function FormButtons(props: {
   return (
     <React.Fragment>
       <Grid
-        sx={
-          useSmallDevice()
-            ? {
-                flexGrow: 1,
-                position: "fixed",
-                zIndex: 1000,
-                bottom: 0,
-                left: 0,
-                padding: "1rem",
-                boxShadow: "0 0.5rem 1rem rgb(0 0 0 / 15%)",
-                backgroundColor: "#fff",
-              }
-            : { flexGrow: 1, marginTop: "48px" }
-        }
+        sx={{
+          position: { xs: "fixed", sm: "relative" },
+          zIndex: { xs: 1000, sm: 0 },
+          bottom: { xs: 0 },
+          left: { xs: 0 },
+          p: { xs: "1rem", sm: 0 },
+          boxShadow: { xs: "0 0.5rem 1rem rgb(0 0 0 / 15%)", sm: 0 },
+          bgcolor: { xs: "background.default" },
+          mt: { sm: 6 },
+        }}
         justifyContent="center"
         flexDirection="row"
         alignItems="center"
         container
         spacing={2}
       >
-        <Grid
-          xs={3}
-          md={3}
-          lg={3}
-          xl={3}
-          style={useSmallDevice() ? { paddingTop: 0 } : {}}
-          item
-        >
+        <Grid xs={4} style={useSmallDevice() ? { paddingTop: 0 } : {}} item>
           <Button
             className="cancelButton"
             variant="outlined"
@@ -52,20 +41,12 @@ export function FormButtons(props: {
               width: "100%",
               height: "100%",
               minHeight: 45,
-              padding: "10px 24px",
             }}
           >
             {t(props.cancelTitle)}
           </Button>
         </Grid>
-        <Grid
-          xs={6}
-          md={6}
-          lg={6}
-          xl={6}
-          style={useSmallDevice() ? { paddingTop: 0 } : {}}
-          item
-        >
+        <Grid xs={8} style={useSmallDevice() ? { paddingTop: 0 } : {}} item>
           <Button
             className="submitButton"
             variant="contained"
@@ -75,7 +56,6 @@ export function FormButtons(props: {
               width: "100%",
               height: "100%",
               minHeight: 45,
-              padding: "10px 24px",
             }}
           >
             {t(props.submitTitle)}

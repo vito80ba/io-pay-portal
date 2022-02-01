@@ -2,26 +2,24 @@ import { Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import pagopaLogo from "../../assets/images/logo-pagopa-spa.svg";
-import { useSmallDevice } from "../../hooks/useSmallDevice";
 
 export default function Footer() {
   const { t } = useTranslation();
 
   return (
     <Box
-      p={3}
-      sx={{
-        height: 53,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0px 48px",
-        ...(useSmallDevice()
-          ? { margin: "3rem 0 0", paddingBottom: "120px" }
-          : { bgcolor: "#F5F6F7" }),
-      }}
+      display={"flex"}
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      height={53}
+      pt={0}
+      pb={{ xs: 16, sm: 0 }}
+      pl={6}
+      pr={6}
+      margin={{ xs: "3rem 0 0", sm: 0 }}
+      bgcolor={{ xs: "background.default", sm: "#F5F6F7" }}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <Box display={"flex"} alignItems={"center"} gap={1}>
         <a
           href="https://form.agid.gov.it/view/7628e161-33c0-420f-8c80-4fe362d2c7c5/"
           target="_blank"
@@ -30,7 +28,7 @@ export default function Footer() {
         >
           {t("mainPage.footer.accessibility")}
         </a>
-        <p style={{ paddingLeft: 8, paddingRight: 8 }}>·</p>
+        <p>·</p>
         <a
           href="https://www.pagopa.gov.it/it/helpdesk/"
           target="_blank"
@@ -39,7 +37,7 @@ export default function Footer() {
         >
           {t("mainPage.footer.help")}
         </a>
-      </div>
+      </Box>
       <a
         href="https://www.pagopa.it/it/"
         target="_blank"

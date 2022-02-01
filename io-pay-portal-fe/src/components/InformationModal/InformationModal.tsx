@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Dialog, DialogTitle, DialogContent } from "@mui/material";
-import React from "react";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSmallDevice } from "../../hooks/useSmallDevice";
+import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import React from "react";
 
 export default function InformationModal(props: {
   open: boolean;
@@ -17,9 +16,11 @@ export default function InformationModal(props: {
       maxWidth="lg"
       PaperProps={{
         style: {
-          borderRadius: 4,
           ...props.style,
-          ...(useSmallDevice() ? {} : { width: "auto" }),
+        },
+        sx: {
+          width: "auto",
+          borderRadius: 1,
         },
       }}
       fullWidth

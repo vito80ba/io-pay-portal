@@ -1,30 +1,33 @@
+import { Typography, Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
 import InformationModal from "../components/InformationModal/InformationModal";
-import { PaymentForm } from "../features/payment/components/paymentForm/paymentForm";
+import { PaymentForm } from "../features/payment/components/PaymentForm/PaymentForm";
 import { useSmallDevice } from "../hooks/useSmallDevice";
 
-export default function FirstChoose() {
+export default function PaymentPage() {
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = React.useState(false);
 
   return (
-    <main style={{ padding: "1rem 0" }}>
-      <h1 style={{ marginBottom: 0 }}>{t("checkoutForm.title")}</h1>
-      <p style={{ marginTop: 8, marginBottom: 8 }}>
-        {t("checkoutForm.description")}
-      </p>
+    <main style={{ padding: "3rem 0" }}>
+      <Typography variant="h2" sx={{ fontSize: "2em" }}>
+        {t("paymentPage.title")}
+      </Typography>
+      <Typography paragraph={true} sx={{ mt: 1, mb: 1 }}>
+        {t("paymentPage.description")}
+      </Typography>
       <a
         href="#"
         style={{ fontWeight: 600, textDecoration: "none" }}
         onClick={() => setModalOpen(true)}
       >
-        {t("checkoutForm.helpLink")}
+        {t("paymentPage.helpLink")}
       </a>
-      <div style={{ marginTop: 48 }}>
+      <Box sx={{ mt: 6 }}>
         <PaymentForm />
-      </div>
+      </Box>
 
       <InformationModal
         open={modalOpen}

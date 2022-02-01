@@ -5,12 +5,15 @@ export const TRANSLATIONS_IT = {
       help: "Aiuto",
     },
   },
-  checkoutForm: {
+  paymentPage: {
     title: "Cosa devi pagare?",
     description: "Inserisci i dati come riportato sull’avviso di pagamento.",
     helpLink: "Dove trovo i dati?",
     privacyDesc: "Premendo 'Continua' dichiari di aver letto e compreso l'",
-    privacy: "informativa privacy",
+    googleDesc: "Form protetto tramite reCAPTCHA e Google",
+    privacy: "Informativa Privacy e i Termini e condizioni d'uso del servizio.",
+    privacyPolicy: "Privacy Policy",
+    serviceTerms: "Termini di servizio",
     formFields: {
       billCode: "Codice Avviso",
       cf: "Codice Fiscale Ente Creditore",
@@ -24,5 +27,21 @@ export const TRANSLATIONS_IT = {
       cancel: "Annulla",
       submit: "Continua",
     },
+  },
+  paymentSummaryPage: {
+    title: "Avviso di pagamento",
+    description:
+      "pagoPA aggiorna automaticamente l'importo per assicurarti di aver pagato esattamente quanto dovuto ed evitarsi così more o altri interessi",
+    amount: "Importo aggiornato",
+    creditor: "Ente Creditore",
+    causal: "Causale",
+    cf: "Codice Fiscale Ente Creditore",
+    buttons: {
+      cancel: "Indietro",
+      submit: "Paga questo avviso",
+    },
+  },
+  general: {
+    and: "e",
   },
 };

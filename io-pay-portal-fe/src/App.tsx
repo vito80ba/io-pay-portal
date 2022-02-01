@@ -1,24 +1,25 @@
-import React from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
-import theme from "@pagopa/mui-italia/theme";
 import CssBaseline from "@mui/material/CssBaseline";
+import theme from "@pagopa/mui-italia/theme";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/commons/Layout";
-import FirstChoose from "./routes/firstchoose";
+import PaymentPage from "./routes/PaymentPage";
+import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
-import { useSmallDevice } from "./hooks/useSmallDevice";
 
 export function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <HashRouter>
-        <Layout sx={useSmallDevice() ? {} : { height: "100%" }}>
+      <BrowserRouter>
+        <Layout>
           <Routes>
-            <Route path="/" element={<FirstChoose />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/summary" element={<PaymentSummaryPage />} />
           </Routes>
         </Layout>
-      </HashRouter>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

@@ -17,7 +17,7 @@ void i18n
   .use(initReactI18next)
   .init({
     detection: DETECTION_OPTIONS,
-    fallbackLng: EN,
+    fallbackLng: IT,
     resources: {
       [EN]: {
         translation: TRANSLATIONS_EN,
