@@ -1,4 +1,4 @@
-import { Typography, Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
@@ -11,7 +11,7 @@ export default function PaymentPage() {
   const [modalOpen, setModalOpen] = React.useState(false);
 
   return (
-    <main style={{ padding: "3rem 0" }}>
+    <Box p={"3rem 0"}>
       <Typography variant="h2" sx={{ fontSize: "2em" }}>
         {t("paymentPage.title")}
       </Typography>
@@ -41,6 +41,6 @@ export default function PaymentPage() {
           style={useSmallDevice() ? { width: "100%" } : { height: "80vh" }}
         />
       </InformationModal>
-    </main>
+    </Box>
   );
 }

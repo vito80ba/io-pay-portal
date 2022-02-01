@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import { Button, Grid } from "@mui/material";
 import { default as React } from "react";
 import { useTranslation } from "react-i18next";

@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-identical-functions */
+/* eslint-disable functional/immutable-data */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 import { Box, Button, InputAdornment } from "@mui/material";
@@ -72,9 +74,14 @@ export function PaymentForm() {
                   error={!!(errors.billCode && touched.billCode)}
                   label="paymentPage.formFields.billCode"
                   id="billCode"
-                  type="billCode"
                   value={values.billCode}
-                  handleChange={handleChange}
+                  handleChange={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(
+                      /\s/g,
+                      ""
+                    );
+                    handleChange(e);
+                  }}
                   handleBlur={handleBlur}
                   sx={{ mb: 2 }}
                   endAdornment={
@@ -93,9 +100,14 @@ export function PaymentForm() {
                   error={Boolean(errors.cf && touched.cf)}
                   label="paymentPage.formFields.cf"
                   id="cf"
-                  type="cf"
                   value={values.cf}
-                  handleChange={handleChange}
+                  handleChange={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(
+                      /\s/g,
+                      ""
+                    );
+                    handleChange(e);
+                  }}
                   handleBlur={handleBlur}
                   endAdornment={
                     <InputAdornment position="end">
