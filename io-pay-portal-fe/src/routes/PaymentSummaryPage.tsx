@@ -24,11 +24,7 @@ export default function PaymentSummaryPage() {
         {t("paymentSummaryPage.description")}
       </Typography>
       <Typography variant="h5" mt={6}>
-        <Box
-          sx={{
-            ...defaultStyle,
-          }}
-        >
+        <Box sx={defaultStyle}>
           <Box>{t("paymentSummaryPage.amount")}</Box>
           <Box>{"€ 100,00"}</Box>
         </Box>
@@ -58,11 +54,7 @@ export default function PaymentSummaryPage() {
         </Box>
       </Typography>
       <Typography variant="h6">
-        <Box
-          sx={{
-            ...defaultStyle,
-          }}
-        >
+        <Box sx={defaultStyle}>
           <Box>{t("paymentSummaryPage.cf")}</Box>
           <Box sx={{ fontWeight: 600 }}>{"77777777777"}</Box>
         </Box>

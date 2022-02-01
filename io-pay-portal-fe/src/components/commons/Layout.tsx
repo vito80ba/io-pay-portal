@@ -15,7 +15,7 @@ export const Layout: FunctionComponent<ContainerProps> = ({ sx, children }) => (
     >
       <Header />
       <Container
-        sx={{ ...sx, p: { xs: 6 }, height: { xs: "100%" } }}
+        sx={{ ...sx, p: { xs: 6, sm: 0 }, height: { xs: "100%" } }}
         maxWidth={"sm"}
       >
         {children}
