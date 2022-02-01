@@ -10,6 +10,7 @@ interface TextFormFieldProps {
   error: boolean;
   label: string;
   id: string;
+  type: string;
   variant?: "outlined" | "standard" | "filled" | undefined;
   style?: React.CSSProperties;
   sx?: SxProps;
@@ -40,7 +41,7 @@ function TextFormField(props: TextFormFieldProps) {
       sx={props.sx}
       InputProps={{
         name: props.id,
-        type: "text",
+        type: props.type,
         onChange: props.handleChange,
         onBlur: props.handleBlur,
         endAdornment: props.endAdornment,

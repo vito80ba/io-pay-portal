@@ -75,6 +75,7 @@ export function PaymentEmailForm() {
                   error={!!(errors.email && touched.email)}
                   label="paymentEmailPage.formFields.email"
                   id="email"
+                  type="email"
                   value={values.email}
                   handleChange={handleChange}
                   handleBlur={handleBlur}
@@ -95,6 +96,7 @@ export function PaymentEmailForm() {
                   error={Boolean(errors.confirmEmail && touched.confirmEmail)}
                   label="paymentEmailPage.formFields.confirmEmail"
                   id="confirmEmail"
+                  type="email"
                   value={values.confirmEmail}
                   handleChange={handleChange}
                   handleBlur={handleBlur}

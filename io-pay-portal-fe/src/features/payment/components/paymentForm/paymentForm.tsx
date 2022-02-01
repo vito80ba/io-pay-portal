@@ -74,6 +74,7 @@ export function PaymentForm() {
                   error={!!(errors.billCode && touched.billCode)}
                   label="paymentPage.formFields.billCode"
                   id="billCode"
+                  type="text"
                   value={values.billCode}
                   handleChange={(e) => {
                     e.currentTarget.value = e.currentTarget.value.replace(
@@ -100,6 +101,7 @@ export function PaymentForm() {
                   error={Boolean(errors.cf && touched.cf)}
                   label="paymentPage.formFields.cf"
                   id="cf"
+                  type="text"
                   value={values.cf}
                   handleChange={(e) => {
                     e.currentTarget.value = e.currentTarget.value.replace(

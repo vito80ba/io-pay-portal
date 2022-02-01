@@ -42,6 +42,22 @@ export const TRANSLATIONS_EN = {
       submit: "Pay this notice",
     },
   },
+  paymentEmailPage: {
+    title: "Enter your email",
+    description: "You will receive the payment result at this address",
+    formFields: {
+      email: "Your email address",
+      confirmEmail: "Confirm your email address",
+    },
+    formErrors: {
+      required: "Required field",
+      invalid: "Enter a valid email address",
+      notEqual: "Email address should be the same",
+    },
+    formButtons: {
+      submit: "Continue",
+    },
+  },
   general: {
     and: "&",
   },
