@@ -15,6 +15,7 @@ interface TextFormFieldProps {
   sx?: SxProps;
   value?: string | number;
   endAdornment?: React.ReactNode;
+  startAdornment?: React.ReactNode;
   disabled?: boolean;
   readOnly?: boolean;
   handleChange: FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -43,6 +44,7 @@ function TextFormField(props: TextFormFieldProps) {
         onChange: props.handleChange,
         onBlur: props.handleBlur,
         endAdornment: props.endAdornment,
+        startAdornment: props.startAdornment,
         value: props.value,
         readOnly: props.readOnly,
       }}
