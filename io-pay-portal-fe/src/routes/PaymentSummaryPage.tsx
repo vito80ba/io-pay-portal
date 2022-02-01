@@ -16,7 +16,7 @@ export default function PaymentSummaryPage() {
   };
 
   return (
-    <main style={{ padding: "3rem 0" }}>
+    <Box p={"3rem 0"}>
       <Typography variant="h2" sx={{ fontSize: "2em" }}>
         {t("paymentSummaryPage.title")}
       </Typography>
@@ -66,6 +66,6 @@ export default function PaymentSummaryPage() {
         handleSubmit={() => {}}
         handleCancel={() => {}}
       />
-    </main>
+    </Box>
   );
 }

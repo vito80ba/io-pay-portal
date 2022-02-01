@@ -32,14 +32,7 @@ export function FormButtons(props: {
         container
         spacing={2}
       >
-        <Grid
-          xs={4}
-          md={4}
-          lg={4}
-          xl={4}
-          style={useSmallDevice() ? { paddingTop: 0 } : {}}
-          item
-        >
+        <Grid xs={4} style={useSmallDevice() ? { paddingTop: 0 } : {}} item>
           <Button
             className="cancelButton"
             variant="outlined"
@@ -53,14 +46,7 @@ export function FormButtons(props: {
             {t(props.cancelTitle)}
           </Button>
         </Grid>
-        <Grid
-          xs={8}
-          md={8}
-          lg={8}
-          xl={8}
-          style={useSmallDevice() ? { paddingTop: 0 } : {}}
-          item
-        >
+        <Grid xs={8} style={useSmallDevice() ? { paddingTop: 0 } : {}} item>
           <Button
             className="submitButton"
             variant="contained"
