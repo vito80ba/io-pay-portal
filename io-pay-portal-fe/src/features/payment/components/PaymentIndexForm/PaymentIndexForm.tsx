@@ -6,7 +6,7 @@ import { Box, Button, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import InformationModal from "../../../../components/InformationModal/InformationModal";
 import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
@@ -19,6 +19,7 @@ import {
 export function PaymentIndexForm() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -46,8 +47,9 @@ export function PaymentIndexForm() {
     return errors;
   };
 
+  const currentPath = location.pathname;
   const handleContinue = React.useCallback(() => {
-    navigate("/summary");
+    navigate(`${currentPath}/summary`);
   }, []);
 
   return (
