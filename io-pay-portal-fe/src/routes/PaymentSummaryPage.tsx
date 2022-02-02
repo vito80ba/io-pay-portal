@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Typography, Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import { FormButtons } from "../components/FormButtons/FormButtons";
 
 export default function PaymentSummaryPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const defaultStyle = {
     display: "flex",
     justifyContent: "space-between",
@@ -63,8 +65,12 @@ export default function PaymentSummaryPage() {
         submitTitle="paymentSummaryPage.buttons.submit"
         cancelTitle="paymentSummaryPage.buttons.cancel"
         disabled={false}
-        handleSubmit={() => {}}
-        handleCancel={() => {}}
+        handleSubmit={() => {
+          navigate("/email");
+        }}
+        handleCancel={() => {
+          navigate(-1);
+        }}
       />
     </Box>
   );
