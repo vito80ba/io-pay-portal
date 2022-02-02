@@ -83,6 +83,7 @@ export function PaymentIndexForm() {
                   label="paymentPage.formFields.billCode"
                   id="billCode"
                   type="text"
+                  inputMode="numeric"
                   value={values.billCode}
                   handleChange={(e) => {
                     e.currentTarget.value = e.currentTarget.value.replace(
@@ -110,6 +111,7 @@ export function PaymentIndexForm() {
                   label="paymentPage.formFields.cf"
                   id="cf"
                   type="text"
+                  inputMode="numeric"
                   value={values.cf}
                   handleChange={(e) => {
                     e.currentTarget.value = e.currentTarget.value.replace(

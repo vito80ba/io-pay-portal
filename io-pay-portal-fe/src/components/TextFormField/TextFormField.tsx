@@ -19,6 +19,16 @@ interface TextFormFieldProps {
   startAdornment?: React.ReactNode;
   disabled?: boolean;
   readOnly?: boolean;
+  inputMode?:
+    | "search"
+    | "text"
+    | "none"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | undefined;
   handleChange: FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   handleBlur: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
@@ -48,6 +58,7 @@ function TextFormField(props: TextFormFieldProps) {
         startAdornment: props.startAdornment,
         value: props.value,
         readOnly: props.readOnly,
+        inputMode: props.inputMode,
       }}
     />
   );
