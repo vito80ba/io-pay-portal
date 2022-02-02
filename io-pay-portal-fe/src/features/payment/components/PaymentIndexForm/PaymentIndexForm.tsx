@@ -96,7 +96,7 @@ export function PaymentIndexForm() {
                   endAdornment={
                     <InputAdornment position="end">
                       {getFormValidationIcon(
-                        touched.billCode,
+                        !!values.billCode,
                         !!errors.billCode
                       )}
                     </InputAdornment>
@@ -121,7 +121,7 @@ export function PaymentIndexForm() {
                   handleBlur={handleBlur}
                   endAdornment={
                     <InputAdornment position="end">
-                      {getFormValidationIcon(touched.cf, !!errors.cf)}
+                      {getFormValidationIcon(!!values.cf, !!errors.cf)}
                     </InputAdornment>
                   }
                 />

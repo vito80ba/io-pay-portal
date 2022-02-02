@@ -82,7 +82,7 @@ export function PaymentEmailForm() {
                   sx={{ mb: 2 }}
                   endAdornment={
                     <InputAdornment position="end">
-                      {getFormValidationIcon(touched.email, !!errors.email)}
+                      {getFormValidationIcon(!!values.email, !!errors.email)}
                     </InputAdornment>
                   }
                   startAdornment={
@@ -103,7 +103,7 @@ export function PaymentEmailForm() {
                   endAdornment={
                     <InputAdornment position="end">
                       {getFormValidationIcon(
-                        touched.confirmEmail,
+                        !!values.confirmEmail,
                         !!errors.confirmEmail
                       )}
                     </InputAdornment>
