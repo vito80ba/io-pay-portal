@@ -86,7 +86,7 @@ export function PaymentEmailForm() {
                     </InputAdornment>
                   }
                   startAdornment={
-                    <MailOutlineIcon sx={{ ml: 1, mr: 2, color: "#5c6f82" }} />
+                    <MailOutlineIcon sx={{ mr: 2, color: "#5c6f82" }} />
                   }
                 />
                 <TextFormField
@@ -109,7 +109,7 @@ export function PaymentEmailForm() {
                     </InputAdornment>
                   }
                   startAdornment={
-                    <MailOutlineIcon sx={{ ml: 1, mr: 2, color: "#5c6f82" }} />
+                    <MailOutlineIcon sx={{ mr: 2, color: "#5c6f82" }} />
                   }
                 />
               </Box>
