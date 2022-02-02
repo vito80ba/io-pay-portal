@@ -6,6 +6,7 @@ import { Box, Button, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import InformationModal from "../../../../components/InformationModal/InformationModal";
 import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
@@ -15,8 +16,9 @@ import {
   PaymentFormFields,
 } from "../../models/paymentModel";
 
-export function PaymentForm() {
+export function PaymentIndexForm() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -44,6 +46,10 @@ export function PaymentForm() {
     return errors;
   };
 
+  const handleContinue = React.useCallback(() => {
+    navigate("/summary");
+  }, []);
+
   return (
     <>
       <Formik
@@ -53,7 +59,7 @@ export function PaymentForm() {
           cf: "",
         }}
         validate={validate}
-        onSubmit={() => {}}
+        onSubmit={handleContinue}
       >
         {(formikProps) => {
           const {
