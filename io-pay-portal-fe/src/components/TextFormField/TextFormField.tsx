@@ -9,15 +9,26 @@ interface TextFormFieldProps {
   errorText: string | undefined;
   error: boolean;
   label: string;
-  type: string;
   id: string;
+  type: string;
   variant?: "outlined" | "standard" | "filled" | undefined;
   style?: React.CSSProperties;
   sx?: SxProps;
   value?: string | number;
   endAdornment?: React.ReactNode;
+  startAdornment?: React.ReactNode;
   disabled?: boolean;
   readOnly?: boolean;
+  inputMode?:
+    | "search"
+    | "text"
+    | "none"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | undefined;
   handleChange: FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   handleBlur: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
@@ -44,8 +55,10 @@ function TextFormField(props: TextFormFieldProps) {
         onChange: props.handleChange,
         onBlur: props.handleBlur,
         endAdornment: props.endAdornment,
+        startAdornment: props.startAdornment,
         value: props.value,
         readOnly: props.readOnly,
+        inputMode: props.inputMode,
       }}
     />
   );

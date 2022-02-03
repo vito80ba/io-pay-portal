@@ -41,6 +41,22 @@ export const TRANSLATIONS_IT = {
       submit: "Paga questo avviso",
     },
   },
+  paymentEmailPage: {
+    title: "Inserisci la tua email",
+    description: "Riceverai l'esito del pagamento a questo indirizzo",
+    formFields: {
+      email: "Il tuo indirizzo email",
+      confirmEmail: "Ripeti di nuovo",
+    },
+    formErrors: {
+      required: "Campo obbligatorio",
+      invalid: "Inserisci un indirizzo email valido",
+      notEqual: "Gli indirizzi email devono coincidere",
+    },
+    formButtons: {
+      submit: "Continua",
+    },
+  },
   general: {
     and: "e",
   },

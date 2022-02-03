@@ -1,9 +1,12 @@
+/* eslint-disable sonarjs/no-identical-functions */
+/* eslint-disable functional/immutable-data */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 import { Box, Button, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router";
 import InformationModal from "../../../../components/InformationModal/InformationModal";
 import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
@@ -13,8 +16,10 @@ import {
   PaymentFormFields,
 } from "../../models/paymentModel";
 
-export function PaymentForm() {
+export function PaymentIndexForm() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -42,6 +47,11 @@ export function PaymentForm() {
     return errors;
   };
 
+  const currentPath = location.pathname;
+  const handleContinue = React.useCallback(() => {
+    navigate(`${currentPath}/summary`);
+  }, []);
+
   return (
     <>
       <Formik
@@ -51,7 +61,7 @@ export function PaymentForm() {
           cf: "",
         }}
         validate={validate}
-        onSubmit={() => {}}
+        onSubmit={handleContinue}
       >
         {(formikProps) => {
           const {
@@ -72,15 +82,22 @@ export function PaymentForm() {
                   error={!!(errors.billCode && touched.billCode)}
                   label="paymentPage.formFields.billCode"
                   id="billCode"
-                  type="billCode"
+                  type="text"
+                  inputMode="numeric"
                   value={values.billCode}
-                  handleChange={handleChange}
+                  handleChange={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(
+                      /\s/g,
+                      ""
+                    );
+                    handleChange(e);
+                  }}
                   handleBlur={handleBlur}
                   sx={{ mb: 2 }}
                   endAdornment={
                     <InputAdornment position="end">
                       {getFormValidationIcon(
-                        touched.billCode,
+                        !!values.billCode,
                         !!errors.billCode
                       )}
                     </InputAdornment>
@@ -93,13 +110,20 @@ export function PaymentForm() {
                   error={Boolean(errors.cf && touched.cf)}
                   label="paymentPage.formFields.cf"
                   id="cf"
-                  type="cf"
+                  type="text"
+                  inputMode="numeric"
                   value={values.cf}
-                  handleChange={handleChange}
+                  handleChange={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(
+                      /\s/g,
+                      ""
+                    );
+                    handleChange(e);
+                  }}
                   handleBlur={handleBlur}
                   endAdornment={
                     <InputAdornment position="end">
-                      {getFormValidationIcon(touched.cf, !!errors.cf)}
+                      {getFormValidationIcon(!!values.cf, !!errors.cf)}
                     </InputAdornment>
                   }
                 />
