@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import { TRANSLATIONS_EN } from "./en/translations";
 import { TRANSLATIONS_IT } from "./it/translations";
 
