@@ -92,3 +92,40 @@ The CI/CD pipelines are defined in the _.devops_ folder. It is required to set t
 - IO_PAY_PORTAL_API_REQUEST_TIMEOUT
 - IO_PAY_PORTAL_PAY_WL_POLLING_INTERVAL
 - IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS
+
+## Adding Translations
+
+The app uses i18n for translations, in order to add a new one follow this steps:
+- Add new language folder in src/translations
+- Create a new file titled: translations.ts
+- Copy the content of the existing translations as template and change accordingly with new translations
+   ```sh
+   export const TRANSLATIONS_<LANG> = {
+   mainPage: {
+      footer: {
+         accessibility: <"Accessibilità">,
+         ...
+      },
+   },
+   ...
+   ```
+- In src/translations/lang.ts import your template
+   ```sh
+   import { TRANSLATIONS_IT } from "./it/translations";
+   ```
+- Add the new configuration in src/translations/lang.ts
+   ```sh
+   const lang: Languages = {
+      it: {
+      label: "Italiano",
+      lang: "it-IT",
+      translation: TRANSLATIONS_IT,
+      },
+      en: {
+      label: "English",
+      lang: "en-EN",
+      translation: TRANSLATIONS_EN,
+      },
+      //here
+   }
+   ```
