@@ -1,11 +1,24 @@
+/* eslint-disable functional/immutable-data */
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { getSortedLang } from "../../translations/lang";
 
 export default function LanguageMenu() {
   const { i18n } = useTranslation();
   const [lang, setLang] = React.useState<string>(i18n.language.split("-")[0]);
+  const languages = getSortedLang().map((elem, index) => (
+    <MenuItem
+      key={index}
+      onClick={() => {
+        void changeLanguageHandler(elem.lang.split("-")[0]);
+        handleMenuClose();
+      }}
+    >
+      {elem.label}
+    </MenuItem>
+  ));
 
   const changeLanguageHandler = React.useCallback(async (lang: string) => {
     setLang(lang);
@@ -41,22 +54,7 @@ export default function LanguageMenu() {
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        <MenuItem
-          onClick={() => {
-            void changeLanguageHandler("it");
-            handleMenuClose();
-          }}
-        >
-          Italiano
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            void changeLanguageHandler("en");
-            handleMenuClose();
-          }}
-        >
-          English
-        </MenuItem>
+        {languages}
       </Menu>
       <IconButton
         size="medium"

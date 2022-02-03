@@ -1,10 +1,8 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-import { TRANSLATIONS_EN } from "./en/translations";
-import { TRANSLATIONS_IT } from "./it/translations";
+import lang from "./lang";
 
-const EN = "en";
 const IT = "it";
 
 const DETECTION_OPTIONS = {
@@ -19,12 +17,7 @@ void i18n
     detection: DETECTION_OPTIONS,
     fallbackLng: IT,
     resources: {
-      [EN]: {
-        translation: TRANSLATIONS_EN,
-      },
-      [IT]: {
-        translation: TRANSLATIONS_IT,
-      },
+      ...lang,
     },
   });
 
