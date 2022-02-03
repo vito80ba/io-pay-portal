@@ -2,13 +2,12 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
-import { Box, Button, InputAdornment } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
-import InformationModal from "../../../../components/InformationModal/InformationModal";
-import PrivacyPolicy from "../../../../components/PrivacyPolicy/PrivacyPolicy";
+import { FormButtons } from "../../../../components/FormButtons/FormButtons";
+import PrivacyInfo from "../../../../components/PrivacyPolicy/PrivacyInfo";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { getFormValidationIcon } from "../../../../utils/form/formValidation";
 import {
@@ -16,13 +15,11 @@ import {
   PaymentFormFields,
 } from "../../models/paymentModel";
 
-export function PaymentIndexForm() {
-  const { t } = useTranslation();
+export function PaymentNoticeForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
-  const [modalOpen, setModalOpen] = React.useState(false);
 
   const validate = (values: PaymentFormFields) => {
     const errors: PaymentFormErrors = {
@@ -47,9 +44,9 @@ export function PaymentIndexForm() {
     return errors;
   };
 
-  const currentPath = location.pathname;
+  const currentPath = location.pathname.split("/")[1];
   const handleContinue = React.useCallback(() => {
-    navigate(`${currentPath}/summary`);
+    navigate(`/${currentPath}/summary`);
   }, []);
 
   return (
@@ -128,38 +125,6 @@ export function PaymentIndexForm() {
                   }
                 />
               </Box>
-              <Box mt={4}>
-                <p>
-                  {t("paymentPage.privacyDesc")}
-                  <a
-                    href="#"
-                    style={{ fontWeight: 600, textDecoration: "none" }}
-                    onClick={() => setModalOpen(true)}
-                  >
-                    {t("paymentPage.privacy")}
-                  </a>
-                  <br />
-                  {`${t("paymentPage.googleDesc")} (`}
-                  <a
-                    href="https://policies.google.com/privacy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontWeight: 600, textDecoration: "none" }}
-                  >
-                    {t("paymentPage.privacyPolicy")}
-                  </a>
-                  {` ${t("general.and")} `}
-                  <a
-                    href="https://policies.google.com/terms"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontWeight: 600, textDecoration: "none" }}
-                  >
-                    {t("paymentPage.serviceTerms")}
-                  </a>
-                  {")."}
-                </p>
-              </Box>
               <Box
                 sx={{
                   position: { xs: "fixed", sm: "relative" },
@@ -173,32 +138,20 @@ export function PaymentIndexForm() {
                   width: "100%",
                 }}
               >
-                <Button
-                  className="submitButton"
-                  variant="contained"
+                <FormButtons
+                  submitTitle="paymentPage.formButtons.submit"
+                  cancelTitle="paymentPage.formButtons.cancel"
                   disabled={disabled}
-                  onClick={() => handleSubmit()}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    minHeight: 45,
+                  handleSubmit={() => handleSubmit()}
+                  handleCancel={() => {
+                    navigate(-1);
                   }}
-                >
-                  {t("paymentPage.formButtons.submit")}
-                </Button>
+                />
               </Box>
             </form>
           );
         }}
       </Formik>
-      <InformationModal
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-        }}
-      >
-        <PrivacyPolicy />
-      </InformationModal>
     </>
   );
 }

@@ -4,6 +4,7 @@ import theme from "@pagopa/mui-italia/theme";
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/commons/Layout";
+import IndexPage from "./routes/IndexPage";
 import PaymentEmailPage from "./routes/PaymentEmailPage";
 import PaymentOutlet from "./routes/PaymentOutlet";
 import PaymentPage from "./routes/PaymentPage";
@@ -19,7 +20,8 @@ export function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/payment" />} />
             <Route path="/payment" element={<PaymentOutlet />}>
-              <Route path="" element={<PaymentPage />} />
+              <Route path="" element={<IndexPage />} />
+              <Route path="notice" element={<PaymentPage />} />
               <Route path="summary" element={<PaymentSummaryPage />} />
               <Route path="email" element={<PaymentEmailPage />} />
               <Route path="*" element={<Navigate replace to="/" />} />

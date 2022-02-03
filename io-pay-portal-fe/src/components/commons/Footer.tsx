@@ -1,10 +1,12 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import pagopaLogo from "../../assets/images/logo-pagopa-spa.svg";
 
 export default function Footer() {
   const { t } = useTranslation();
+  const location = useLocation();
 
   return (
     <Box
@@ -13,11 +15,19 @@ export default function Footer() {
       alignItems={"center"}
       height={53}
       pt={0}
-      pb={{ xs: 16, sm: 0 }}
+      pb={{ ...(location.pathname === "/payment" ? {} : { xs: 16 }), sm: 0 }}
       pl={6}
       pr={6}
-      margin={{ xs: "3rem 0 0", sm: 0 }}
-      bgcolor={{ xs: "background.default", sm: "#F5F6F7" }}
+      margin={{
+        ...(location.pathname === "/payment" ? {} : { xs: "3rem 0 0" }),
+        sm: 0,
+      }}
+      bgcolor={{
+        ...(location.pathname === "/payment"
+          ? { xs: "#F5F6F7" }
+          : { xs: "background.default" }),
+        sm: "#F5F6F7",
+      }}
     >
       <Box display={"flex"} alignItems={"center"} gap={1}>
         <a

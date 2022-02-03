@@ -25,7 +25,7 @@ export const TRANSLATIONS_EN = {
       minCf: "Enter 11 digits",
     },
     formButtons: {
-      cancel: "Cancel",
+      cancel: "Back",
       submit: "Continue",
     },
   },

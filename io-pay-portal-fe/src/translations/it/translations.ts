@@ -24,7 +24,7 @@ export const TRANSLATIONS_IT = {
       minCf: "Inserisci 11 cifre",
     },
     formButtons: {
-      cancel: "Annulla",
+      cancel: "Indietro",
       submit: "Continua",
     },
   },
