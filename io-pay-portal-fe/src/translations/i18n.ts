@@ -3,10 +3,10 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import lang from "./lang";
 
-const IT = "it";
+export const fallbackLang = "it";
 
 const DETECTION_OPTIONS = {
-  order: ["navigator"],
+  order: ["querystring", "navigator"],
   caches: [],
 };
 
@@ -15,7 +15,7 @@ void i18n
   .use(initReactI18next)
   .init({
     detection: DETECTION_OPTIONS,
-    fallbackLng: IT,
+    fallbackLng: fallbackLang,
     resources: {
       ...lang,
     },

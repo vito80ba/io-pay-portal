@@ -3,7 +3,9 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { fallbackLang } from "../../translations/i18n";
 import { getSortedLang } from "../../translations/lang";
+import supportedLang from "../../translations/lang";
 
 export default function LanguageMenu() {
   const { i18n } = useTranslation();
@@ -72,7 +74,9 @@ export default function LanguageMenu() {
           component="div"
           style={{ color: "#0073E6" }}
         >
-          {lang.toUpperCase()}
+          {lang in supportedLang
+            ? lang.toUpperCase()
+            : fallbackLang.toUpperCase()}
         </Typography>
         <KeyboardArrowDownIcon style={{ color: "#0073E6" }} />
       </IconButton>
