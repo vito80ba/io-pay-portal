@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import { InputBase, NativeSelect, styled } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";

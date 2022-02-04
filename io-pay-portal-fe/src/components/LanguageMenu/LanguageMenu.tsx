@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import React from "react";
