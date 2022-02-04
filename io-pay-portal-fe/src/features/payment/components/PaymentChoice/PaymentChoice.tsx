@@ -31,7 +31,7 @@ export function PaymentChoice() {
   return (
     <>
       <Grid container sx={defaultStyle} onClick={() => handleClickOnQR()}>
-        <Grid item xs={6}>
+        <Grid item xs={9}>
           <Box
             sx={{
               display: "flex",
@@ -66,7 +66,7 @@ export function PaymentChoice() {
         sx={{ ...defaultStyle, mt: 6 }}
         onClick={() => handleClickOnForm()}
       >
-        <Grid item xs={6}>
+        <Grid item xs={9}>
           <Box
             sx={{
               display: "flex",

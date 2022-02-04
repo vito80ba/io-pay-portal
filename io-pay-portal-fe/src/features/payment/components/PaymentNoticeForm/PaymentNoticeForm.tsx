@@ -7,7 +7,6 @@ import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
-import PrivacyInfo from "../../../../components/PrivacyPolicy/PrivacyInfo";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { getFormValidationIcon } from "../../../../utils/form/formValidation";
 import {

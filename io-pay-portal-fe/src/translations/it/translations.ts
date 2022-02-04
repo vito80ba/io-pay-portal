@@ -57,6 +57,21 @@ export const TRANSLATIONS_IT = {
       submit: "Continua",
     },
   },
+  indexPage: {
+    title: "Paga un avviso",
+    description:
+      "Puoi usare la tua carta di debito o credito, senza fare alcun login. Riceverai l'esito del pagamento via email.",
+  },
+  paymentChoice: {
+    qr: {
+      title: "Inquadra il codice QR",
+      description: "Usa la tua webcam o fotocamera",
+    },
+    form: {
+      title: "Inserisci tu i dati",
+      description: "Codice Avviso e Codice Fiscale Ente",
+    },
+  },
   general: {
     and: "e",
   },
