@@ -73,7 +73,7 @@ export function PaymentNoticeForm() {
               <Box>
                 <TextFormField
                   fullWidth
-                  variant="standard"
+                  variant="outlined"
                   errorText={errors.billCode}
                   error={!!(errors.billCode && touched.billCode)}
                   label="paymentPage.formFields.billCode"
@@ -101,7 +101,7 @@ export function PaymentNoticeForm() {
                 />
                 <TextFormField
                   fullWidth
-                  variant="standard"
+                  variant="outlined"
                   errorText={errors.cf}
                   error={Boolean(errors.cf && touched.cf)}
                   label="paymentPage.formFields.cf"

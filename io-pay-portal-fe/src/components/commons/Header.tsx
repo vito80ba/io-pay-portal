@@ -1,7 +1,6 @@
 import { Box, BoxProps } from "@mui/material";
 import React, { FunctionComponent } from "react";
 import pagopaLogo from "../../assets/images/pagopa-logo.svg";
-import LanguageMenu from "../LanguageMenu/LanguageMenu";
 
 export const Header: FunctionComponent<BoxProps> = () => (
   <Box
@@ -20,6 +19,5 @@ export const Header: FunctionComponent<BoxProps> = () => (
       alt="pagoPA"
       style={{ width: "56px", height: "36px" }}
     />
-    <LanguageMenu />
   </Box>
 );
