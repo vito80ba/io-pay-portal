@@ -36,6 +36,7 @@ export const TRANSLATIONS_IT = {
     creditor: "Ente Creditore",
     causal: "Causale",
     cf: "Codice Fiscale Ente Creditore",
+    iuv: "Codice IUV",
     buttons: {
       cancel: "Indietro",
       submit: "Paga questo avviso",

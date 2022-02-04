@@ -70,7 +70,7 @@ export function PaymentEmailForm() {
               <Box>
                 <TextFormField
                   fullWidth
-                  variant="standard"
+                  variant="outlined"
                   errorText={errors.email}
                   error={!!(errors.email && touched.email)}
                   label="paymentEmailPage.formFields.email"
@@ -91,7 +91,7 @@ export function PaymentEmailForm() {
                 />
                 <TextFormField
                   fullWidth
-                  variant="standard"
+                  variant="outlined"
                   errorText={errors.confirmEmail}
                   error={Boolean(errors.confirmEmail && touched.confirmEmail)}
                   label="paymentEmailPage.formFields.confirmEmail"

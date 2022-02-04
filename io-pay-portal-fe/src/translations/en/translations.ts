@@ -37,6 +37,7 @@ export const TRANSLATIONS_EN = {
     creditor: "Creditor Institution",
     causal: "Causal",
     cf: "Creditor Institution tax code",
+    iuv: "IUV Code",
     buttons: {
       cancel: "Back",
       submit: "Pay this notice",
