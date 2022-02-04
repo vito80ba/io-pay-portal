@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
 import InformationModal from "../components/InformationModal/InformationModal";
-import { PaymentIndexForm } from "../features/payment/components/PaymentIndexForm/PaymentIndexForm";
+import { PaymentNoticeForm } from "../features/payment/components/PaymentNoticeForm/PaymentNoticeForm";
 import { useSmallDevice } from "../hooks/useSmallDevice";
 
 export default function PaymentPage() {
@@ -26,7 +26,7 @@ export default function PaymentPage() {
         {t("paymentPage.helpLink")}
       </a>
       <Box sx={{ mt: 6 }}>
-        <PaymentIndexForm />
+        <PaymentNoticeForm />
       </Box>
 
       <InformationModal
