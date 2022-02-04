@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import pagopaLogo from "../../assets/images/logo-pagopa-spa.svg";
-import LanguageFooterMenu from "../LanguageMenu/LanguageFooterMenu";
+import LanguageFooterMenu from "../LanguageMenu/LanguageNativeSelect";
 
 export default function Footer(props: { fixedPages: Array<string> }) {
   const { t } = useTranslation();
