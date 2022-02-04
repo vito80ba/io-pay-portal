@@ -12,11 +12,13 @@ import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
 
 export function App() {
+  const fixedFooterPages = ["payment", "qrcode"];
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Layout>
+        <Layout fixedFooterPages={fixedFooterPages}>
           <Routes>
             <Route path="/" element={<Navigate to="/payment" />} />
             <Route path="/payment" element={<PaymentOutlet />}>

@@ -1,32 +1,39 @@
-import { Container, ContainerProps } from "@mui/material";
-import { Box } from "@mui/system";
-import React, { FunctionComponent } from "react";
+import { Container } from "@mui/material";
+import { Box, SxProps } from "@mui/system";
+import React from "react";
 import Footer from "./Footer";
 import { Header } from "./Header";
 
-export const Layout: FunctionComponent<ContainerProps> = ({ sx, children }) => (
-  <>
-    <Box
-      sx={{
-        display: { sm: "flex" },
-        flexDirection: "column",
-        height: "100vh",
-      }}
-    >
-      <Header />
-      <Container
+interface LayoutProps {
+  sx?: SxProps;
+  children?: React.ReactNode;
+  fixedFooterPages: Array<string>;
+}
+export function Layout({ sx, children, fixedFooterPages }: LayoutProps) {
+  return (
+    <>
+      <Box
         sx={{
-          ...sx,
-          p: { xs: 6, sm: 0 },
-          pl: { sm: 6, md: 0 },
-          pr: { sm: 6, md: 0 },
-          height: { xs: "100%" },
+          display: { sm: "flex" },
+          flexDirection: "column",
+          height: "100vh",
         }}
-        maxWidth={"sm"}
       >
-        {children}
-      </Container>
-      <Footer />
-    </Box>
-  </>
-);
+        <Header />
+        <Container
+          sx={{
+            ...sx,
+            p: { xs: 6, sm: 0 },
+            pl: { sm: 6, md: 0 },
+            pr: { sm: 6, md: 0 },
+            height: { xs: "100%" },
+          }}
+          maxWidth={"sm"}
+        >
+          {children}
+        </Container>
+        <Footer fixedPages={fixedFooterPages} />
+      </Box>
+    </>
+  );
+}
