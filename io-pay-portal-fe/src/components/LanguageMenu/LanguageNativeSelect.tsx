@@ -21,7 +21,9 @@ export default function LanguageNativeSelect() {
   }, []);
 
   const StyledInput = styled(InputBase)(() => ({
-    "& .MuiInputBase-input": {},
+    "& .MuiInputBase-input": {
+      padding: 0,
+    },
   }));
 
   return (
