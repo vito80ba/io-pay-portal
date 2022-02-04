@@ -24,45 +24,70 @@ export default function PaymentSummaryPage() {
       <Typography variant="h2" component={"div"} sx={{ fontSize: "2em" }}>
         {t("paymentSummaryPage.title")}
       </Typography>
-      <Typography paragraph={true} sx={{ mt: 1, mb: 1 }}>
+      <Typography paragraph={true} sx={{ mt: 1, mb: 4 }}>
         {t("paymentSummaryPage.description")}
       </Typography>
-      <Typography variant="h5" component={"div"} mt={6}>
-        <Box sx={defaultStyle}>
-          <Box>{t("paymentSummaryPage.amount")}</Box>
-          <Box>{"€ 100,00"}</Box>
-        </Box>
-      </Typography>
-      <Typography variant="h6" component={"div"}>
-        <Box
-          sx={{
-            ...defaultStyle,
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Box>{t("paymentSummaryPage.creditor")}</Box>
-          <Box sx={{ fontWeight: 600 }}>{"Comune di Milano"}</Box>
-        </Box>
-      </Typography>
-      <Typography variant="h6" component={"div"}>
-        <Box
-          sx={{
-            ...defaultStyle,
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <Box>{t("paymentSummaryPage.causal")}</Box>
-          <Box sx={{ fontWeight: 600 }}>{"TARI 2020 Rata Unica"}</Box>
-        </Box>
-      </Typography>
-      <Typography variant="h6" component={"div"}>
-        <Box sx={defaultStyle}>
-          <Box>{t("paymentSummaryPage.cf")}</Box>
-          <Box sx={{ fontWeight: 600 }}>{"77777777777"}</Box>
-        </Box>
-      </Typography>
+
+      <Box
+        sx={{
+          ...defaultStyle,
+          flexDirection: "column",
+        }}
+      >
+        <Typography variant="h6" component={"div"}>
+          {t("paymentSummaryPage.creditor")}
+        </Typography>
+        <Typography variant="h5" component={"div"}>
+          {"Comune di Milano"}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          ...defaultStyle,
+          flexDirection: "column",
+        }}
+      >
+        <Typography variant="h6" component={"div"}>
+          {t("paymentSummaryPage.causal")}
+        </Typography>
+        <Typography variant="h5" component={"div"}>
+          {"TARI 2020 Rata Unica"}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          ...defaultStyle,
+          flexDirection: "column",
+        }}
+      >
+        <Typography variant="h6" component={"div"}>
+          {t("paymentSummaryPage.amount")}
+        </Typography>
+        <Typography variant="h5" component={"div"}>
+          {"€ 100,00"}
+        </Typography>
+      </Box>
+
+      <Box sx={{ ...defaultStyle, alignItems: "center" }}>
+        <Typography variant="h6" component={"div"} pr={2}>
+          {t("paymentSummaryPage.cf")}
+        </Typography>
+        <Typography variant="h5" component={"div"}>
+          {"77777777777"}
+        </Typography>
+      </Box>
+
+      <Box sx={{ ...defaultStyle, alignItems: "center" }}>
+        <Typography variant="h6" component={"div"} pr={2}>
+          {t("paymentSummaryPage.iuv")}
+        </Typography>
+        <Typography variant="h5" component={"div"}>
+          {"777777777777777"}
+        </Typography>
+      </Box>
+
       <FormButtons
         submitTitle="paymentSummaryPage.buttons.submit"
         cancelTitle="paymentSummaryPage.buttons.cancel"
