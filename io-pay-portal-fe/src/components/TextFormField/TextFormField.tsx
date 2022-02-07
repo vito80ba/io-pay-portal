@@ -29,6 +29,7 @@ interface TextFormFieldProps {
     | "numeric"
     | "decimal"
     | undefined;
+  autoComplete?: string;
   handleChange: FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   handleBlur: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
@@ -47,6 +48,7 @@ function TextFormField(props: TextFormFieldProps) {
       id={props.id}
       name={props.id}
       variant={props.variant}
+      autoComplete={props.autoComplete}
       style={props.style}
       sx={props.sx}
       InputProps={{

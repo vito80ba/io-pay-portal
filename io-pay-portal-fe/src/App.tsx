@@ -5,6 +5,7 @@ import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/commons/Layout";
 import IndexPage from "./routes/IndexPage";
+import InputCardPage from "./routes/InputCardPage";
 import PaymentEmailPage from "./routes/PaymentEmailPage";
 import PaymentOutlet from "./routes/PaymentOutlet";
 import PaymentPage from "./routes/PaymentPage";
@@ -26,6 +27,7 @@ export function App() {
               <Route path="notice" element={<PaymentPage />} />
               <Route path="summary" element={<PaymentSummaryPage />} />
               <Route path="email" element={<PaymentEmailPage />} />
+              <Route path="inputcard" element={<InputCardPage />} />
               <Route path="*" element={<Navigate replace to="/" />} />
             </Route>
             <Route path="*" element={<Navigate replace to="/" />} />
