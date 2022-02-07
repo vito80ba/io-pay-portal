@@ -1,17 +1,20 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
-import { Box, IconButton, InputAdornment } from "@mui/material";
+import { Box, IconButton, InputAdornment, SvgIcon } from "@mui/material";
 import cardValidator from "card-validator";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import sprite from "../../../../../src-pug/assets/icons/app.svg";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { expireDateFormatter } from "../../../../utils/form/formatters";
@@ -33,44 +36,46 @@ export function InputCardForm() {
   const [showNumber, setShowNumber] = React.useState(false);
   const [showCvv, setShowCvv] = React.useState(false);
   const [cvvLength, setCvvLength] = React.useState(3);
+  const [ccIcon, setCcIcon] = React.useState<string | undefined>(undefined);
 
   const validate = (values: InputCardFormFields) => {
     cardValidator.number(values.number).card?.type === "american-express"
       ? setCvvLength(4)
       : setCvvLength(3);
+    values.number && setCcIcon(cardValidator.number(values.number).card?.type);
     const errors: InputCardFormErrors = {
       ...(values.name
         ? {
             ...(cardValidator.cardholderName(values.name).isValid
               ? {}
-              : { name: "inputCardForm.errors.name.invalid" }),
+              : { name: "inputCardPage.formErrors.name" }),
           }
-        : { name: "inputCardForm.errors.required" }),
+        : { name: "inputCardPage.formErrors.required" }),
       ...(values.number
         ? {
             ...(cardValidator.number(values.number).isValid
               ? {}
-              : { number: "inputCardForm.errors.number.invalid" }),
+              : { number: "inputCardPage.formErrors.number" }),
           }
-        : { number: "inputCardForm.errors.required" }),
+        : { number: "inputCardPage.formErrors.required" }),
       ...(values.expirationDate
         ? {
             ...(cardValidator.expirationDate(values.expirationDate).isValid
               ? {}
               : {
-                  expirationDate: "inputCardForm.errors.expirationDate.invalid",
+                  expirationDate: "inputCardPage.formErrors.expirationDate",
                 }),
           }
-        : { expirationDate: "inputCardForm.errors.required" }),
+        : { expirationDate: "inputCardPage.formErrors.required" }),
       ...(values.cvv
         ? {
             ...(cardValidator.cvv(values.cvv, cvvLength).isValid
               ? {}
               : {
-                  cvv: "inputCardForm.errors.cvv.invalid",
+                  cvv: "inputCardPage.formErrors.cvv",
                 }),
           }
-        : { cvv: "inputCardForm.errors.required" }),
+        : { cvv: "inputCardPage.formErrors.required" }),
     };
 
     setDisabled(!!Object.keys(errors).length);
@@ -114,7 +119,7 @@ export function InputCardForm() {
                   variant="outlined"
                   errorText={errors.name}
                   error={!!(errors.name && touched.name)}
-                  label="inputcardPage.formFields.name"
+                  label="inputCardPage.formFields.name"
                   id="name"
                   type="text"
                   inputMode="numeric"
@@ -136,7 +141,7 @@ export function InputCardForm() {
                   variant="outlined"
                   errorText={errors.number}
                   error={!!(errors.number && touched.number)}
-                  label="inputcardPage.formFields.number"
+                  label="inputCardPage.formFields.number"
                   id="number"
                   type={showNumber ? "text" : "password"}
                   inputMode="numeric"
@@ -162,7 +167,13 @@ export function InputCardForm() {
                     </InputAdornment>
                   }
                   startAdornment={
-                    <PersonIcon sx={{ mr: 2, color: "#5c6f82" }} />
+                    ccIcon ? (
+                      <SvgIcon sx={{ mr: 2, color: "#5c6f82" }}>
+                        <use href={sprite + `#icons-${ccIcon}-mini`} />
+                      </SvgIcon>
+                    ) : (
+                      <CreditCardIcon sx={{ mr: 2, color: "#5c6f82" }} />
+                    )
                   }
                 />
                 <Box
@@ -175,7 +186,7 @@ export function InputCardForm() {
                     variant="outlined"
                     errorText={errors.expirationDate}
                     error={!!(errors.expirationDate && touched.expirationDate)}
-                    label="inputcardPage.formFields.expirationDate"
+                    label="inputCardPage.formFields.expirationDate"
                     id="expirationDate"
                     type="text"
                     inputMode="numeric"
@@ -209,7 +220,7 @@ export function InputCardForm() {
                     variant="outlined"
                     errorText={errors.cvv}
                     error={!!(errors.cvv && touched.cvv)}
-                    label="inputcardPage.formFields.cvv"
+                    label="inputCardPage.formFields.cvv"
                     id="cvv"
                     type={showCvv ? "text" : "password"}
                     inputMode="numeric"

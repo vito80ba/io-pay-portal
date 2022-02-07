@@ -76,4 +76,20 @@ export const TRANSLATIONS_IT = {
   general: {
     and: "e",
   },
+  inputCardPage: {
+    title: "Inserisci i dati della carta",
+    formFields: {
+      name: "Titolare carta",
+      number: "Numero carta",
+      expirationDate: "Scadenza",
+      cvv: "Codice di sicurezza",
+    },
+    formErrors: {
+      required: "Campo obbligatorio",
+      name: "Inserisci come riportato sulla carta",
+      number: "Inserisci un numero valido",
+      expirationDate: "Inserisci mm/aa",
+      cvv: "Inserisci 3/4 cifre",
+    },
+  },
 };

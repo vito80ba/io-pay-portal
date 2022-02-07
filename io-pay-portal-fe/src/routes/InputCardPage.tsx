@@ -9,7 +9,7 @@ export default function InputCardPage() {
   return (
     <Box p={"3rem 0"}>
       <Typography variant="h2" component={"div"} sx={{ fontSize: "2em" }}>
-        {t("inputcardPage.title")}
+        {t("inputCardPage.title")}
       </Typography>
       <Box sx={{ mt: 6 }}>
         <InputCardForm />
