@@ -4,30 +4,6 @@ export function emailValidation(email: string) {
   );
 }
 
-export function cardNameValidation(name: string) {
-  return /^[a-zA-Z]+[\s']+([a-zA-Z]+[\s']*){1,}$/.test(name);
-}
-
-export function cardNumberValidation(ccnumber: string) {
-  return /^[0-9\\*]{15,19}$/.test(ccnumber);
-}
-
-export function cardMonthValidation(month: string) {
-  return /^(0[1-9]|1[0-2])$/.test(month);
-}
-
-export function cardYearValidation(year: string) {
-  return /^[0-9]{2}$/.test(year);
-}
-
-export function cvvValidation(cvv: string) {
-  return /^[0-9]{3,4}$/.test(cvv);
-}
-
 export function digitValidation(text: string) {
   return /^\d+$/.test(text);
-}
-
-export function expirationDateValidation(text: string) {
-  return /^((0[1-9]|1[0-2])|([1-9]))\/[0-9]{2}$/.test(text);
 }
