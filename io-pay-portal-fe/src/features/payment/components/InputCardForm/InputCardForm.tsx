@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -8,7 +9,14 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
-import { Box, IconButton, InputAdornment, SvgIcon } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  Typography,
+  SvgIcon,
+  Switch,
+} from "@mui/material";
 import cardValidator from "card-validator";
 import { Formik, FormikProps } from "formik";
 import React from "react";
@@ -16,6 +24,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import sprite from "../../../../../src-pug/assets/icons/app.svg";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
+import InformationModal from "../../../../components/InformationModal/InformationModal";
+import PrivacyTerms from "../../../../components/PrivacyPolicy/PrivacyTerms";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { expireDateFormatter } from "../../../../utils/form/formatters";
 import {
@@ -37,6 +47,7 @@ export function InputCardForm() {
   const [showCvv, setShowCvv] = React.useState(false);
   const [cvvLength, setCvvLength] = React.useState(3);
   const [ccIcon, setCcIcon] = React.useState<string | undefined>(undefined);
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   const validate = (values: InputCardFormFields) => {
     cardValidator.number(values.number).card?.type === "american-express"
@@ -76,6 +87,7 @@ export function InputCardForm() {
                 }),
           }
         : { cvv: "inputCardPage.formErrors.required" }),
+      ...(values.terms ? {} : { terms: "inputCardPage.formErrors.required" }),
     };
 
     setDisabled(!!Object.keys(errors).length);
@@ -98,6 +110,7 @@ export function InputCardForm() {
           number: "",
           expirationDate: "",
           cvv: "",
+          terms: false,
         }}
         validate={validate}
         onSubmit={() => {}}
@@ -249,6 +262,28 @@ export function InputCardForm() {
                     }
                   />
                 </Box>
+                <Box
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                  sx={{ gap: 2 }}
+                >
+                  <Switch
+                    id="terms"
+                    checked={values.terms}
+                    onChange={handleChange}
+                  />
+                  <PrivacyTerms />
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <a
+                    href="#"
+                    style={{ fontWeight: 600, textDecoration: "none" }}
+                    onClick={() => setModalOpen(true)}
+                  >
+                    {t("inputCardPage.helpLink")}
+                  </a>
+                </Box>
               </Box>
               <Box
                 sx={{
@@ -277,6 +312,25 @@ export function InputCardForm() {
           );
         }}
       </Formik>
+      <InformationModal
+        maxWidth="xs"
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      >
+        <Box p={"2rem"}>
+          <Typography variant="h3" component={"div"} sx={{ mb: 2 }}>
+            {t("inputCardPage.modal.title")}
+          </Typography>
+          <Typography paragraph={true}>
+            {t("inputCardPage.modal.description")}
+          </Typography>
+          <Typography paragraph={true}>
+            {t("inputCardPage.modal.descriptionAE")}
+          </Typography>
+        </Box>
+      </InformationModal>
     </>
   );
 }

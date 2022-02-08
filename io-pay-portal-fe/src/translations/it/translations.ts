@@ -91,5 +91,16 @@ export const TRANSLATIONS_IT = {
       expirationDate: "Inserisci mm/aa",
       cvv: "Inserisci 3/4 cifre",
     },
+    privacyDesc: "Ho letto e compreso ",
+    privacyTerms:
+      "l'informativa privacy e accetto i termini e condizioni d'uso",
+    helpLink: "Dove trovo il codice di sicurezza?",
+    modal: {
+      title: "Codice di sicurezza",
+      description:
+        "È un codice a tre cifre, chiamato CVV o CVS, che puoi trovare sul retro della tua carta.",
+      descriptionAE:
+        "Sulle carte American Express il codice (CID) è a quattro cifre ed è posizionato sul fronte.",
+    },
   },
 };
