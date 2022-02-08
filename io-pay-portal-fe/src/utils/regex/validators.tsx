@@ -4,6 +4,10 @@ export function emailValidation(email: string) {
   );
 }
 
+export function cardNameValidation(name: string) {
+  return /^[a-zA-Z]+[\s']+([a-zA-Z]+[\s']*){1,}$/.test(name);
+}
+
 export function digitValidation(text: string) {
   return /^\d+$/.test(text);
 }

@@ -4,3 +4,7 @@ export function expireDateFormatter(old: string, current: string) {
   }
   return current;
 }
+
+export function cleanSpaces(text: string) {
+  return text.replace(/\s/g, "");
+}

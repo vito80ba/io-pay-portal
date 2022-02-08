@@ -13,9 +13,9 @@ import {
   Box,
   IconButton,
   InputAdornment,
-  Typography,
   SvgIcon,
   Switch,
+  Typography,
 } from "@mui/material";
 import cardValidator from "card-validator";
 import { Formik, FormikProps } from "formik";
@@ -27,15 +27,23 @@ import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import InformationModal from "../../../../components/InformationModal/InformationModal";
 import PrivacyTerms from "../../../../components/PrivacyPolicy/PrivacyTerms";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
-import { expireDateFormatter } from "../../../../utils/form/formatters";
+import {
+  cleanSpaces,
+  expireDateFormatter,
+} from "../../../../utils/form/formatters";
 import {
   expirationDateChangeValidation,
   getFormValidationIcon,
 } from "../../../../utils/form/formValidation";
-import { digitValidation } from "../../../../utils/regex/validators";
+import {
+  cardNameValidation,
+  digitValidation,
+} from "../../../../utils/regex/validators";
 import {
   InputCardFormErrors,
   InputCardFormFields,
+  SecureCodeDigits,
+  SecureCodeLabels,
 } from "../../models/paymentModel";
 
 export function InputCardForm() {
@@ -43,21 +51,22 @@ export function InputCardForm() {
   const navigate = useNavigate();
   const formRef = React.useRef<FormikProps<InputCardFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
-  const [showNumber, setShowNumber] = React.useState(false);
+  const [showNumber, setShowNumber] = React.useState(true);
   const [showCvv, setShowCvv] = React.useState(false);
-  const [cvvLength, setCvvLength] = React.useState(3);
+  const [cvvLength, setCvvLength] = React.useState(SecureCodeDigits.cvv);
   const [ccIcon, setCcIcon] = React.useState<string | undefined>(undefined);
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const validate = (values: InputCardFormFields) => {
     cardValidator.number(values.number).card?.type === "american-express"
-      ? setCvvLength(4)
-      : setCvvLength(3);
+      ? setCvvLength(SecureCodeDigits.cid)
+      : setCvvLength(SecureCodeDigits.cvv);
+
     values.number && setCcIcon(cardValidator.number(values.number).card?.type);
     const errors: InputCardFormErrors = {
       ...(values.name
         ? {
-            ...(cardValidator.cardholderName(values.name).isValid
+            ...(cardNameValidation(values.name)
               ? {}
               : { name: "inputCardPage.formErrors.name" }),
           }
@@ -83,7 +92,7 @@ export function InputCardForm() {
             ...(cardValidator.cvv(values.cvv, cvvLength).isValid
               ? {}
               : {
-                  cvv: "inputCardPage.formErrors.cvv",
+                  cvv: SecureCodeLabels[cvvLength].error,
                 }),
           }
         : { cvv: "inputCardPage.formErrors.required" }),
@@ -162,6 +171,7 @@ export function InputCardForm() {
                   autoComplete="cc-number"
                   handleChange={(e) => {
                     e.currentTarget.value || handleChange(e);
+                    e.currentTarget.value = cleanSpaces(e.currentTarget.value);
                     digitValidation(e.currentTarget.value) &&
                       e.currentTarget.value.length <= 19 &&
                       handleChange(e);
@@ -233,7 +243,7 @@ export function InputCardForm() {
                     variant="outlined"
                     errorText={errors.cvv}
                     error={!!(errors.cvv && touched.cvv)}
-                    label="inputCardPage.formFields.cvv"
+                    label={SecureCodeLabels[cvvLength].label}
                     id="cvv"
                     type={showCvv ? "text" : "password"}
                     inputMode="numeric"

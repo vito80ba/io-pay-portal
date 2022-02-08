@@ -83,13 +83,15 @@ export const TRANSLATIONS_IT = {
       number: "Numero carta",
       expirationDate: "Scadenza",
       cvv: "Codice di sicurezza",
+      cid: "CID (4 cifre)",
     },
     formErrors: {
       required: "Campo obbligatorio",
       name: "Inserisci come riportato sulla carta",
       number: "Inserisci un numero valido",
       expirationDate: "Inserisci mm/aa",
-      cvv: "Inserisci 3/4 cifre",
+      cvv: "Inserisci 3 cifre",
+      cid: "Inserisci 4 cifre",
     },
     privacyDesc: "Ho letto e compreso ",
     privacyTerms:
