@@ -17,3 +17,37 @@ export interface PaymentEmailFormErrors {
   email?: string;
   confirmEmail?: string;
 }
+
+export interface InputCardFormFields {
+  name: string;
+  number: string;
+  expirationDate: string;
+  cvv: string;
+  terms: boolean;
+}
+
+export interface InputCardFormErrors {
+  name?: string;
+  number?: string;
+  expirationDate?: string;
+  cvv?: string;
+  terms?: string;
+}
+
+export enum SecureCodeDigits {
+  cvv = 3,
+  cid = 4,
+}
+
+export const SecureCodeLabels: {
+  [key: number]: { label: string; error: string };
+} = {
+  3: {
+    label: "inputCardPage.formFields.cvv",
+    error: "inputCardPage.formErrors.cvv",
+  },
+  4: {
+    label: "inputCardPage.formFields.cid",
+    error: "inputCardPage.formErrors.cid",
+  },
+};

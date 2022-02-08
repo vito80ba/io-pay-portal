@@ -8,6 +8,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
+import { cleanSpaces } from "../../../../utils/form/formatters";
 import { getFormValidationIcon } from "../../../../utils/form/formValidation";
 import {
   PaymentFormErrors,
@@ -82,10 +83,7 @@ export function PaymentNoticeForm() {
                   inputMode="numeric"
                   value={values.billCode}
                   handleChange={(e) => {
-                    e.currentTarget.value = e.currentTarget.value.replace(
-                      /\s/g,
-                      ""
-                    );
+                    e.currentTarget.value = cleanSpaces(e.currentTarget.value);
                     handleChange(e);
                   }}
                   handleBlur={handleBlur}
@@ -110,10 +108,7 @@ export function PaymentNoticeForm() {
                   inputMode="numeric"
                   value={values.cf}
                   handleChange={(e) => {
-                    e.currentTarget.value = e.currentTarget.value.replace(
-                      /\s/g,
-                      ""
-                    );
+                    e.currentTarget.value = cleanSpaces(e.currentTarget.value);
                     handleChange(e);
                   }}
                   handleBlur={handleBlur}
