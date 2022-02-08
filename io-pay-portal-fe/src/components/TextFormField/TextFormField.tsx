@@ -60,6 +60,8 @@ function TextFormField(props: TextFormFieldProps) {
         startAdornment: props.startAdornment,
         value: props.value,
         readOnly: props.readOnly,
+      }}
+      inputProps={{
         inputMode: props.inputMode,
       }}
     />
