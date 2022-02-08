@@ -109,6 +109,50 @@ export function InputCardForm() {
   const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+  const handleDigitChange = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
+    handleChange: (e: React.ChangeEvent<any>) => void,
+    maxDigits: number
+  ) => {
+    digitValidation(e.currentTarget.value) &&
+      e.currentTarget.value.length <= maxDigits &&
+      handleChange(e);
+  };
+  const handleNumberChange = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const handleChange = formRef.current?.handleChange;
+    if (handleChange) {
+      e.currentTarget.value || handleChange(e);
+      e.currentTarget.value = cleanSpaces(e.currentTarget.value);
+      handleDigitChange(e, handleChange, 19);
+    }
+  };
+  const handleExpireChange = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const handleChange = formRef.current?.handleChange;
+    const values = formRef.current?.values;
+    if (handleChange && values) {
+      const value = e.currentTarget.value;
+      if (expirationDateChangeValidation(value)) {
+        e.currentTarget.value = expireDateFormatter(
+          values.expirationDate,
+          value
+        );
+        handleChange(e);
+      }
+    }
+  };
+  const handleCvvChange = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const handleChange = formRef.current?.handleChange;
+    if (handleChange) {
+      e.currentTarget.value || handleChange(e);
+      handleDigitChange(e, handleChange, cvvLength);
+    }
+  };
 
   return (
     <>
@@ -124,203 +168,175 @@ export function InputCardForm() {
         validate={validate}
         onSubmit={() => {}}
       >
-        {(formikProps) => {
-          const {
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-          } = formikProps;
-          return (
-            <form onSubmit={handleSubmit}>
-              <Box>
+        {({
+          touched,
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.name}
+                error={!!(errors.name && touched.name)}
+                label="inputCardPage.formFields.name"
+                id="name"
+                type="text"
+                value={values.name}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                sx={{ mb: 2 }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormValidationIcon(!!values.name, !!errors.name)}
+                  </InputAdornment>
+                }
+                startAdornment={<PersonIcon sx={{ mr: 2, color: "#5c6f82" }} />}
+              />
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.number}
+                error={!!(errors.number && touched.number)}
+                label="inputCardPage.formFields.number"
+                id="number"
+                type={showNumber ? "text" : "password"}
+                inputMode="numeric"
+                value={values.number}
+                autoComplete="cc-number"
+                handleChange={handleNumberChange}
+                handleBlur={handleBlur}
+                sx={{ mb: 2 }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormValidationIcon(!!values.number, !!errors.number)}
+                    <IconButton
+                      onClick={handleShowNumber}
+                      onMouseDown={handleMouseDown}
+                    >
+                      {showNumber ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                startAdornment={
+                  ccIcon ? (
+                    <SvgIcon sx={{ mr: 2, color: "#5c6f82" }}>
+                      <use href={sprite + `#icons-${ccIcon}-mini`} />
+                    </SvgIcon>
+                  ) : (
+                    <CreditCardIcon sx={{ mr: 2, color: "#5c6f82" }} />
+                  )
+                }
+              />
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                sx={{ gap: 2 }}
+              >
                 <TextFormField
                   fullWidth
                   variant="outlined"
-                  errorText={errors.name}
-                  error={!!(errors.name && touched.name)}
-                  label="inputCardPage.formFields.name"
-                  id="name"
+                  errorText={errors.expirationDate}
+                  error={!!(errors.expirationDate && touched.expirationDate)}
+                  label="inputCardPage.formFields.expirationDate"
+                  id="expirationDate"
                   type="text"
                   inputMode="numeric"
-                  value={values.name}
-                  handleChange={handleChange}
+                  value={values.expirationDate}
+                  handleChange={handleExpireChange}
                   handleBlur={handleBlur}
                   sx={{ mb: 2 }}
                   endAdornment={
                     <InputAdornment position="end">
-                      {getFormValidationIcon(!!values.name, !!errors.name)}
+                      {getFormValidationIcon(
+                        !!values.expirationDate,
+                        !!errors.expirationDate
+                      )}
                     </InputAdornment>
                   }
                   startAdornment={
-                    <PersonIcon sx={{ mr: 2, color: "#5c6f82" }} />
+                    <DateRangeIcon sx={{ mr: 2, color: "#5c6f82" }} />
                   }
                 />
                 <TextFormField
                   fullWidth
                   variant="outlined"
-                  errorText={errors.number}
-                  error={!!(errors.number && touched.number)}
-                  label="inputCardPage.formFields.number"
-                  id="number"
-                  type={showNumber ? "text" : "password"}
+                  errorText={errors.cvv}
+                  error={!!(errors.cvv && touched.cvv)}
+                  label={SecureCodeLabels[cvvLength].label}
+                  id="cvv"
+                  type={showCvv ? "text" : "password"}
                   inputMode="numeric"
-                  value={values.number}
-                  autoComplete="cc-number"
-                  handleChange={(e) => {
-                    e.currentTarget.value || handleChange(e);
-                    e.currentTarget.value = cleanSpaces(e.currentTarget.value);
-                    digitValidation(e.currentTarget.value) &&
-                      e.currentTarget.value.length <= 19 &&
-                      handleChange(e);
-                  }}
+                  value={values.cvv}
+                  handleChange={handleCvvChange}
                   handleBlur={handleBlur}
                   sx={{ mb: 2 }}
                   endAdornment={
                     <InputAdornment position="end">
-                      {getFormValidationIcon(!!values.number, !!errors.number)}
+                      {getFormValidationIcon(!!values.cvv, !!errors.cvv)}
                       <IconButton
-                        onClick={handleShowNumber}
+                        onClick={handleShowCvv}
                         onMouseDown={handleMouseDown}
                       >
-                        {showNumber ? <Visibility /> : <VisibilityOff />}
+                        {showCvv ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   }
-                  startAdornment={
-                    ccIcon ? (
-                      <SvgIcon sx={{ mr: 2, color: "#5c6f82" }}>
-                        <use href={sprite + `#icons-${ccIcon}-mini`} />
-                      </SvgIcon>
-                    ) : (
-                      <CreditCardIcon sx={{ mr: 2, color: "#5c6f82" }} />
-                    )
-                  }
+                  startAdornment={<LockIcon sx={{ mr: 2, color: "#5c6f82" }} />}
                 />
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  sx={{ gap: 2 }}
-                >
-                  <TextFormField
-                    fullWidth
-                    variant="outlined"
-                    errorText={errors.expirationDate}
-                    error={!!(errors.expirationDate && touched.expirationDate)}
-                    label="inputCardPage.formFields.expirationDate"
-                    id="expirationDate"
-                    type="text"
-                    inputMode="numeric"
-                    value={values.expirationDate}
-                    handleChange={(e) => {
-                      const value = e.currentTarget.value;
-                      if (expirationDateChangeValidation(value)) {
-                        e.currentTarget.value = expireDateFormatter(
-                          values.expirationDate,
-                          value
-                        );
-                        handleChange(e);
-                      }
-                    }}
-                    handleBlur={handleBlur}
-                    sx={{ mb: 2 }}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        {getFormValidationIcon(
-                          !!values.expirationDate,
-                          !!errors.expirationDate
-                        )}
-                      </InputAdornment>
-                    }
-                    startAdornment={
-                      <DateRangeIcon sx={{ mr: 2, color: "#5c6f82" }} />
-                    }
-                  />
-                  <TextFormField
-                    fullWidth
-                    variant="outlined"
-                    errorText={errors.cvv}
-                    error={!!(errors.cvv && touched.cvv)}
-                    label={SecureCodeLabels[cvvLength].label}
-                    id="cvv"
-                    type={showCvv ? "text" : "password"}
-                    inputMode="numeric"
-                    value={values.cvv}
-                    handleChange={(e) => {
-                      e.currentTarget.value || handleChange(e);
-                      digitValidation(e.currentTarget.value) &&
-                        e.currentTarget.value.length <= cvvLength &&
-                        handleChange(e);
-                    }}
-                    handleBlur={handleBlur}
-                    sx={{ mb: 2 }}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        {getFormValidationIcon(!!values.cvv, !!errors.cvv)}
-                        <IconButton
-                          onClick={handleShowCvv}
-                          onMouseDown={handleMouseDown}
-                        >
-                          {showCvv ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    startAdornment={
-                      <LockIcon sx={{ mr: 2, color: "#5c6f82" }} />
-                    }
-                  />
-                </Box>
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  sx={{ gap: 2 }}
-                >
-                  <Switch
-                    id="terms"
-                    checked={values.terms}
-                    onChange={handleChange}
-                  />
-                  <PrivacyTerms />
-                </Box>
-                <Box sx={{ mt: 2 }}>
-                  <a
-                    href="#"
-                    style={{ fontWeight: 600, textDecoration: "none" }}
-                    onClick={() => setModalOpen(true)}
-                  >
-                    {t("inputCardPage.helpLink")}
-                  </a>
-                </Box>
               </Box>
               <Box
-                sx={{
-                  position: { xs: "fixed", sm: "relative" },
-                  zIndex: { xs: 1000, sm: 0 },
-                  bottom: { xs: 0 },
-                  left: { xs: 0 },
-                  p: { xs: "1rem", sm: 0 },
-                  boxShadow: { xs: "0 0.5rem 1rem rgb(0 0 0 / 15%)", sm: 0 },
-                  bgcolor: { xs: "background.default" },
-                  mt: { sm: 6 },
-                  width: "100%",
-                }}
+                display={"flex"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                sx={{ gap: 2 }}
               >
-                <FormButtons
-                  submitTitle="paymentPage.formButtons.submit"
-                  cancelTitle="paymentPage.formButtons.cancel"
-                  disabled={disabled}
-                  handleSubmit={() => handleSubmit()}
-                  handleCancel={() => {
-                    navigate(-1);
-                  }}
+                <Switch
+                  id="terms"
+                  checked={values.terms}
+                  onChange={handleChange}
                 />
+                <PrivacyTerms />
               </Box>
-            </form>
-          );
-        }}
+              <Box sx={{ mt: 2 }}>
+                <a
+                  href="#"
+                  style={{ fontWeight: 600, textDecoration: "none" }}
+                  onClick={() => setModalOpen(true)}
+                >
+                  {t("inputCardPage.helpLink")}
+                </a>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                position: { xs: "fixed", sm: "relative" },
+                zIndex: { xs: 1000, sm: 0 },
+                bottom: { xs: 0 },
+                left: { xs: 0 },
+                p: { xs: "1rem", sm: 0 },
+                boxShadow: { xs: "0 0.5rem 1rem rgb(0 0 0 / 15%)", sm: 0 },
+                bgcolor: { xs: "background.default" },
+                mt: { sm: 6 },
+                width: "100%",
+              }}
+            >
+              <FormButtons
+                submitTitle="paymentPage.formButtons.submit"
+                cancelTitle="paymentPage.formButtons.cancel"
+                disabled={disabled}
+                handleSubmit={() => handleSubmit()}
+                handleCancel={() => {
+                  navigate(-1);
+                }}
+              />
+            </Box>
+          </form>
+        )}
       </Formik>
       <InformationModal
         maxWidth="xs"
