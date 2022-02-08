@@ -5,6 +5,7 @@ import { Box, Button, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { getFormValidationIcon } from "../../../../utils/form/formValidation";
 import { emailValidation } from "../../../../utils/regex/validators";
@@ -15,6 +16,7 @@ import {
 
 export function PaymentEmailForm() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const formRef = React.useRef<FormikProps<PaymentEmailFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
 
@@ -45,6 +47,11 @@ export function PaymentEmailForm() {
     return errors;
   };
 
+  const currentPath = location.pathname.split("/")[1];
+  const handleContinue = React.useCallback(() => {
+    navigate(`/${currentPath}/inputcard`);
+  }, []);
+
   return (
     <>
       <Formik
@@ -54,7 +61,7 @@ export function PaymentEmailForm() {
           confirmEmail: "",
         }}
         validate={validate}
-        onSubmit={() => {}}
+        onSubmit={handleContinue}
       >
         {(formikProps) => {
           const {
