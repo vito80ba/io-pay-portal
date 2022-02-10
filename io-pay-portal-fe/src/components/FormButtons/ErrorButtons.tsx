@@ -15,17 +15,18 @@ export function ErrorButtons(props: {
       <Grid
         sx={{
           mt: 4,
+          justifyContent: { xs: "center", sm: "end" },
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "center",
         }}
-        justifyContent="end"
-        flexDirection="row"
-        alignItems="center"
         container
         spacing={2}
       >
         {props.buttonsDetail.map((button, index) => (
           <Grid
             key={index}
-            xs={4}
+            xs={12}
+            sm={5}
             style={useSmallDevice() ? { paddingTop: 0 } : {}}
             item
           >

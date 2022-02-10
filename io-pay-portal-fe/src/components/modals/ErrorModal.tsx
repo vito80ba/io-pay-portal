@@ -83,7 +83,12 @@ function ErrorModal(props: {
               <Typography
                 variant="h5"
                 component={"div"}
-                sx={{ fontSize: "16px" }}
+                sx={{
+                  fontSize: "16px",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
               >
                 {props.error}
               </Typography>
