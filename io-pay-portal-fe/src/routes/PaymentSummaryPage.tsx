@@ -2,8 +2,11 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
+import { RootState } from "../app/store";
 import { FormButtons } from "../components/FormButtons/FormButtons";
+import { moneyFormat } from "../utils/form/formatters";
 
 export default function PaymentSummaryPage() {
   const { t } = useTranslation();
@@ -18,6 +21,7 @@ export default function PaymentSummaryPage() {
     pb: 2,
   };
   const currentPath = location.pathname.split("/")[1];
+  const paymentInfo = useSelector((state: RootState) => state.payment);
 
   return (
     <Box p={"3rem 0"}>
@@ -38,7 +42,7 @@ export default function PaymentSummaryPage() {
           {t("paymentSummaryPage.creditor")}
         </Typography>
         <Typography variant="h5" component={"div"}>
-          {"Comune di Milano"}
+          {paymentInfo.creditor}
         </Typography>
       </Box>
 
@@ -52,7 +56,7 @@ export default function PaymentSummaryPage() {
           {t("paymentSummaryPage.causal")}
         </Typography>
         <Typography variant="h5" component={"div"}>
-          {"TARI 2020 Rata Unica"}
+          {paymentInfo.causal}
         </Typography>
       </Box>
 
@@ -66,7 +70,7 @@ export default function PaymentSummaryPage() {
           {t("paymentSummaryPage.amount")}
         </Typography>
         <Typography variant="h5" component={"div"}>
-          {"€ 100,00"}
+          {`€ ${moneyFormat(paymentInfo.amount)}`}
         </Typography>
       </Box>
 
@@ -75,16 +79,7 @@ export default function PaymentSummaryPage() {
           {t("paymentSummaryPage.cf")}
         </Typography>
         <Typography variant="h5" component={"div"}>
-          {"77777777777"}
-        </Typography>
-      </Box>
-
-      <Box sx={{ ...defaultStyle, alignItems: "center" }}>
-        <Typography variant="h6" component={"div"} pr={2}>
-          {t("paymentSummaryPage.iuv")}
-        </Typography>
-        <Typography variant="h5" component={"div"}>
-          {"777777777777777"}
+          {paymentInfo.cf}
         </Typography>
       </Box>
 

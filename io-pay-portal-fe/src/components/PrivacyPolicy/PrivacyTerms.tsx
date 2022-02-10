@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import InformationModal from "../InformationModal/InformationModal";
+import InformationModal from "../modals/InformationModal";
 import PrivacyPolicy from "./PrivacyPolicy";
 
 export default function PrivacyTerms() {

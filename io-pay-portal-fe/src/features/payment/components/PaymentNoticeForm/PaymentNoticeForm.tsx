@@ -5,7 +5,6 @@
 import { Box, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
-import { useLocation, useNavigate } from "react-router";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { cleanSpaces } from "../../../../utils/form/formatters";
@@ -15,9 +14,10 @@ import {
   PaymentFormFields,
 } from "../../models/paymentModel";
 
-export function PaymentNoticeForm() {
-  const navigate = useNavigate();
-  const location = useLocation();
+export function PaymentNoticeForm(props: {
+  onCancel: () => void;
+  onSubmit: (notice: PaymentFormFields) => void;
+}) {
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
 
@@ -44,11 +44,6 @@ export function PaymentNoticeForm() {
     return errors;
   };
 
-  const currentPath = location.pathname.split("/")[1];
-  const handleContinue = React.useCallback(() => {
-    navigate(`/${currentPath}/summary`);
-  }, []);
-
   return (
     <>
       <Formik
@@ -58,7 +53,7 @@ export function PaymentNoticeForm() {
           cf: "",
         }}
         validate={validate}
-        onSubmit={handleContinue}
+        onSubmit={props.onSubmit}
       >
         {(formikProps) => {
           const {
@@ -137,9 +132,7 @@ export function PaymentNoticeForm() {
                   cancelTitle="paymentPage.formButtons.cancel"
                   disabled={disabled}
                   handleSubmit={() => handleSubmit()}
-                  handleCancel={() => {
-                    navigate(-1);
-                  }}
+                  handleCancel={props.onCancel}
                 />
               </Box>
             </form>

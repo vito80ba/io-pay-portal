@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import sprite from "../../../../../src-pug/assets/icons/app.svg";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
-import InformationModal from "../../../../components/InformationModal/InformationModal";
+import InformationModal from "../../../../components/modals/InformationModal";
 import PrivacyTerms from "../../../../components/PrivacyPolicy/PrivacyTerms";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import {
