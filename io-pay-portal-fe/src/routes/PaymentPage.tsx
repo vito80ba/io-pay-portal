@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { RptId } from "../../generated/RptId";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
 import { getPaymentInfoTask } from "../../src-pug/helper";
+import ErrorModal from "../components/modals/ErrorModal";
 import InformationModal from "../components/modals/InformationModal";
 import { PaymentNoticeForm } from "../features/payment/components/PaymentNoticeForm/PaymentNoticeForm";
 import { PaymentFormFields } from "../features/payment/models/paymentModel";
@@ -80,6 +81,15 @@ export default function PaymentPage() {
           style={useSmallDevice() ? { width: "100%" } : { height: "80vh" }}
         />
       </InformationModal>
+      {error && (
+        <ErrorModal
+          error={error}
+          open={errorModalOpen}
+          onClose={() => {
+            setErrorModalOpen(false);
+          }}
+        />
+      )}
     </Box>
   );
 }
