@@ -17,6 +17,7 @@ export function Layout({ sx, children, fixedFooterPages }: LayoutProps) {
           display: { sm: "flex" },
           flexDirection: "column",
           height: "100vh",
+          backgroundColor: "background.paper",
         }}
       >
         <Header />

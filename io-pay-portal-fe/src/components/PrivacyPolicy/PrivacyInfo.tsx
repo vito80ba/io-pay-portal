@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import InformationModal from "../modals/InformationModal";
 import PrivacyPolicy from "./PrivacyPolicy";
@@ -11,7 +11,7 @@ export default function PrivacyInfo() {
   return (
     <>
       <Box mt={4}>
-        <p>
+        <Typography variant="body2" component={"div"}>
           {t("paymentPage.privacyDesc")}
           <a
             href="#"
@@ -40,7 +40,7 @@ export default function PrivacyInfo() {
             {t("paymentPage.serviceTerms")}
           </a>
           {")."}
-        </p>
+        </Typography>
       </Box>
       <InformationModal
         open={modalOpen}

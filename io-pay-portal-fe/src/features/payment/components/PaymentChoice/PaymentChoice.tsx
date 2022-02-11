@@ -40,21 +40,20 @@ export function PaymentChoice() {
             }}
           >
             <QrCodeScannerIcon sx={{ color: "primary.main" }} />
-            <Typography variant="h6" component={"div"}>
-              <Box
-                sx={{
-                  ...defaultStyle,
-                  flexDirection: "column",
-                  alignItems: "baseline",
-                  gap: 1,
-                }}
-              >
-                <Box sx={{ fontWeight: 600 }}>
-                  {t("paymentChoice.qr.title")}
-                </Box>
-                <Box>{t("paymentChoice.qr.description")}</Box>
-              </Box>
-            </Typography>
+            <Box
+              sx={{
+                ...defaultStyle,
+                flexDirection: "column",
+                alignItems: "baseline",
+              }}
+            >
+              <Typography variant="sidenav" component={"div"}>
+                {t("paymentChoice.qr.title")}
+              </Typography>
+              <Typography variant="body2" component={"div"}>
+                {t("paymentChoice.qr.description")}
+              </Typography>
+            </Box>
           </Box>
         </Grid>
         <Grid item xs={3} sx={{ display: "flex", justifyContent: "center" }}>
@@ -75,21 +74,20 @@ export function PaymentChoice() {
             }}
           >
             <KeyboardIcon sx={{ color: "primary.main" }} />
-            <Typography variant="h6" component={"div"}>
-              <Box
-                sx={{
-                  ...defaultStyle,
-                  flexDirection: "column",
-                  alignItems: "baseline",
-                  gap: 1,
-                }}
-              >
-                <Box sx={{ fontWeight: 600 }}>
-                  {t("paymentChoice.form.title")}
-                </Box>
-                <Box>{t("paymentChoice.form.description")}</Box>
-              </Box>
-            </Typography>
+            <Box
+              sx={{
+                ...defaultStyle,
+                flexDirection: "column",
+                alignItems: "baseline",
+              }}
+            >
+              <Typography variant="sidenav" component={"div"}>
+                {t("paymentChoice.form.title")}
+              </Typography>
+              <Typography variant="body2" component={"div"}>
+                {t("paymentChoice.form.description")}
+              </Typography>
+            </Box>
           </Box>
         </Grid>
         <Grid item xs={3} sx={{ display: "flex", justifyContent: "center" }}>

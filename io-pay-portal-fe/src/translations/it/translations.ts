@@ -56,6 +56,7 @@ export const TRANSLATIONS_IT = {
     },
     formButtons: {
       submit: "Continua",
+      cancel: "Indietro",
     },
   },
   indexPage: {

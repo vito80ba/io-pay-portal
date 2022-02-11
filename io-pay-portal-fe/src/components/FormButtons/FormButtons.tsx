@@ -22,7 +22,7 @@ export function FormButtons(props: {
           left: { xs: 0 },
           p: { xs: "1rem", sm: 0 },
           boxShadow: { xs: "0 0.5rem 1rem rgb(0 0 0 / 15%)", sm: 0 },
-          bgcolor: { xs: "background.default" },
+          bgcolor: { xs: "background.paper" },
           mt: { sm: 6 },
         }}
         justifyContent="center"
