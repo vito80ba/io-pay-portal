@@ -11,7 +11,7 @@ export default function PrivacyInfo() {
   return (
     <>
       <Box mt={4}>
-        <Typography variant="body2" component={"div"}>
+        <Typography variant="caption" component={"div"}>
           {t("paymentPage.privacyDesc")}
           <a
             href="#"
