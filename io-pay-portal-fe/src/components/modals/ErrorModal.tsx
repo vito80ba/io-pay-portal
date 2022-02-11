@@ -26,22 +26,40 @@ function ErrorModal(props: {
 }) {
   const { t } = useTranslation();
   const [copy, setCopy] = React.useState(t("clipboard.copy"));
+
   const isCustom = (error: string) =>
     PaymentResponses[error]?.category === PaymentFaultCategory.CUSTOM;
   const notListed = (error: string) => PaymentResponses[error] === undefined;
+  const hasDetail = (error: string) =>
+    !!PaymentCategoryResponses[PaymentResponses[error]?.category]?.detail;
+  const showDetail = (text: string) => text === "ErrorCodeDescription";
 
-  const title = isCustom(props.error)
-    ? PaymentResponses[props.error]?.title
-    : notListed(props.error)
-    ? PaymentCategoryResponses[PaymentFaultCategory.NOTLISTED]?.title
-    : PaymentCategoryResponses[PaymentResponses[props.error]?.category]?.title;
-  const body = isCustom(props.error)
-    ? PaymentResponses[props.error]?.body
-    : notListed(props.error)
-    ? PaymentCategoryResponses[PaymentFaultCategory.NOTLISTED]?.body
-    : PaymentCategoryResponses[PaymentResponses[props.error]?.category]?.detail
-    ? "ErrorCodeDescription"
-    : PaymentCategoryResponses[PaymentResponses[props.error]?.category]?.body;
+  const getErrorTitle = () => {
+    if (isCustom(props.error)) {
+      return PaymentResponses[props.error]?.title;
+    }
+    if (notListed(props.error)) {
+      return PaymentCategoryResponses[PaymentFaultCategory.NOTLISTED]?.title;
+    }
+    return PaymentCategoryResponses[PaymentResponses[props.error]?.category]
+      ?.title;
+  };
+  const getErrorBody = () => {
+    if (isCustom(props.error)) {
+      return PaymentResponses[props.error]?.body;
+    }
+    if (notListed(props.error)) {
+      return PaymentCategoryResponses[PaymentFaultCategory.NOTLISTED]?.body;
+    }
+    if (hasDetail(props.error)) {
+      return "ErrorCodeDescription";
+    }
+    return PaymentCategoryResponses[PaymentResponses[props.error]?.category]
+      ?.body;
+  };
+
+  const title = getErrorTitle() || "GenericError.title";
+  const body = getErrorBody() || "GenericError.body";
   const buttonsDetail = notListed(props.error)
     ? PaymentCategoryResponses[PaymentFaultCategory.NOTLISTED]?.buttons
     : PaymentCategoryResponses[PaymentResponses[props.error]?.category]
@@ -66,10 +84,10 @@ function ErrorModal(props: {
       <DialogContent sx={{ p: 0 }}>
         <Box>
           <Typography variant="h3" component={"div"} sx={{ mb: 2 }}>
-            {t(title || "")}
+            {t(title)}
           </Typography>
-          <Typography paragraph={true}>{t(body || "")}</Typography>
-          {body === "ErrorCodeDescription" && (
+          <Typography paragraph={true}>{t(body)}</Typography>
+          {showDetail(body) && (
             <Box
               display={"flex"}
               justifyContent={"space-between"}
@@ -106,10 +124,12 @@ function ErrorModal(props: {
               </Tooltip>
             </Box>
           )}
-          <ErrorButtons
-            handleClose={props.onClose}
-            buttonsDetail={buttonsDetail || []}
-          />
+          {!!buttonsDetail && (
+            <ErrorButtons
+              handleClose={props.onClose}
+              buttonsDetail={buttonsDetail}
+            />
+          )}
         </Box>
       </DialogContent>
     </Dialog>

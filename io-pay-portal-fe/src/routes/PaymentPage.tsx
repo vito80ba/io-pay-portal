@@ -81,7 +81,7 @@ export default function PaymentPage() {
           style={useSmallDevice() ? { width: "100%" } : { height: "80vh" }}
         />
       </InformationModal>
-      {error && (
+      {!!error && (
         <ErrorModal
           error={error}
           open={errorModalOpen}

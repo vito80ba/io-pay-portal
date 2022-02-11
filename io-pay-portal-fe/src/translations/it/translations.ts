@@ -157,4 +157,8 @@ export const TRANSLATIONS_IT = {
     copy: "Copia",
     copied: "Copiato",
   },
+  GenericError: {
+    title: "Spiacenti, si è verificato un errore imprevisto",
+    body: "Prova di nuovo o contattaci per ricevere assistenza.",
+  },
 };
