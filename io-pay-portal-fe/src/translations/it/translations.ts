@@ -105,4 +105,60 @@ export const TRANSLATIONS_IT = {
         "Sulle carte American Express il codice (CID) è a quattro cifre ed è posizionato sul fronte.",
     },
   },
+  errorButton: {
+    help: "Contatta l'assistenza",
+    close: "Chiudi",
+  },
+  ERRORE_EC: {
+    title: "Spiacenti, l’Ente Creditore sta avendo problemi nella risposta",
+    buttons: {
+      help: "Contatta l'assistenza",
+      close: "Chiudi",
+    },
+  },
+  ERRORE_TECNICO: {
+    title: "Spiacenti, c’è un problema tecnico con questo avviso",
+  },
+  ERRORE_DATI: {
+    title: "Spiacenti, i dati dell'avviso non sono corretti",
+  },
+  NOTLISTED: {
+    title: "Spiacenti, si è verificato un errore imprevisto",
+    body: "Prova di nuovo o contattaci per ricevere assistenza.",
+  },
+  PAA_PAGAMENTO_DUPLICATO: {
+    title: "Questo avviso è stato già pagato!",
+    body:
+      "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento.",
+  },
+  PAA_PAGAMENTO_IN_CORSO: {
+    title: "Il pagamento è già in corso, riprova tra qualche minuto",
+    body: "Se è passato troppo tempo, segnalacelo!",
+  },
+  PPT_PAGAMENTO_DUPLICATO: {
+    title: "Questo avviso è stato già pagato!",
+    body:
+      "La ricevuta è stata inviata all'indirizzo email che hai indicato durante il pagamento.",
+  },
+  PPT_PAGAMENTO_IN_CORSO: {
+    title: "Il pagamento è già in corso, riprova tra qualche minuto",
+    body: "Se è passato troppo tempo, segnalacelo!",
+  },
+  PAA_PAGAMENTO_ANNULLATO: {
+    title: "Spiacenti, l’Ente Creditore ha revocato questo avviso",
+    body: "Contatta l’Ente per maggiori informazioni.",
+  },
+  PAA_PAGAMENTO_SCADUTO: {
+    title: "Spiacenti, l’avviso è scaduto e non è più possibile pagarlo",
+    body: "Contatta l’Ente per maggiori informazioni.",
+  },
+  ErrorCodeDescription: "Codice di errore per l'assistenza",
+  clipboard: {
+    copy: "Copia",
+    copied: "Copiato",
+  },
+  GenericError: {
+    title: "Spiacenti, si è verificato un errore imprevisto",
+    body: "Prova di nuovo o contattaci per ricevere assistenza.",
+  },
 };
