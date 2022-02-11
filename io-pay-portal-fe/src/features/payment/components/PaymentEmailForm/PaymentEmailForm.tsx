@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import { Box, Button, InputAdornment } from "@mui/material";
+import { Box, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { getFormValidationIcon } from "../../../../utils/form/formValidation";
 import { emailValidation } from "../../../../utils/regex/validators";
@@ -15,7 +15,6 @@ import {
 } from "../../models/paymentModel";
 
 export function PaymentEmailForm() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const formRef = React.useRef<FormikProps<PaymentEmailFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
@@ -120,33 +119,13 @@ export function PaymentEmailForm() {
                   }
                 />
               </Box>
-              <Box
-                sx={{
-                  position: { xs: "fixed", sm: "relative" },
-                  zIndex: { xs: 1000, sm: 0 },
-                  bottom: { xs: 0 },
-                  left: { xs: 0 },
-                  p: { xs: "1rem", sm: 0 },
-                  boxShadow: { xs: "0 0.5rem 1rem rgb(0 0 0 / 15%)", sm: 0 },
-                  bgcolor: { xs: "background.default" },
-                  mt: { sm: 6 },
-                  width: "100%",
-                }}
-              >
-                <Button
-                  className="submitButton"
-                  variant="contained"
-                  disabled={disabled}
-                  onClick={() => handleSubmit()}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    minHeight: 45,
-                  }}
-                >
-                  {t("paymentEmailPage.formButtons.submit")}
-                </Button>
-              </Box>
+              <FormButtons
+                submitTitle="paymentEmailPage.formButtons.submit"
+                cancelTitle="paymentEmailPage.formButtons.cancel"
+                disabled={disabled}
+                handleSubmit={() => handleSubmit()}
+                handleCancel={() => navigate(-1)}
+              />
             </form>
           );
         }}

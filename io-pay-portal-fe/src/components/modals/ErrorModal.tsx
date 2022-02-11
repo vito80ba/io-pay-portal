@@ -2,6 +2,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Dialog,
@@ -83,46 +85,41 @@ function ErrorModal(props: {
     >
       <DialogContent sx={{ p: 0 }}>
         <Box>
-          <Typography variant="h3" component={"div"} sx={{ mb: 2 }}>
+          <Typography variant="h6" component={"div"} sx={{ mb: 2 }}>
             {t(title)}
           </Typography>
-          <Typography paragraph={true}>{t(body)}</Typography>
+          <Typography variant="body1" component={"div"}>
+            {t(body)}
+          </Typography>
           {showDetail(body) && (
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
+            <Alert
+              severity="info"
               sx={{
-                bgcolor: "#e0f2f9",
-                p: 2,
-                borderRadius: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "start",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                mt: 2,
               }}
+              action={
+                <Tooltip title={copy} onMouseOver={(e) => e.stopPropagation()}>
+                  <Button
+                    variant="text"
+                    onClick={() => {
+                      void navigator.clipboard.writeText(props.error);
+                      setCopy(t("clipboard.copied"));
+                    }}
+                    onMouseLeave={() => setCopy(t("clipboard.copy"))}
+                  >
+                    <ContentCopyIcon sx={{ mr: 1 }} /> {t("clipboard.copy")}
+                  </Button>
+                </Tooltip>
+              }
             >
-              <Typography
-                variant="h5"
-                component={"div"}
-                sx={{
-                  fontSize: "16px",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {props.error}
-              </Typography>
-              <Tooltip title={copy} onMouseOver={(e) => e.stopPropagation()}>
-                <Button
-                  variant="text"
-                  onClick={() => {
-                    void navigator.clipboard.writeText(props.error);
-                    setCopy(t("clipboard.copied"));
-                  }}
-                  onMouseLeave={() => setCopy(t("clipboard.copy"))}
-                >
-                  <ContentCopyIcon sx={{ mr: 1 }} /> {t("clipboard.copy")}
-                </Button>
-              </Tooltip>
-            </Box>
+              <AlertTitle sx={{ mb: 0 }}>{props.error}</AlertTitle>
+            </Alert>
           )}
           {!!buttonsDetail && (
             <ErrorButtons

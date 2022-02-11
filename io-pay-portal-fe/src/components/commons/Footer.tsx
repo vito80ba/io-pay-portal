@@ -16,17 +16,18 @@ export default function Footer(props: { fixedPages: Array<string> }) {
       display={"flex"}
       justifyContent={"space-between"}
       alignItems={"center"}
-      pt={0}
       pb={{ ...(isFixed() ? {} : { xs: 16 }), sm: 0 }}
       pl={{ xs: 3, sm: 6 }}
       pr={{ xs: 3, sm: 6 }}
-      margin={{
-        ...(isFixed() ? {} : { xs: "3rem 0 0" }),
+      pt={{
+        ...(isFixed() ? {} : { xs: "3rem" }),
         sm: 0,
       }}
       bgcolor={{
-        ...(isFixed() ? { xs: "#F5F6F7" } : { xs: "background.default" }),
-        sm: "#F5F6F7",
+        ...(isFixed()
+          ? { xs: "background.default" }
+          : { xs: "background.paper" }),
+        sm: "background.default",
       }}
     >
       <Box display={"flex"} alignItems={"center"} gap={1}>

@@ -57,6 +57,7 @@ export const TRANSLATIONS_EN = {
     },
     formButtons: {
       submit: "Continue",
+      cancel: "Back",
     },
   },
   general: {

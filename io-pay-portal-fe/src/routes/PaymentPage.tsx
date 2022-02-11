@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
 import { getPaymentInfoTask } from "../../src-pug/helper";
 import ErrorModal from "../components/modals/ErrorModal";
 import InformationModal from "../components/modals/InformationModal";
+import PageContainer from "../components/PageContent/PageContainer";
 import { PaymentNoticeForm } from "../features/payment/components/PaymentNoticeForm/PaymentNoticeForm";
 import { PaymentFormFields } from "../features/payment/models/paymentModel";
 import { setPayment } from "../features/payment/slices/paymentSlice";
@@ -51,13 +52,10 @@ export default function PaymentPage() {
   };
 
   return (
-    <Box p={"3rem 0"}>
-      <Typography variant="h2" component={"div"} sx={{ fontSize: "2em" }}>
-        {t("paymentPage.title")}
-      </Typography>
-      <Typography paragraph={true} sx={{ mt: 1, mb: 1 }}>
-        {t("paymentPage.description")}
-      </Typography>
+    <PageContainer
+      title="paymentPage.title"
+      description="paymentPage.description"
+    >
       <a
         href="#"
         style={{ fontWeight: 600, textDecoration: "none" }}
@@ -90,6 +88,6 @@ export default function PaymentPage() {
           }}
         />
       )}
-    </Box>
+    </PageContainer>
   );
 }

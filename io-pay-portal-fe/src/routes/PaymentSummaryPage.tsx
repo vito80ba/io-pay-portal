@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { RootState } from "../app/store";
 import { FormButtons } from "../components/FormButtons/FormButtons";
+import PageContainer from "../components/PageContent/PageContainer";
 import { moneyFormat } from "../utils/form/formatters";
 
 export default function PaymentSummaryPage() {
@@ -24,24 +25,20 @@ export default function PaymentSummaryPage() {
   const paymentInfo = useSelector((state: RootState) => state.payment);
 
   return (
-    <Box p={"3rem 0"}>
-      <Typography variant="h2" component={"div"} sx={{ fontSize: "2em" }}>
-        {t("paymentSummaryPage.title")}
-      </Typography>
-      <Typography paragraph={true} sx={{ mt: 1, mb: 4 }}>
-        {t("paymentSummaryPage.description")}
-      </Typography>
-
+    <PageContainer
+      title="paymentSummaryPage.title"
+      description="paymentSummaryPage.description"
+    >
       <Box
         sx={{
           ...defaultStyle,
           flexDirection: "column",
         }}
       >
-        <Typography variant="h6" component={"div"}>
+        <Typography variant="body2" component={"div"}>
           {t("paymentSummaryPage.creditor")}
         </Typography>
-        <Typography variant="h5" component={"div"}>
+        <Typography variant="sidenav" component={"div"}>
           {paymentInfo.creditor}
         </Typography>
       </Box>
@@ -52,10 +49,10 @@ export default function PaymentSummaryPage() {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h6" component={"div"}>
+        <Typography variant="body2" component={"div"}>
           {t("paymentSummaryPage.causal")}
         </Typography>
-        <Typography variant="h5" component={"div"}>
+        <Typography variant="sidenav" component={"div"}>
           {paymentInfo.causal}
         </Typography>
       </Box>
@@ -66,19 +63,19 @@ export default function PaymentSummaryPage() {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h6" component={"div"}>
+        <Typography variant="body2" component={"div"}>
           {t("paymentSummaryPage.amount")}
         </Typography>
-        <Typography variant="h5" component={"div"}>
+        <Typography variant="sidenav" component={"div"}>
           {`€ ${moneyFormat(paymentInfo.amount)}`}
         </Typography>
       </Box>
 
       <Box sx={{ ...defaultStyle, alignItems: "center" }}>
-        <Typography variant="h6" component={"div"} pr={2}>
+        <Typography variant="body2" component={"div"} pr={2}>
           {t("paymentSummaryPage.cf")}
         </Typography>
-        <Typography variant="h5" component={"div"}>
+        <Typography variant="sidenav" component={"div"}>
           {paymentInfo.cf}
         </Typography>
       </Box>
@@ -94,6 +91,6 @@ export default function PaymentSummaryPage() {
           navigate(-1);
         }}
       />
-    </Box>
+    </PageContainer>
   );
 }

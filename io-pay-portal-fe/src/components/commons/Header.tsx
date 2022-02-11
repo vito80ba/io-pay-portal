@@ -12,6 +12,7 @@ export const Header: FunctionComponent<BoxProps> = () => (
       justifyContent: "space-between",
       alignItems: "center",
       width: "100%",
+      zIndex: 1000,
     }}
   >
     <img

@@ -114,27 +114,13 @@ export function PaymentNoticeForm(props: {
                   }
                 />
               </Box>
-              <Box
-                sx={{
-                  position: { xs: "fixed", sm: "relative" },
-                  zIndex: { xs: 1000, sm: 0 },
-                  bottom: { xs: 0 },
-                  left: { xs: 0 },
-                  p: { xs: "1rem", sm: 0 },
-                  boxShadow: { xs: "0 0.5rem 1rem rgb(0 0 0 / 15%)", sm: 0 },
-                  bgcolor: { xs: "background.default" },
-                  mt: { sm: 6 },
-                  width: "100%",
-                }}
-              >
-                <FormButtons
-                  submitTitle="paymentPage.formButtons.submit"
-                  cancelTitle="paymentPage.formButtons.cancel"
-                  disabled={disabled}
-                  handleSubmit={() => handleSubmit()}
-                  handleCancel={props.onCancel}
-                />
-              </Box>
+              <FormButtons
+                submitTitle="paymentPage.formButtons.submit"
+                cancelTitle="paymentPage.formButtons.cancel"
+                disabled={disabled}
+                handleSubmit={() => handleSubmit()}
+                handleCancel={props.onCancel}
+              />
             </form>
           );
         }}

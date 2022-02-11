@@ -1,24 +1,16 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import PageContainer from "../components/PageContent/PageContainer";
 import PrivacyInfo from "../components/PrivacyPolicy/PrivacyInfo";
 import { PaymentChoice } from "../features/payment/components/PaymentChoice/PaymentChoice";
 
 export default function IndexPage() {
-  const { t } = useTranslation();
-
   return (
-    <Box p={"3rem 0"}>
-      <Typography variant="h2" component={"div"} sx={{ fontSize: "2em" }}>
-        {t("indexPage.title")}
-      </Typography>
-      <Typography paragraph={true} sx={{ mt: 1, mb: 1 }}>
-        {t("indexPage.description")}
-      </Typography>
+    <PageContainer title="indexPage.title" description="indexPage.description">
       <Box sx={{ mt: 6 }}>
         <PaymentChoice />
       </Box>
       <PrivacyInfo />
-    </Box>
+    </PageContainer>
   );
 }
