@@ -8,6 +8,7 @@ import { RootState } from "../app/store";
 import { FormButtons } from "../components/FormButtons/FormButtons";
 import PageContainer from "../components/PageContent/PageContainer";
 import { moneyFormat } from "../utils/form/formatters";
+import { loadState } from "../utils/storage/sessionStorage";
 
 export default function PaymentSummaryPage() {
   const { t } = useTranslation();
@@ -22,7 +23,21 @@ export default function PaymentSummaryPage() {
     pb: 2,
   };
   const currentPath = location.pathname.split("/")[1];
-  const paymentInfo = useSelector((state: RootState) => state.payment);
+  const paymentInfo = useSelector((state: RootState) => {
+    if (!state.payment.amount) {
+      const paymentInfo = loadState();
+      return {
+        amount: paymentInfo?.importoSingoloVersamento || 0,
+        creditor:
+          paymentInfo?.enteBeneficiario?.denominazioneBeneficiario || "",
+        causal: paymentInfo?.causaleVersamento || "",
+        cf:
+          paymentInfo?.enteBeneficiario?.identificativoUnivocoBeneficiario ||
+          "",
+      };
+    }
+    return state.payment;
+  });
 
   return (
     <PageContainer

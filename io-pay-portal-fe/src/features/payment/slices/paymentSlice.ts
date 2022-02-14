@@ -7,7 +7,7 @@ export const paymentSlice = createSlice({
     amount: 0,
     creditor: "",
     causal: "",
-    cf: 0,
+    cf: "",
   },
   reducers: {
     setPayment(state, action) {
@@ -20,7 +20,7 @@ export const paymentSlice = createSlice({
       state.amount = 0;
       state.creditor = "";
       state.causal = "";
-      state.cf = 0;
+      state.cf = "";
     },
   },
 });
