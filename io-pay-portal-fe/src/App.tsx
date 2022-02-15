@@ -9,7 +9,7 @@ import IndexPage from "./routes/IndexPage";
 import InputCardPage from "./routes/InputCardPage";
 import PaymentChoicePage from "./routes/PaymentChoicePage";
 import PaymentEmailPage from "./routes/PaymentEmailPage";
-import PaymentNoticePage from "./routes/PaymentNoticePage";
+import PaymentPage from "./routes/PaymentPage";
 import PaymentOutlet from "./routes/PaymentOutlet";
 import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
@@ -26,7 +26,7 @@ export function App() {
             <Route path="/" element={<Navigate to="/payment" />} />
             <Route path="/payment" element={<PaymentOutlet />}>
               <Route path="" element={<IndexPage />} />
-              <Route path="notice" element={<PaymentNoticePage />} />
+              <Route path="notice" element={<PaymentPage />} />
               <Route
                 path="summary"
                 element={
