@@ -25,8 +25,8 @@ export function Layout({ sx, children, fixedFooterPages }: LayoutProps) {
           sx={{
             ...sx,
             p: { xs: 6, sm: 0 },
-            pl: { sm: 6, md: 0 },
-            pr: { sm: 6, md: 0 },
+            pl: { xs: 2, sm: 6, md: 0 },
+            pr: { xs: 2, sm: 6, md: 0 },
             height: { xs: "100%" },
           }}
           maxWidth={"sm"}

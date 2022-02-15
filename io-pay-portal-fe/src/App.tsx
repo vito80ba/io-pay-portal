@@ -6,6 +6,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/commons/Layout";
 import IndexPage from "./routes/IndexPage";
 import InputCardPage from "./routes/InputCardPage";
+import PaymentChoicePage from "./routes/PaymentChoicePage";
 import PaymentEmailPage from "./routes/PaymentEmailPage";
 import PaymentOutlet from "./routes/PaymentOutlet";
 import PaymentPage from "./routes/PaymentPage";
@@ -38,6 +39,16 @@ export function App() {
               />
               <Route path="email" element={<PaymentEmailPage />} />
               <Route path="inputcard" element={<InputCardPage />} />
+              <Route
+                path="paymentchoice"
+                element={
+                  isStateEmpty() ? (
+                    <Navigate to="/payment" />
+                  ) : (
+                    <PaymentChoicePage />
+                  )
+                }
+              />
               <Route path="*" element={<Navigate replace to="/" />} />
             </Route>
             <Route path="*" element={<Navigate replace to="/" />} />

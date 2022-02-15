@@ -1,99 +1,53 @@
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Grid, Box, Typography } from "@mui/material";
+/* eslint-disable @typescript-eslint/no-empty-function */
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import MobileFriendlyIcon from "@mui/icons-material/MobileFriendly";
+import { Chip } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import KeyboardIcon from "@mui/icons-material/Keyboard";
+import ClickableFieldContainer from "../../../../components/TextFormField/ClickableFieldContainer";
 
 export function PaymentChoice() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const currentPath = location.pathname;
+  const currentPath = location.pathname.split("/")[1];
 
-  const handleClickOnQR = React.useCallback(() => {
-    navigate(`${currentPath}/qr-reader`);
+  const handleClickOnCard = React.useCallback(() => {
+    navigate(`/${currentPath}/email`);
   }, []);
-  const handleClickOnForm = React.useCallback(() => {
-    navigate(`${currentPath}/notice`);
-  }, []);
-
-  const defaultStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    cursor: "pointer",
-    ml: 2,
-    mr: 2,
-  };
 
   return (
     <>
-      <Grid container sx={defaultStyle} onClick={() => handleClickOnQR()}>
-        <Grid item xs={9}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <QrCodeScannerIcon sx={{ color: "primary.main" }} />
-            <Box
-              sx={{
-                ...defaultStyle,
-                flexDirection: "column",
-                alignItems: "baseline",
-              }}
-            >
-              <Typography variant="sidenav" component={"div"}>
-                {t("paymentChoice.qr.title")}
-              </Typography>
-              <Typography variant="body2" component={"div"}>
-                {t("paymentChoice.qr.description")}
-              </Typography>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={3} sx={{ display: "flex", justifyContent: "center" }}>
-          <ArrowForwardIosIcon sx={{ color: "primary.main" }} />
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        sx={{ ...defaultStyle, mt: 6 }}
-        onClick={() => handleClickOnForm()}
-      >
-        <Grid item xs={9}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <KeyboardIcon sx={{ color: "primary.main" }} />
-            <Box
-              sx={{
-                ...defaultStyle,
-                flexDirection: "column",
-                alignItems: "baseline",
-              }}
-            >
-              <Typography variant="sidenav" component={"div"}>
-                {t("paymentChoice.form.title")}
-              </Typography>
-              <Typography variant="body2" component={"div"}>
-                {t("paymentChoice.form.description")}
-              </Typography>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={3} sx={{ display: "flex", justifyContent: "center" }}>
-          <ArrowForwardIosIcon sx={{ color: "primary.main" }} />
-        </Grid>
-      </Grid>
+      <ClickableFieldContainer
+        title="paymentChoicePage.creditCard"
+        onClick={handleClickOnCard}
+        icon={<CreditCardIcon color="primary" fontSize="small" />}
+        endAdornment={
+          <ArrowForwardIosIcon
+            sx={{ color: "primary.main" }}
+            fontSize="small"
+          />
+        }
+      />
+      <ClickableFieldContainer
+        title="paymentChoicePage.bank"
+        onClick={() => {}}
+        icon={<AccountBalanceIcon color="primary" fontSize="small" />}
+        endAdornment={
+          <Chip label={t("paymentChoicePage.incoming")} color="secondary" />
+        }
+      />
+      <ClickableFieldContainer
+        title="paymentChoicePage.others"
+        onClick={() => {}}
+        icon={<MobileFriendlyIcon color="primary" fontSize="small" />}
+        endAdornment={
+          <Chip label={t("paymentChoicePage.incoming")} color="secondary" />
+        }
+      />
     </>
   );
 }

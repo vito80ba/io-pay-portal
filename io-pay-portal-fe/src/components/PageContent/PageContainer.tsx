@@ -6,6 +6,7 @@ export default function PageContainer(props: {
   title: string;
   description?: string;
   children?: React.ReactNode;
+  link?: React.ReactNode;
 }) {
   const { t } = useTranslation();
 
@@ -17,6 +18,7 @@ export default function PageContainer(props: {
       {!!props.description && (
         <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
           {t(props.description)}
+          {!!props.link && props.link}
         </Typography>
       )}
       {props.children}

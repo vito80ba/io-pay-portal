@@ -79,7 +79,7 @@ export default function PaymentSummaryPage() {
         cancelTitle="paymentSummaryPage.buttons.cancel"
         disabled={false}
         handleSubmit={() => {
-          navigate(`/${currentPath}/email`);
+          navigate(`/${currentPath}/paymentchoice`);
         }}
         handleCancel={() => {
           navigate(-1);
