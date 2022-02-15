@@ -64,7 +64,7 @@ export const TRANSLATIONS_IT = {
     description:
       "Puoi usare la tua carta di debito o credito, senza fare alcun login. Riceverai l'esito del pagamento via email.",
   },
-  paymentChoice: {
+  paymentNoticeChoice: {
     qr: {
       title: "Inquadra il codice QR",
       description: "Usa la tua webcam o fotocamera",
@@ -161,5 +161,15 @@ export const TRANSLATIONS_IT = {
   GenericError: {
     title: "Spiacenti, si è verificato un errore imprevisto",
     body: "Prova di nuovo o contattaci per ricevere assistenza.",
+  },
+  paymentChoicePage: {
+    title: "Come vuoi pagare?",
+    description:
+      "Per sapere di più sui metodi e i costi applicati dai gestori aderenti, visita la pagina ",
+    costs: "Trasparenza Costi.",
+    creditCard: "Carta di debito o credito",
+    bank: "Conto corrente",
+    others: "Altri metodi",
+    incoming: "In arrivo",
   },
 };

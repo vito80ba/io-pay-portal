@@ -4,7 +4,7 @@ export const loadState = () => {
   try {
     const serializedState = sessionStorage.getItem("paymentInfo");
 
-    if (serializedState === null) {
+    if (!serializedState) {
       return undefined;
     }
 
