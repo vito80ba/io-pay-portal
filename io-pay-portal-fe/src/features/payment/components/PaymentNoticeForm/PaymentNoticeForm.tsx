@@ -55,75 +55,72 @@ export function PaymentNoticeForm(props: {
         validate={validate}
         onSubmit={props.onSubmit}
       >
-        {(formikProps) => {
-          const {
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-          } = formikProps;
-          return (
-            <form onSubmit={handleSubmit}>
-              <Box>
-                <TextFormField
-                  fullWidth
-                  variant="outlined"
-                  errorText={errors.billCode}
-                  error={!!(errors.billCode && touched.billCode)}
-                  label="paymentPage.formFields.billCode"
-                  id="billCode"
-                  type="text"
-                  inputMode="numeric"
-                  value={values.billCode}
-                  handleChange={(e) => {
-                    e.currentTarget.value = cleanSpaces(e.currentTarget.value);
-                    handleChange(e);
-                  }}
-                  handleBlur={handleBlur}
-                  sx={{ mb: 2 }}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {getFormValidationIcon(
-                        !!values.billCode,
-                        !!errors.billCode
-                      )}
-                    </InputAdornment>
-                  }
-                />
-                <TextFormField
-                  fullWidth
-                  variant="outlined"
-                  errorText={errors.cf}
-                  error={Boolean(errors.cf && touched.cf)}
-                  label="paymentPage.formFields.cf"
-                  id="cf"
-                  type="text"
-                  inputMode="numeric"
-                  value={values.cf}
-                  handleChange={(e) => {
-                    e.currentTarget.value = cleanSpaces(e.currentTarget.value);
-                    handleChange(e);
-                  }}
-                  handleBlur={handleBlur}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {getFormValidationIcon(!!values.cf, !!errors.cf)}
-                    </InputAdornment>
-                  }
-                />
-              </Box>
-              <FormButtons
-                submitTitle="paymentPage.formButtons.submit"
-                cancelTitle="paymentPage.formButtons.cancel"
-                disabled={disabled}
-                handleSubmit={() => handleSubmit()}
-                handleCancel={props.onCancel}
+        {({
+          touched,
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.billCode}
+                error={!!(errors.billCode && touched.billCode)}
+                label="paymentPage.formFields.billCode"
+                id="billCode"
+                type="text"
+                inputMode="numeric"
+                value={values.billCode}
+                handleChange={(e) => {
+                  e.currentTarget.value = cleanSpaces(e.currentTarget.value);
+                  handleChange(e);
+                }}
+                handleBlur={handleBlur}
+                sx={{ mb: 2 }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormValidationIcon(
+                      !!values.billCode,
+                      !!errors.billCode
+                    )}
+                  </InputAdornment>
+                }
               />
-            </form>
-          );
-        }}
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.cf}
+                error={Boolean(errors.cf && touched.cf)}
+                label="paymentPage.formFields.cf"
+                id="cf"
+                type="text"
+                inputMode="numeric"
+                value={values.cf}
+                handleChange={(e) => {
+                  e.currentTarget.value = cleanSpaces(e.currentTarget.value);
+                  handleChange(e);
+                }}
+                handleBlur={handleBlur}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormValidationIcon(!!values.cf, !!errors.cf)}
+                  </InputAdornment>
+                }
+              />
+            </Box>
+            <FormButtons
+              submitTitle="paymentPage.formButtons.submit"
+              cancelTitle="paymentPage.formButtons.cancel"
+              disabled={disabled}
+              handleSubmit={() => handleSubmit()}
+              handleCancel={props.onCancel}
+            />
+          </form>
+        )}
       </Formik>
     </>
   );
