@@ -5,6 +5,8 @@ import PrivacyInfo from "../components/PrivacyPolicy/PrivacyInfo";
 import { PaymentNoticeChoice } from "../features/payment/components/PaymentNoticeChoice/PaymentNoticeChoice";
 
 export default function IndexPage() {
+  sessionStorage.clear();
+
   return (
     <PageContainer title="indexPage.title" description="indexPage.description">
       <Box sx={{ mt: 6 }}>
