@@ -23,6 +23,7 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentPath = location.pathname.split("/")[1];
+  sessionStorage.clear();
 
   const onError = (m: string) => {
     setError(m);
@@ -42,6 +43,7 @@ export default function PaymentPage() {
             cf: paymentInfo.enteBeneficiario?.identificativoUnivocoBeneficiario,
           })
         );
+        sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
         navigate(`/${currentPath}/summary`);
       })
       .run();

@@ -51,3 +51,14 @@ export const SecureCodeLabels: {
     error: "inputCardPage.formErrors.cid",
   },
 };
+
+export interface PaymentInfo {
+  importoSingoloVersamento: number;
+  codiceContestoPagamento: string;
+  ibanAccredito: string;
+  causaleVersamento: string;
+  enteBeneficiario: {
+    identificativoUnivocoBeneficiario: string;
+    denominazioneBeneficiario: string;
+  };
+}
