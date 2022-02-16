@@ -33,6 +33,13 @@ export function expirationDateChangeValidation(value: string) {
   if (value.length === 1 && value === "/") {
     return false;
   }
+  if (
+    value.length === 2 &&
+    value.charAt(0) === "0" &&
+    value.charAt(1) === "/"
+  ) {
+    return false;
+  }
   if (value.length > 3 && value.slice(-1) !== "/" && value.includes("/")) {
     return value.split("/")[1].length < 3;
   }

@@ -8,22 +8,13 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
-import {
-  Box,
-  InputAdornment,
-  SvgIcon,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Box, InputAdornment, SvgIcon } from "@mui/material";
 import cardValidator from "card-validator";
 import { Formik, FormikProps } from "formik";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import sprite from "../../../../../src-pug/assets/icons/app.svg";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
-import InformationModal from "../../../../components/modals/InformationModal";
-import PrivacyTerms from "../../../../components/PrivacyPolicy/PrivacyTerms";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import {
   cleanSpaces,
@@ -45,13 +36,11 @@ import {
 } from "../../models/paymentModel";
 
 export function InputCardForm() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const formRef = React.useRef<FormikProps<InputCardFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
   const [cvvLength, setCvvLength] = React.useState(SecureCodeDigits.cvv);
   const [ccIcon, setCcIcon] = React.useState<string | undefined>(undefined);
-  const [modalOpen, setModalOpen] = React.useState(false);
 
   const validate = (values: InputCardFormFields) => {
     cardValidator.number(values.number).card?.type === "american-express"
@@ -92,7 +81,6 @@ export function InputCardForm() {
                 }),
           }
         : { cvv: "inputCardPage.formErrors.required" }),
-      ...(values.terms ? {} : { terms: "inputCardPage.formErrors.required" }),
     };
 
     setDisabled(!!Object.keys(errors).length);
@@ -154,7 +142,6 @@ export function InputCardForm() {
           number: "",
           expirationDate: "",
           cvv: "",
-          terms: false,
         }}
         validate={validate}
         onSubmit={() => {}}
@@ -268,28 +255,6 @@ export function InputCardForm() {
                 }
                 startAdornment={<PersonIcon sx={{ mr: 2 }} color="action" />}
               />
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                sx={{ gap: 2 }}
-              >
-                <Switch
-                  id="terms"
-                  checked={values.terms}
-                  onChange={handleChange}
-                />
-                <PrivacyTerms />
-              </Box>
-              <Box sx={{ mt: 2 }}>
-                <a
-                  href="#"
-                  style={{ fontWeight: 600, textDecoration: "none" }}
-                  onClick={() => setModalOpen(true)}
-                >
-                  {t("inputCardPage.helpLink")}
-                </a>
-              </Box>
             </Box>
             <FormButtons
               submitTitle="paymentNoticePage.formButtons.submit"
@@ -303,25 +268,6 @@ export function InputCardForm() {
           </form>
         )}
       </Formik>
-      <InformationModal
-        maxWidth="xs"
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-        }}
-      >
-        <Box p={"2rem"}>
-          <Typography variant="h3" component={"div"} sx={{ mb: 2 }}>
-            {t("inputCardPage.modal.title")}
-          </Typography>
-          <Typography paragraph={true}>
-            {t("inputCardPage.modal.description")}
-          </Typography>
-          <Typography paragraph={true}>
-            {t("inputCardPage.modal.descriptionAE")}
-          </Typography>
-        </Box>
-      </InformationModal>
     </>
   );
 }
