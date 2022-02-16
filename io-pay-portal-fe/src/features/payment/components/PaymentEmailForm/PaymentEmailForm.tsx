@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { Box, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
@@ -89,9 +88,6 @@ export function PaymentEmailForm() {
                     {getFormErrorIcon(!!values.email, !!errors.email)}
                   </InputAdornment>
                 }
-                startAdornment={
-                  <MailOutlineIcon sx={{ mr: 2 }} color="action" />
-                }
               />
               <TextFormField
                 fullWidth
@@ -111,9 +107,6 @@ export function PaymentEmailForm() {
                       !!errors.confirmEmail
                     )}
                   </InputAdornment>
-                }
-                startAdornment={
-                  <MailOutlineIcon sx={{ mr: 2 }} color="action" />
                 }
               />
             </Box>

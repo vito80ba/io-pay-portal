@@ -48,7 +48,7 @@ export const TRANSLATIONS_IT = {
     title: "Inserisci la tua email",
     description: "Riceverai l'esito del pagamento a questo indirizzo",
     formFields: {
-      email: "Il tuo indirizzo email",
+      email: "Indirizzo email",
       confirmEmail: "Ripeti di nuovo",
     },
     formErrors: {

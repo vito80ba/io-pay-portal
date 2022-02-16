@@ -49,7 +49,7 @@ export const TRANSLATIONS_EN = {
     title: "Enter your email",
     description: "You will receive the payment result at this address",
     formFields: {
-      email: "Your email address",
+      email: "Email address",
       confirmEmail: "Confirm your email address",
     },
     formErrors: {
