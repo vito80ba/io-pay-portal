@@ -13,6 +13,7 @@ import PaymentPage from "./routes/PaymentPage";
 import PaymentOutlet from "./routes/PaymentOutlet";
 import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
+import PaymentQrPage from "./routes/PaymentQrPage";
 
 export function App() {
   const fixedFooterPages = ["payment", "qrcode"];
@@ -26,6 +27,7 @@ export function App() {
             <Route path="/" element={<Navigate to="/payment" />} />
             <Route path="/payment" element={<PaymentOutlet />}>
               <Route path="" element={<IndexPage />} />
+              <Route path="qr-reader" element={<PaymentQrPage />} />
               <Route path="notice" element={<PaymentPage />} />
               <Route
                 path="summary"
