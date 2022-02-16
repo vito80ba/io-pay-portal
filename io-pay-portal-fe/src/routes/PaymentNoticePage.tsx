@@ -23,7 +23,6 @@ export default function PaymentNoticePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentPath = location.pathname.split("/")[1];
-  sessionStorage.clear();
 
   const onError = (m: string) => {
     setError(m);
