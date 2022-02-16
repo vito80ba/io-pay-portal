@@ -14,7 +14,7 @@ import { PaymentFormFields } from "../features/payment/models/paymentModel";
 import { setPayment } from "../features/payment/slices/paymentSlice";
 import { useSmallDevice } from "../hooks/useSmallDevice";
 
-export default function PaymentPage() {
+export default function PaymentNoticePage() {
   const { t } = useTranslation();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [errorModalOpen, setErrorModalOpen] = React.useState(false);
@@ -55,15 +55,15 @@ export default function PaymentPage() {
 
   return (
     <PageContainer
-      title="paymentPage.title"
-      description="paymentPage.description"
+      title="paymentNoticePage.title"
+      description="paymentNoticePage.description"
     >
       <a
         href="#"
         style={{ fontWeight: 600, textDecoration: "none" }}
         onClick={() => setModalOpen(true)}
       >
-        {t("paymentPage.helpLink")}
+        {t("paymentNoticePage.helpLink")}
       </a>
       <Box sx={{ mt: 6 }}>
         <PaymentNoticeForm onCancel={onCancel} onSubmit={onSubmit} />

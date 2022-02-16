@@ -5,16 +5,18 @@ export const TRANSLATIONS_EN = {
       help: "Help",
     },
   },
-  paymentPage: {
-    title: "What do you have to pay?",
-    description: "Enter the data as shown on the payment notification.",
-    helpLink: "Where do I find the data?",
+  privacyInfo: {
     privacyDesc:
       "By pressing 'Continue' you declare that you have read and understood the ",
     googleDesc: "Form protected by reCAPTCHA and Google",
     privacy: "Privacy Policy and Terms and conditions of use of the service.",
     privacyPolicy: "Privacy Policy",
     serviceTerms: "Terms of Service",
+  },
+  paymentNoticePage: {
+    title: "What do you have to pay?",
+    description: "Enter the data as shown on the payment notification.",
+    helpLink: "Where do I find the data?",
     formFields: {
       billCode: "Notification Code",
       cf: "Creditor Institution Tax Identification Number",

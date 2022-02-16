@@ -7,7 +7,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
-import { getFormValidationIcon } from "../../../../utils/form/formValidation";
+import { getFormErrorIcon } from "../../../../utils/form/formValidation";
 import { emailValidation } from "../../../../utils/regex/validators";
 import {
   PaymentEmailFormErrors,
@@ -62,73 +62,70 @@ export function PaymentEmailForm() {
         validate={validate}
         onSubmit={handleContinue}
       >
-        {(formikProps) => {
-          const {
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-          } = formikProps;
-          return (
-            <form onSubmit={handleSubmit}>
-              <Box>
-                <TextFormField
-                  fullWidth
-                  variant="outlined"
-                  errorText={errors.email}
-                  error={!!(errors.email && touched.email)}
-                  label="paymentEmailPage.formFields.email"
-                  id="email"
-                  type="email"
-                  value={values.email}
-                  handleChange={handleChange}
-                  handleBlur={handleBlur}
-                  sx={{ mb: 2 }}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {getFormValidationIcon(!!values.email, !!errors.email)}
-                    </InputAdornment>
-                  }
-                  startAdornment={
-                    <MailOutlineIcon sx={{ mr: 2, color: "#5c6f82" }} />
-                  }
-                />
-                <TextFormField
-                  fullWidth
-                  variant="outlined"
-                  errorText={errors.confirmEmail}
-                  error={Boolean(errors.confirmEmail && touched.confirmEmail)}
-                  label="paymentEmailPage.formFields.confirmEmail"
-                  id="confirmEmail"
-                  type="email"
-                  value={values.confirmEmail}
-                  handleChange={handleChange}
-                  handleBlur={handleBlur}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {getFormValidationIcon(
-                        !!values.confirmEmail,
-                        !!errors.confirmEmail
-                      )}
-                    </InputAdornment>
-                  }
-                  startAdornment={
-                    <MailOutlineIcon sx={{ mr: 2, color: "#5c6f82" }} />
-                  }
-                />
-              </Box>
-              <FormButtons
-                submitTitle="paymentEmailPage.formButtons.submit"
-                cancelTitle="paymentEmailPage.formButtons.cancel"
-                disabled={disabled}
-                handleSubmit={() => handleSubmit()}
-                handleCancel={() => navigate(-1)}
+        {({
+          touched,
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.email}
+                error={!!(errors.email && touched.email)}
+                label="paymentEmailPage.formFields.email"
+                id="email"
+                type="email"
+                value={values.email}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                sx={{ mb: 4 }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormErrorIcon(!!values.email, !!errors.email)}
+                  </InputAdornment>
+                }
+                startAdornment={
+                  <MailOutlineIcon sx={{ mr: 2 }} color="action" />
+                }
               />
-            </form>
-          );
-        }}
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.confirmEmail}
+                error={Boolean(errors.confirmEmail && touched.confirmEmail)}
+                label="paymentEmailPage.formFields.confirmEmail"
+                id="confirmEmail"
+                type="email"
+                value={values.confirmEmail}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormErrorIcon(
+                      !!values.confirmEmail,
+                      !!errors.confirmEmail
+                    )}
+                  </InputAdornment>
+                }
+                startAdornment={
+                  <MailOutlineIcon sx={{ mr: 2 }} color="action" />
+                }
+              />
+            </Box>
+            <FormButtons
+              submitTitle="paymentEmailPage.formButtons.submit"
+              cancelTitle="paymentEmailPage.formButtons.cancel"
+              disabled={disabled}
+              handleSubmit={() => handleSubmit()}
+              handleCancel={() => navigate(-1)}
+            />
+          </form>
+        )}
       </Formik>
     </>
   );
