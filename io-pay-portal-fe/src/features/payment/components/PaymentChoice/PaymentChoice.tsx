@@ -35,6 +35,7 @@ export function PaymentChoice() {
       <ClickableFieldContainer
         title="paymentChoicePage.bank"
         onClick={() => {}}
+        clickable={true}
         icon={<AccountBalanceIcon color="primary" fontSize="small" />}
         endAdornment={
           <Chip label={t("paymentChoicePage.incoming")} color="secondary" />
@@ -43,6 +44,7 @@ export function PaymentChoice() {
       <ClickableFieldContainer
         title="paymentChoicePage.others"
         onClick={() => {}}
+        clickable={true}
         icon={<MobileFriendlyIcon color="primary" fontSize="small" />}
         endAdornment={
           <Chip label={t("paymentChoicePage.incoming")} color="secondary" />

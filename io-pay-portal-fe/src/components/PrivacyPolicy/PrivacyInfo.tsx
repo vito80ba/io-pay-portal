@@ -12,23 +12,23 @@ export default function PrivacyInfo() {
     <>
       <Box mt={4}>
         <Typography variant="caption" component={"div"}>
-          {t("paymentPage.privacyDesc")}
+          {t("privacyInfo.privacyDesc")}
           <a
             href="#"
             style={{ fontWeight: 600, textDecoration: "none" }}
             onClick={() => setModalOpen(true)}
           >
-            {t("paymentPage.privacy")}
+            {t("privacyInfo.privacy")}
           </a>
           <br />
-          {`${t("paymentPage.googleDesc")} (`}
+          {`${t("privacyInfo.googleDesc")} (`}
           <a
             href="https://policies.google.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
             style={{ fontWeight: 600, textDecoration: "none" }}
           >
-            {t("paymentPage.privacyPolicy")}
+            {t("privacyInfo.privacyPolicy")}
           </a>
           {` ${t("general.and")} `}
           <a
@@ -37,7 +37,7 @@ export default function PrivacyInfo() {
             rel="noopener noreferrer"
             style={{ fontWeight: 600, textDecoration: "none" }}
           >
-            {t("paymentPage.serviceTerms")}
+            {t("privacyInfo.serviceTerms")}
           </a>
           {")."}
         </Typography>

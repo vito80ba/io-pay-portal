@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "@pagopa/mui-italia/theme";
 import React from "react";
@@ -9,16 +9,41 @@ import IndexPage from "./routes/IndexPage";
 import InputCardPage from "./routes/InputCardPage";
 import PaymentChoicePage from "./routes/PaymentChoicePage";
 import PaymentEmailPage from "./routes/PaymentEmailPage";
-import PaymentPage from "./routes/PaymentPage";
 import PaymentOutlet from "./routes/PaymentOutlet";
+import PaymentNoticePage from "./routes/PaymentNoticePage";
 import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
+import { SessionItems } from "./utils/storage/sessionStorage";
+
+const checkoutTheme = createTheme({
+  ...theme,
+  components: {
+    ...theme.components,
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginTop: 0,
+          height: 0,
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        message: {
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        },
+      },
+    },
+  },
+});
 
 export function App() {
   const fixedFooterPages = ["payment", "qrcode"];
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={checkoutTheme}>
       <CssBaseline />
       <BrowserRouter>
         <Layout fixedFooterPages={fixedFooterPages}>
@@ -26,11 +51,11 @@ export function App() {
             <Route path="/" element={<Navigate to="/payment" />} />
             <Route path="/payment" element={<PaymentOutlet />}>
               <Route path="" element={<IndexPage />} />
-              <Route path="notice" element={<PaymentPage />} />
+              <Route path="notice" element={<PaymentNoticePage />} />
               <Route
                 path="summary"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.paymentInfo}>
                     <PaymentSummaryPage />
                   </Guard>
                 }
@@ -38,7 +63,7 @@ export function App() {
               <Route
                 path="email"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.paymentInfo}>
                     <PaymentEmailPage />
                   </Guard>
                 }
@@ -46,7 +71,7 @@ export function App() {
               <Route
                 path="inputcard"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.email}>
                     <InputCardPage />
                   </Guard>
                 }
@@ -54,7 +79,7 @@ export function App() {
               <Route
                 path="paymentchoice"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.paymentInfo}>
                     <PaymentChoicePage />
                   </Guard>
                 }

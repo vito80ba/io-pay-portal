@@ -8,18 +8,19 @@ import React from "react";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { cleanSpaces } from "../../../../utils/form/formatters";
-import { getFormValidationIcon } from "../../../../utils/form/formValidation";
+import { getFormErrorIcon } from "../../../../utils/form/formValidation";
 import {
   PaymentFormErrors,
   PaymentFormFields,
 } from "../../models/paymentModel";
 
 export function PaymentNoticeForm(props: {
+  defaultValues?: PaymentFormFields;
   onCancel: () => void;
   onSubmit: (notice: PaymentFormFields) => void;
 }) {
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
-  const [disabled, setDisabled] = React.useState(true);
+  const [disabled, setDisabled] = React.useState(!props.defaultValues?.cf);
 
   const validate = (values: PaymentFormFields) => {
     const errors: PaymentFormErrors = {
@@ -27,16 +28,16 @@ export function PaymentNoticeForm(props: {
         ? {
             ...(/\b\d{18}\b/.test(values.billCode)
               ? {}
-              : { billCode: "paymentPage.formErrors.minCode" }),
+              : { billCode: "paymentNoticePage.formErrors.minCode" }),
           }
-        : { billCode: "paymentPage.formErrors.required" }),
+        : { billCode: "paymentNoticePage.formErrors.required" }),
       ...(values.cf
         ? {
             ...(/\b\d{11}\b/.test(values.cf)
               ? {}
-              : { cf: "paymentPage.formErrors.minCf" }),
+              : { cf: "paymentNoticePage.formErrors.minCf" }),
           }
-        : { cf: "paymentPage.formErrors.required" }),
+        : { cf: "paymentNoticePage.formErrors.required" }),
     };
 
     setDisabled(!!(errors.billCode || errors.cf));
@@ -48,10 +49,12 @@ export function PaymentNoticeForm(props: {
     <>
       <Formik
         innerRef={formRef}
-        initialValues={{
-          billCode: "",
-          cf: "",
-        }}
+        initialValues={
+          props.defaultValues || {
+            billCode: "",
+            cf: "",
+          }
+        }
         validate={validate}
         onSubmit={props.onSubmit}
       >
@@ -70,7 +73,7 @@ export function PaymentNoticeForm(props: {
                 variant="outlined"
                 errorText={errors.billCode}
                 error={!!(errors.billCode && touched.billCode)}
-                label="paymentPage.formFields.billCode"
+                label="paymentNoticePage.formFields.billCode"
                 id="billCode"
                 type="text"
                 inputMode="numeric"
@@ -80,13 +83,10 @@ export function PaymentNoticeForm(props: {
                   handleChange(e);
                 }}
                 handleBlur={handleBlur}
-                sx={{ mb: 2 }}
+                sx={{ mb: 4 }}
                 endAdornment={
                   <InputAdornment position="end">
-                    {getFormValidationIcon(
-                      !!values.billCode,
-                      !!errors.billCode
-                    )}
+                    {getFormErrorIcon(!!values.billCode, !!errors.billCode)}
                   </InputAdornment>
                 }
               />
@@ -95,7 +95,7 @@ export function PaymentNoticeForm(props: {
                 variant="outlined"
                 errorText={errors.cf}
                 error={Boolean(errors.cf && touched.cf)}
-                label="paymentPage.formFields.cf"
+                label="paymentNoticePage.formFields.cf"
                 id="cf"
                 type="text"
                 inputMode="numeric"
@@ -107,14 +107,14 @@ export function PaymentNoticeForm(props: {
                 handleBlur={handleBlur}
                 endAdornment={
                   <InputAdornment position="end">
-                    {getFormValidationIcon(!!values.cf, !!errors.cf)}
+                    {getFormErrorIcon(!!values.cf, !!errors.cf)}
                   </InputAdornment>
                 }
               />
             </Box>
             <FormButtons
-              submitTitle="paymentPage.formButtons.submit"
-              cancelTitle="paymentPage.formButtons.cancel"
+              submitTitle="paymentNoticePage.formButtons.submit"
+              cancelTitle="paymentNoticePage.formButtons.cancel"
               disabled={disabled}
               handleSubmit={() => handleSubmit()}
               handleCancel={props.onCancel}

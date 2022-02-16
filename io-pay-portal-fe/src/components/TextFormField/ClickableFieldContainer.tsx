@@ -8,6 +8,7 @@ function ClickableFieldContainer(props: {
   title: string;
   icon: React.ReactNode;
   endAdornment: React.ReactNode;
+  clickable?: boolean;
   onClick: () => void;
 }) {
   const { t } = useTranslation();
@@ -15,7 +16,7 @@ function ClickableFieldContainer(props: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    cursor: "pointer",
+    cursor: props.clickable ? "auto" : "pointer",
     borderBottom: "1px solid",
     borderBottomColor: "#EFEFEF",
     pt: 3,

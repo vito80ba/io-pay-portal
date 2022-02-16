@@ -5,15 +5,17 @@ export const TRANSLATIONS_IT = {
       help: "Aiuto",
     },
   },
-  paymentPage: {
-    title: "Cosa devi pagare?",
-    description: "Inserisci i dati come riportato sull’avviso di pagamento.",
-    helpLink: "Dove trovo i dati?",
-    privacyDesc: "Premendo 'Continua' dichiari di aver letto e compreso l'",
+  privacyInfo: {
+    privacyDesc: "Proseguendo dichiari di aver letto e compreso l'",
     googleDesc: "Form protetto tramite reCAPTCHA e Google",
     privacy: "Informativa Privacy e i Termini e condizioni d'uso del servizio.",
     privacyPolicy: "Privacy Policy",
     serviceTerms: "Termini di servizio",
+  },
+  paymentNoticePage: {
+    title: "Cosa devi pagare?",
+    description: "Inserisci i dati come riportato sull’avviso di pagamento.",
+    helpLink: "Vedi un esempio",
     formFields: {
       billCode: "Codice Avviso",
       cf: "Codice Fiscale Ente Creditore",
@@ -46,7 +48,7 @@ export const TRANSLATIONS_IT = {
     title: "Inserisci la tua email",
     description: "Riceverai l'esito del pagamento a questo indirizzo",
     formFields: {
-      email: "Il tuo indirizzo email",
+      email: "Indirizzo email",
       confirmEmail: "Ripeti di nuovo",
     },
     formErrors: {

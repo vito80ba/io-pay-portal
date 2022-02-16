@@ -23,7 +23,6 @@ export interface InputCardFormFields {
   number: string;
   expirationDate: string;
   cvv: string;
-  terms: boolean;
 }
 
 export interface InputCardFormErrors {
@@ -31,7 +30,6 @@ export interface InputCardFormErrors {
   number?: string;
   expirationDate?: string;
   cvv?: string;
-  terms?: string;
 }
 
 export enum SecureCodeDigits {
