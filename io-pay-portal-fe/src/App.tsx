@@ -13,6 +13,7 @@ import PaymentOutlet from "./routes/PaymentOutlet";
 import PaymentNoticePage from "./routes/PaymentNoticePage";
 import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
+import { SessionItems } from "./utils/storage/sessionStorage";
 
 const checkoutTheme = createTheme({
   ...theme,
@@ -23,6 +24,15 @@ const checkoutTheme = createTheme({
         root: {
           marginTop: 0,
           height: 0,
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        message: {
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
         },
       },
     },
@@ -45,7 +55,7 @@ export function App() {
               <Route
                 path="summary"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.paymentInfo}>
                     <PaymentSummaryPage />
                   </Guard>
                 }
@@ -53,7 +63,7 @@ export function App() {
               <Route
                 path="email"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.paymentInfo}>
                     <PaymentEmailPage />
                   </Guard>
                 }
@@ -61,7 +71,7 @@ export function App() {
               <Route
                 path="inputcard"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.email}>
                     <InputCardPage />
                   </Guard>
                 }
@@ -69,7 +79,7 @@ export function App() {
               <Route
                 path="paymentchoice"
                 element={
-                  <Guard>
+                  <Guard item={SessionItems.paymentInfo}>
                     <PaymentChoicePage />
                   </Guard>
                 }

@@ -3,7 +3,6 @@
 import { Box, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
 import { getFormErrorIcon } from "../../../../utils/form/formValidation";
@@ -13,10 +12,13 @@ import {
   PaymentEmailFormFields,
 } from "../../models/paymentModel";
 
-export function PaymentEmailForm() {
-  const navigate = useNavigate();
+export function PaymentEmailForm(props: {
+  defaultValues?: PaymentEmailFormFields;
+  onCancel: () => void;
+  onSubmit: (emailInfo: PaymentEmailFormFields) => void;
+}) {
   const formRef = React.useRef<FormikProps<PaymentEmailFormFields>>(null);
-  const [disabled, setDisabled] = React.useState(true);
+  const [disabled, setDisabled] = React.useState(!props.defaultValues?.email);
 
   const validate = (values: PaymentEmailFormFields) => {
     const errors: PaymentEmailFormErrors = {
@@ -45,21 +47,18 @@ export function PaymentEmailForm() {
     return errors;
   };
 
-  const currentPath = location.pathname.split("/")[1];
-  const handleContinue = React.useCallback(() => {
-    navigate(`/${currentPath}/inputcard`);
-  }, []);
-
   return (
     <>
       <Formik
         innerRef={formRef}
-        initialValues={{
-          email: "",
-          confirmEmail: "",
-        }}
+        initialValues={
+          props.defaultValues || {
+            email: "",
+            confirmEmail: "",
+          }
+        }
         validate={validate}
-        onSubmit={handleContinue}
+        onSubmit={props.onSubmit}
       >
         {({
           touched,
@@ -115,7 +114,7 @@ export function PaymentEmailForm() {
               cancelTitle="paymentEmailPage.formButtons.cancel"
               disabled={disabled}
               handleSubmit={() => handleSubmit()}
-              handleCancel={() => navigate(-1)}
+              handleCancel={props.onCancel}
             />
           </form>
         )}

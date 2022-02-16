@@ -1,18 +1,21 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RptId } from "../../generated/RptId";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
 import { getPaymentInfoTask } from "../../src-pug/helper";
+import { RootState } from "../app/store";
 import ErrorModal from "../components/modals/ErrorModal";
 import InformationModal from "../components/modals/InformationModal";
 import PageContainer from "../components/PageContent/PageContainer";
 import { PaymentNoticeForm } from "../features/payment/components/PaymentNoticeForm/PaymentNoticeForm";
 import { PaymentFormFields } from "../features/payment/models/paymentModel";
+import { setNotice } from "../features/payment/slices/noticeSlice";
 import { setPayment } from "../features/payment/slices/paymentSlice";
 import { useSmallDevice } from "../hooks/useSmallDevice";
+import { loadState, SessionItems } from "../utils/storage/sessionStorage";
 
 export default function PaymentNoticePage() {
   const { t } = useTranslation();
@@ -23,6 +26,18 @@ export default function PaymentNoticePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentPath = location.pathname.split("/")[1];
+  const noticeInfo = useSelector((state: RootState) => {
+    if (!state.notice.cf) {
+      const noticeInfo = loadState(
+        SessionItems.noticeInfo
+      ) as PaymentFormFields;
+      return {
+        billCode: noticeInfo?.billCode || "",
+        cf: noticeInfo?.cf || "",
+      };
+    }
+    return state.notice;
+  });
 
   const onError = (m: string) => {
     setError(m);
@@ -42,7 +57,9 @@ export default function PaymentNoticePage() {
             cf: paymentInfo.enteBeneficiario?.identificativoUnivocoBeneficiario,
           })
         );
+        dispatch(setNotice(notice));
         sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
+        sessionStorage.setItem("rptId", JSON.stringify(notice));
         navigate(`/${currentPath}/summary`);
       })
       .run();
@@ -65,7 +82,11 @@ export default function PaymentNoticePage() {
         {t("paymentNoticePage.helpLink")}
       </a>
       <Box sx={{ mt: 6 }}>
-        <PaymentNoticeForm onCancel={onCancel} onSubmit={onSubmit} />
+        <PaymentNoticeForm
+          onCancel={onCancel}
+          onSubmit={onSubmit}
+          defaultValues={noticeInfo}
+        />
       </Box>
 
       <InformationModal

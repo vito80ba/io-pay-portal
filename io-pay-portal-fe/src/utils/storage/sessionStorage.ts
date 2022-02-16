@@ -1,17 +1,29 @@
-import { PaymentInfo } from "../../features/payment/models/paymentModel";
+import {
+  PaymentEmailFormFields,
+  PaymentFormFields,
+  PaymentInfo,
+} from "../../features/payment/models/paymentModel";
 
-export const loadState = () => {
+export enum SessionItems {
+  paymentInfo = "paymentInfo",
+  noticeInfo = "rptId",
+  email = "email",
+}
+export const loadState = (item: string) => {
   try {
-    const serializedState = sessionStorage.getItem("paymentInfo");
+    const serializedState = sessionStorage.getItem(item);
 
     if (!serializedState) {
       return undefined;
     }
 
-    return JSON.parse(serializedState) as PaymentInfo;
+    return JSON.parse(serializedState) as
+      | PaymentInfo
+      | PaymentFormFields
+      | PaymentEmailFormFields;
   } catch (e) {
     return undefined;
   }
 };
 
-export const isStateEmpty = () => !loadState();
+export const isStateEmpty = (item: string) => !loadState(item);

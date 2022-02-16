@@ -15,11 +15,12 @@ import {
 } from "../../models/paymentModel";
 
 export function PaymentNoticeForm(props: {
+  defaultValues?: PaymentFormFields;
   onCancel: () => void;
   onSubmit: (notice: PaymentFormFields) => void;
 }) {
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
-  const [disabled, setDisabled] = React.useState(true);
+  const [disabled, setDisabled] = React.useState(!props.defaultValues?.cf);
 
   const validate = (values: PaymentFormFields) => {
     const errors: PaymentFormErrors = {
@@ -48,10 +49,12 @@ export function PaymentNoticeForm(props: {
     <>
       <Formik
         innerRef={formRef}
-        initialValues={{
-          billCode: "",
-          cf: "",
-        }}
+        initialValues={
+          props.defaultValues || {
+            billCode: "",
+            cf: "",
+          }
+        }
         validate={validate}
         onSubmit={props.onSubmit}
       >
