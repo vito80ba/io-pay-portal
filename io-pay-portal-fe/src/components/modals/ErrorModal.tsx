@@ -98,9 +98,6 @@ function ErrorModal(props: {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "start",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
                 mt: 2,
               }}
               action={
@@ -118,7 +115,13 @@ function ErrorModal(props: {
                 </Tooltip>
               }
             >
-              <AlertTitle sx={{ mb: 0 }}>{props.error}</AlertTitle>
+              <AlertTitle
+                sx={{
+                  mb: 0,
+                }}
+              >
+                {props.error}
+              </AlertTitle>
             </Alert>
           )}
           {!!buttonsDetail && (

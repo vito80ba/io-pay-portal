@@ -24,19 +24,29 @@ export function PaymentNoticeChoice() {
     justifyContent: "space-between",
     alignItems: "center",
     cursor: "pointer",
-    ml: 2,
-    mr: 2,
+    pt: 3,
+    pb: 3,
   };
 
   return (
     <>
-      <Grid container sx={defaultStyle} onClick={() => handleClickOnQR()}>
+      <Grid
+        container
+        sx={{
+          ...defaultStyle,
+          borderBottom: "1px solid",
+          borderBottomColor: "#EFEFEF",
+        }}
+        onClick={() => handleClickOnQR()}
+      >
         <Grid item xs={9}>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1,
+              gap: 3,
+              pl: 2,
+              pr: 2,
             }}
           >
             <QrCodeScannerIcon sx={{ color: "primary.main" }} />
@@ -45,6 +55,8 @@ export function PaymentNoticeChoice() {
                 ...defaultStyle,
                 flexDirection: "column",
                 alignItems: "baseline",
+                pt: 0,
+                pb: 0,
               }}
             >
               <Typography variant="sidenav" component={"div"}>
@@ -56,7 +68,11 @@ export function PaymentNoticeChoice() {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={3} sx={{ display: "flex", justifyContent: "center" }}>
+        <Grid
+          item
+          xs={3}
+          sx={{ display: "flex", justifyContent: "end", pr: 2 }}
+        >
           <ArrowForwardIosIcon
             sx={{ color: "primary.main" }}
             fontSize="small"
@@ -65,7 +81,11 @@ export function PaymentNoticeChoice() {
       </Grid>
       <Grid
         container
-        sx={{ ...defaultStyle, mt: 6 }}
+        sx={{
+          ...defaultStyle,
+          borderBottom: "1px solid",
+          borderBottomColor: "#EFEFEF",
+        }}
         onClick={() => handleClickOnForm()}
       >
         <Grid item xs={9}>
@@ -73,7 +93,9 @@ export function PaymentNoticeChoice() {
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 1,
+              gap: 3,
+              pl: 2,
+              pr: 2,
             }}
           >
             <KeyboardIcon sx={{ color: "primary.main" }} />
@@ -82,6 +104,8 @@ export function PaymentNoticeChoice() {
                 ...defaultStyle,
                 flexDirection: "column",
                 alignItems: "baseline",
+                pt: 0,
+                pb: 0,
               }}
             >
               <Typography variant="sidenav" component={"div"}>
@@ -93,7 +117,11 @@ export function PaymentNoticeChoice() {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={3} sx={{ display: "flex", justifyContent: "center" }}>
+        <Grid
+          item
+          xs={3}
+          sx={{ display: "flex", justifyContent: "end", pr: 2 }}
+        >
           <ArrowForwardIosIcon
             sx={{ color: "primary.main" }}
             fontSize="small"

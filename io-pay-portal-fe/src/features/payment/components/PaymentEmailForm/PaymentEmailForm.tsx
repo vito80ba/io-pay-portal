@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { Box, InputAdornment } from "@mui/material";
 import { Formik, FormikProps } from "formik";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
-import { getFormValidationIcon } from "../../../../utils/form/formValidation";
+import { getFormErrorIcon } from "../../../../utils/form/formValidation";
 import { emailValidation } from "../../../../utils/regex/validators";
 import {
   PaymentEmailFormErrors,
   PaymentEmailFormFields,
 } from "../../models/paymentModel";
 
-export function PaymentEmailForm() {
-  const navigate = useNavigate();
+export function PaymentEmailForm(props: {
+  defaultValues?: PaymentEmailFormFields;
+  onCancel: () => void;
+  onSubmit: (emailInfo: PaymentEmailFormFields) => void;
+}) {
   const formRef = React.useRef<FormikProps<PaymentEmailFormFields>>(null);
-  const [disabled, setDisabled] = React.useState(true);
+  const [disabled, setDisabled] = React.useState(!props.defaultValues?.email);
 
   const validate = (values: PaymentEmailFormFields) => {
     const errors: PaymentEmailFormErrors = {
@@ -46,89 +47,77 @@ export function PaymentEmailForm() {
     return errors;
   };
 
-  const currentPath = location.pathname.split("/")[1];
-  const handleContinue = React.useCallback(() => {
-    navigate(`/${currentPath}/inputcard`);
-  }, []);
-
   return (
     <>
       <Formik
         innerRef={formRef}
-        initialValues={{
-          email: "",
-          confirmEmail: "",
-        }}
+        initialValues={
+          props.defaultValues || {
+            email: "",
+            confirmEmail: "",
+          }
+        }
         validate={validate}
-        onSubmit={handleContinue}
+        onSubmit={props.onSubmit}
       >
-        {(formikProps) => {
-          const {
-            touched,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-          } = formikProps;
-          return (
-            <form onSubmit={handleSubmit}>
-              <Box>
-                <TextFormField
-                  fullWidth
-                  variant="outlined"
-                  errorText={errors.email}
-                  error={!!(errors.email && touched.email)}
-                  label="paymentEmailPage.formFields.email"
-                  id="email"
-                  type="email"
-                  value={values.email}
-                  handleChange={handleChange}
-                  handleBlur={handleBlur}
-                  sx={{ mb: 2 }}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {getFormValidationIcon(!!values.email, !!errors.email)}
-                    </InputAdornment>
-                  }
-                  startAdornment={
-                    <MailOutlineIcon sx={{ mr: 2, color: "#5c6f82" }} />
-                  }
-                />
-                <TextFormField
-                  fullWidth
-                  variant="outlined"
-                  errorText={errors.confirmEmail}
-                  error={Boolean(errors.confirmEmail && touched.confirmEmail)}
-                  label="paymentEmailPage.formFields.confirmEmail"
-                  id="confirmEmail"
-                  type="email"
-                  value={values.confirmEmail}
-                  handleChange={handleChange}
-                  handleBlur={handleBlur}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {getFormValidationIcon(
-                        !!values.confirmEmail,
-                        !!errors.confirmEmail
-                      )}
-                    </InputAdornment>
-                  }
-                  startAdornment={
-                    <MailOutlineIcon sx={{ mr: 2, color: "#5c6f82" }} />
-                  }
-                />
-              </Box>
-              <FormButtons
-                submitTitle="paymentEmailPage.formButtons.submit"
-                cancelTitle="paymentEmailPage.formButtons.cancel"
-                disabled={disabled}
-                handleSubmit={() => handleSubmit()}
-                handleCancel={() => navigate(-1)}
+        {({
+          touched,
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.email}
+                error={!!(errors.email && touched.email)}
+                label="paymentEmailPage.formFields.email"
+                id="email"
+                type="email"
+                value={values.email}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                sx={{ mb: 4 }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormErrorIcon(!!values.email, !!errors.email)}
+                  </InputAdornment>
+                }
               />
-            </form>
-          );
-        }}
+              <TextFormField
+                fullWidth
+                variant="outlined"
+                errorText={errors.confirmEmail}
+                error={Boolean(errors.confirmEmail && touched.confirmEmail)}
+                label="paymentEmailPage.formFields.confirmEmail"
+                id="confirmEmail"
+                type="email"
+                value={values.confirmEmail}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {getFormErrorIcon(
+                      !!values.confirmEmail,
+                      !!errors.confirmEmail
+                    )}
+                  </InputAdornment>
+                }
+              />
+            </Box>
+            <FormButtons
+              submitTitle="paymentEmailPage.formButtons.submit"
+              cancelTitle="paymentEmailPage.formButtons.cancel"
+              disabled={disabled}
+              handleSubmit={() => handleSubmit()}
+              handleCancel={props.onCancel}
+            />
+          </form>
+        )}
       </Formik>
     </>
   );
