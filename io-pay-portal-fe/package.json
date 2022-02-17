@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.2.5",
+    "@mui/lab": "^5.0.0-alpha.69",
     "@pagopa/mui-italia": "^0.4.3",
     "@reduxjs/toolkit": "^1.7.1",
     "@types/mixpanel-browser": "^2.35.6",

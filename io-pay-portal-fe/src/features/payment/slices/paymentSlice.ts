@@ -4,23 +4,33 @@ import { createSlice } from "@reduxjs/toolkit";
 export const paymentSlice = createSlice({
   name: "payment",
   initialState: {
-    amount: 0,
-    creditor: "",
-    causal: "",
-    cf: "",
+    causaleVersamento: "",
+    codiceContestoPagamento: "",
+    enteBeneficiario: {
+      denominazioneBeneficiario: "",
+      identificativoUnivocoBeneficiario: "",
+    },
+    ibanAccredito: "",
+    importoSingoloVersamento: 0,
   },
   reducers: {
     setPayment(state, action) {
-      state.amount = action.payload.amount;
-      state.creditor = action.payload.creditor;
-      state.causal = action.payload.causal;
-      state.cf = action.payload.cf;
+      state.causaleVersamento = action.payload.causaleVersamento;
+      state.codiceContestoPagamento = action.payload.codiceContestoPagamento;
+      state.enteBeneficiario.denominazioneBeneficiario =
+        action.payload.enteBeneficiario.denominazioneBeneficiario;
+      state.enteBeneficiario.identificativoUnivocoBeneficiario =
+        action.payload.enteBeneficiario.identificativoUnivocoBeneficiario;
+      state.ibanAccredito = action.payload.ibanAccredito;
+      state.importoSingoloVersamento = action.payload.importoSingoloVersamento;
     },
     resetPayment(state) {
-      state.amount = 0;
-      state.creditor = "";
-      state.causal = "";
-      state.cf = "";
+      state.causaleVersamento = "";
+      state.codiceContestoPagamento = "";
+      state.enteBeneficiario.denominazioneBeneficiario = "";
+      state.enteBeneficiario.identificativoUnivocoBeneficiario = "";
+      state.ibanAccredito = "";
+      state.importoSingoloVersamento = 0;
     },
   },
 });

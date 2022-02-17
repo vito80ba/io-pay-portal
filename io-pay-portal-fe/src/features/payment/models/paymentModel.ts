@@ -60,3 +60,7 @@ export interface PaymentInfo {
     denominazioneBeneficiario: string;
   };
 }
+
+export interface PaymentId {
+  idPagamento: string;
+}

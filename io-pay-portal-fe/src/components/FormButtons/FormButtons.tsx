@@ -1,4 +1,5 @@
 import { Button, Grid } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { default as React } from "react";
 import { useTranslation } from "react-i18next";
 import { useSmallDevice } from "../../hooks/useSmallDevice";
@@ -7,6 +8,7 @@ export function FormButtons(props: {
   handleSubmit: () => void;
   handleCancel: () => void;
   disabled: boolean;
+  loading?: boolean;
   submitTitle: string;
   cancelTitle: string;
 }) {
@@ -33,7 +35,6 @@ export function FormButtons(props: {
       >
         <Grid xs={4} style={useSmallDevice() ? { paddingTop: 0 } : {}} item>
           <Button
-            className="cancelButton"
             variant="outlined"
             onClick={props.handleCancel}
             style={{
@@ -46,8 +47,8 @@ export function FormButtons(props: {
           </Button>
         </Grid>
         <Grid xs={8} style={useSmallDevice() ? { paddingTop: 0 } : {}} item>
-          <Button
-            className="submitButton"
+          <LoadingButton
+            loading={props.loading || false}
             variant="contained"
             onClick={props.handleSubmit}
             disabled={props.disabled}
@@ -58,7 +59,7 @@ export function FormButtons(props: {
             }}
           >
             {t(props.submitTitle)}
-          </Button>
+          </LoadingButton>
         </Grid>
       </Grid>
     </React.Fragment>
