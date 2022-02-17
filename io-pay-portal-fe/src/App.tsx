@@ -13,6 +13,7 @@ import PaymentOutlet from "./routes/PaymentOutlet";
 import PaymentNoticePage from "./routes/PaymentNoticePage";
 import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
+import PaymentQrPage from "./routes/PaymentQrPage";
 import { SessionItems } from "./utils/storage/sessionStorage";
 
 const checkoutTheme = createTheme({
@@ -51,6 +52,7 @@ export function App() {
             <Route path="/" element={<Navigate to="/payment" />} />
             <Route path="/payment" element={<PaymentOutlet />}>
               <Route path="" element={<IndexPage />} />
+              <Route path="qr-reader" element={<PaymentQrPage />} />
               <Route path="notice" element={<PaymentNoticePage />} />
               <Route
                 path="summary"

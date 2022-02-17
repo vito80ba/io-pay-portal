@@ -174,4 +174,10 @@ export const TRANSLATIONS_IT = {
     others: "Altri metodi",
     incoming: "In arrivo",
   },
+  paymentQrPage: {
+    title: "Inquadra il Codice QR",
+    description:
+      "Assicurati di avere una buona illuminazione. Se il codice non è a fuoco, prova ad allontanarlo leggermente dallo schermo.",
+    navigate: "Non funziona? Inserisci manualmente",
+  },
 };
