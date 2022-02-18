@@ -18,6 +18,7 @@ export function PaymentNoticeForm(props: {
   defaultValues?: PaymentFormFields;
   onCancel: () => void;
   onSubmit: (notice: PaymentFormFields) => void;
+  loading: boolean;
 }) {
   const formRef = React.useRef<FormikProps<PaymentFormFields>>(null);
   const [disabled, setDisabled] = React.useState(!props.defaultValues?.cf);
@@ -116,6 +117,7 @@ export function PaymentNoticeForm(props: {
               submitTitle="paymentNoticePage.formButtons.submit"
               cancelTitle="paymentNoticePage.formButtons.cancel"
               disabled={disabled}
+              loading={props.loading}
               handleSubmit={() => handleSubmit()}
               handleCancel={props.onCancel}
             />

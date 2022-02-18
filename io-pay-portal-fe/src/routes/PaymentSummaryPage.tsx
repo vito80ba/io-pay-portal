@@ -5,13 +5,25 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
+import { PaymentRequestsGetResponse } from "../../generated/PaymentRequestsGetResponse";
+import { RptId } from "../../generated/RptId";
 import { RootState } from "../app/store";
 import { FormButtons } from "../components/FormButtons/FormButtons";
+import ErrorModal from "../components/modals/ErrorModal";
 import PageContainer from "../components/PageContent/PageContainer";
 import FieldContainer from "../components/TextFormField/FieldContainer";
-import { PaymentInfo } from "../features/payment/models/paymentModel";
+import {
+  PaymentFormFields,
+  PaymentInfo,
+} from "../features/payment/models/paymentModel";
+import { setPaymentId } from "../features/payment/slices/paymentIdSlice";
+import {
+  activePaymentTask,
+  pollingActivationStatus,
+} from "../utils/api/helper";
+import { getConfig } from "../utils/config/config";
 import { moneyFormat } from "../utils/form/formatters";
 import { loadState, SessionItems } from "../utils/storage/sessionStorage";
 
@@ -29,22 +41,80 @@ export default function PaymentSummaryPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const currentPath = location.pathname.split("/")[1];
+  const [errorModalOpen, setErrorModalOpen] = React.useState(false);
+  const [error, setError] = React.useState("");
   const paymentInfo = useSelector((state: RootState) => {
-    if (!state.payment.amount) {
+    if (!state.payment.codiceContestoPagamento) {
       const paymentInfo = loadState(SessionItems.paymentInfo) as PaymentInfo;
       return {
-        amount: paymentInfo?.importoSingoloVersamento || 0,
-        creditor:
-          paymentInfo?.enteBeneficiario?.denominazioneBeneficiario || "",
-        causal: paymentInfo?.causaleVersamento || "",
-        cf:
-          paymentInfo?.enteBeneficiario?.identificativoUnivocoBeneficiario ||
-          "",
+        importoSingoloVersamento: paymentInfo?.importoSingoloVersamento || 0,
+        enteBeneficiario: {
+          denominazioneBeneficiario:
+            paymentInfo?.enteBeneficiario?.denominazioneBeneficiario || "",
+          identificativoUnivocoBeneficiario:
+            paymentInfo?.enteBeneficiario?.identificativoUnivocoBeneficiario ||
+            "",
+        },
+        causaleVersamento: paymentInfo?.causaleVersamento || "",
+        codiceContestoPagamento: paymentInfo?.codiceContestoPagamento || "",
+        ibanAccredito: paymentInfo?.ibanAccredito || "",
       };
     }
     return state.payment;
   });
+  const noticeInfo = useSelector((state: RootState) => {
+    if (!state.notice.cf) {
+      const noticeInfo = loadState(
+        SessionItems.noticeInfo
+      ) as PaymentFormFields;
+      return {
+        billCode: noticeInfo?.billCode || "",
+        cf: noticeInfo?.cf || "",
+      };
+    }
+    return state.notice;
+  });
+  const [loading, setLoading] = React.useState(false);
+
+  const onError = (m: string) => {
+    setLoading(false);
+    setError(m);
+    setErrorModalOpen(true);
+  };
+
+  const onSubmit = React.useCallback(() => {
+    const rptId: RptId = `${noticeInfo.cf}${noticeInfo.billCode}`;
+    setLoading(true);
+
+    PaymentRequestsGetResponse.decode(paymentInfo).fold(
+      () => onError(""),
+      async (paymentInfo) =>
+        await activePaymentTask(
+          paymentInfo.importoSingoloVersamento,
+          paymentInfo.codiceContestoPagamento,
+          rptId
+        )
+          .fold(onError, () => {
+            void pollingActivationStatus(
+              paymentInfo.codiceContestoPagamento,
+              getConfig("IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS") as number,
+              (res) => {
+                dispatch(
+                  setPaymentId({
+                    paymentId: res.idPagamento,
+                  })
+                );
+                sessionStorage.setItem("paymentId", JSON.stringify(res));
+                setLoading(false);
+                navigate(`/${currentPath}/paymentchoice`);
+              }
+            );
+          })
+          .run()
+    );
+  }, []);
 
   return (
     <PageContainer
@@ -53,17 +123,17 @@ export default function PaymentSummaryPage() {
     >
       <FieldContainer
         title="paymentSummaryPage.creditor"
-        body={paymentInfo.creditor}
+        body={paymentInfo.enteBeneficiario.denominazioneBeneficiario}
         icon={<AccountBalanceIcon color="primary" sx={{ ml: 3 }} />}
       />
       <FieldContainer
         title="paymentSummaryPage.causal"
-        body={paymentInfo.causal}
+        body={paymentInfo.causaleVersamento}
         icon={<ReceiptLongIcon color="primary" sx={{ ml: 3 }} />}
       />
       <FieldContainer
         title="paymentSummaryPage.amount"
-        body={moneyFormat(paymentInfo.amount)}
+        body={moneyFormat(paymentInfo.importoSingoloVersamento)}
         icon={<EuroIcon color="primary" sx={{ ml: 3 }} />}
       />
       <Box sx={{ ...defaultStyle, pl: 2, pr: 2 }}>
@@ -71,7 +141,7 @@ export default function PaymentSummaryPage() {
           {t("paymentSummaryPage.cf")}
         </Typography>
         <Typography variant="sidenav" component={"div"}>
-          {paymentInfo.cf}
+          {paymentInfo.enteBeneficiario.identificativoUnivocoBeneficiario}
         </Typography>
       </Box>
 
@@ -79,13 +149,21 @@ export default function PaymentSummaryPage() {
         submitTitle="paymentSummaryPage.buttons.submit"
         cancelTitle="paymentSummaryPage.buttons.cancel"
         disabled={false}
-        handleSubmit={() => {
-          navigate(`/${currentPath}/paymentchoice`);
-        }}
+        loading={loading}
+        handleSubmit={onSubmit}
         handleCancel={() => {
           navigate(-1);
         }}
       />
+      {!!error && (
+        <ErrorModal
+          error={error}
+          open={errorModalOpen}
+          onClose={() => {
+            setErrorModalOpen(false);
+          }}
+        />
+      )}
     </PageContainer>
   );
 }

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RptId } from "../../generated/RptId";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
-import { getPaymentInfoTask } from "../../src-pug/helper";
 import { RootState } from "../app/store";
 import ErrorModal from "../components/modals/ErrorModal";
 import InformationModal from "../components/modals/InformationModal";
@@ -15,6 +14,7 @@ import { PaymentFormFields } from "../features/payment/models/paymentModel";
 import { setNotice } from "../features/payment/slices/noticeSlice";
 import { setPayment } from "../features/payment/slices/paymentSlice";
 import { useSmallDevice } from "../hooks/useSmallDevice";
+import { getPaymentInfoTask } from "../utils/api/helper";
 import { loadState, SessionItems } from "../utils/storage/sessionStorage";
 
 export default function PaymentNoticePage() {
@@ -22,6 +22,7 @@ export default function PaymentNoticePage() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const [errorModalOpen, setErrorModalOpen] = React.useState(false);
   const [error, setError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,26 +41,37 @@ export default function PaymentNoticePage() {
   });
 
   const onError = (m: string) => {
+    setLoading(false);
     setError(m);
     setErrorModalOpen(true);
   };
 
   const onSubmit = React.useCallback((notice: PaymentFormFields) => {
     const rptId: RptId = `${notice.cf}${notice.billCode}`;
+    setLoading(true);
 
     void getPaymentInfoTask(rptId, "")
       .fold(onError, (paymentInfo) => {
         dispatch(
           setPayment({
-            amount: paymentInfo.importoSingoloVersamento,
-            creditor: paymentInfo.enteBeneficiario?.denominazioneBeneficiario,
-            causal: paymentInfo.causaleVersamento,
-            cf: paymentInfo.enteBeneficiario?.identificativoUnivocoBeneficiario,
+            importoSingoloVersamento:
+              paymentInfo?.importoSingoloVersamento || 0,
+            enteBeneficiario: {
+              denominazioneBeneficiario:
+                paymentInfo?.enteBeneficiario?.denominazioneBeneficiario || "",
+              identificativoUnivocoBeneficiario:
+                paymentInfo?.enteBeneficiario
+                  ?.identificativoUnivocoBeneficiario || "",
+            },
+            causaleVersamento: paymentInfo?.causaleVersamento || "",
+            codiceContestoPagamento: paymentInfo?.codiceContestoPagamento || "",
+            ibanAccredito: paymentInfo?.ibanAccredito || "",
           })
         );
         dispatch(setNotice(notice));
         sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
         sessionStorage.setItem("rptId", JSON.stringify(notice));
+        setLoading(false);
         navigate(`/${currentPath}/summary`);
       })
       .run();
@@ -86,6 +98,7 @@ export default function PaymentNoticePage() {
           onCancel={onCancel}
           onSubmit={onSubmit}
           defaultValues={noticeInfo}
+          loading={loading}
         />
       </Box>
 

@@ -81,7 +81,7 @@ export function App() {
               <Route
                 path="paymentchoice"
                 element={
-                  <Guard item={SessionItems.paymentInfo}>
+                  <Guard item={SessionItems.paymentId}>
                     <PaymentChoicePage />
                   </Guard>
                 }
