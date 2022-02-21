@@ -10,7 +10,6 @@ import {
   PaymentCheckData,
   PaymentId,
 } from "../features/payment/models/paymentModel";
-import { getPaymentCheckData } from "../utils/api/helper";
 import { loadState, SessionItems } from "../utils/storage/sessionStorage";
 
 export default function PaymentChoicePage() {
@@ -49,12 +48,6 @@ export default function PaymentChoicePage() {
     }
     return state.checkData;
   });
-
-  if (!checkData.idPayment) {
-    void getPaymentCheckData(paymentId.paymentId);
-    // va passato callback su errore e su response
-    // adatta la funzione in helper
-  }
 
   return (
     <PageContainer

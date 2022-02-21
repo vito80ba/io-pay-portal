@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 function ClickableFieldContainer(props: {
   title: string;
   icon: React.ReactNode;
-  endAdornment: React.ReactNode;
+  endAdornment?: React.ReactNode;
   clickable?: boolean;
   onClick: () => void;
 }) {
@@ -18,7 +18,7 @@ function ClickableFieldContainer(props: {
     alignItems: "center",
     cursor: props.clickable ? "auto" : "pointer",
     borderBottom: "1px solid",
-    borderBottomColor: "#EFEFEF",
+    borderBottomColor: "divider",
     pt: 3,
     pb: 3,
   };

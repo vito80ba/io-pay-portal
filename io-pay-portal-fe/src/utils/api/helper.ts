@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { toError } from "fp-ts/lib/Either";
 import { fromNullable } from "fp-ts/lib/Option";
 import {
   fromLeft,
@@ -33,15 +32,7 @@ import {
   PAYMENT_VERIFY_SUCCESS,
   PAYMENT_VERIFY_SVR_ERR,
 } from "../config/mixpanelHelperInit";
-import {
-  PAYMENT_CHECK_INIT,
-  PAYMENT_CHECK_NET_ERR,
-  PAYMENT_CHECK_RESP_ERR,
-  PAYMENT_CHECK_SUCCESS,
-  PAYMENT_CHECK_SVR_ERR,
-} from "../config/pmMixpanelHelperInit";
-import { PaymentSession } from "../sessionData/PaymentSession";
-import { apiClient, pmClient } from "./client";
+import { apiClient } from "./client";
 
 export const getPaymentInfoTask = (
   rptId: RptId,
@@ -206,70 +197,4 @@ export const pollingActivationStatus = async (
         : () => {}; // TODO Error Intereptor
     }, onResponse)
     .run();
-};
-
-export const getPaymentCheckData = async (idPayment: string) => {
-  mixpanel.track(PAYMENT_CHECK_INIT.value, {
-    EVENT_ID: PAYMENT_CHECK_INIT.value,
-  });
-  fromNullable(idPayment).fold(
-    // If undefined
-    await tryCatch(
-      () =>
-        (pmClient as any).checkPaymentUsingGET({
-          id: fromNullable(idPayment).getOrElse(""),
-        }),
-      // Error on call
-      () => {
-        // errorHandler(ErrorsType.CONNECTION);
-        mixpanel.track(PAYMENT_CHECK_NET_ERR.value, {
-          EVENT_ID: PAYMENT_CHECK_NET_ERR.value,
-        });
-        return toError;
-      }
-    )
-      .fold(
-        () => {
-          // errorHandler(ErrorsType.SERVER);
-          mixpanel.track(PAYMENT_CHECK_SVR_ERR.value, {
-            EVENT_ID: PAYMENT_CHECK_SVR_ERR.value,
-          });
-        },
-        (myResExt: any) => {
-          myResExt.fold(
-            () => {}, // TODO react error handler
-            (response: {
-              value: { data: { urlRedirectEc: string } };
-              status: number;
-            }) => {
-              const maybePayment = PaymentSession.decode(response.value?.data);
-
-              if (response.status === 200 && maybePayment.isRight()) {
-                sessionStorage.setItem(
-                  "checkData",
-                  JSON.stringify(maybePayment.value)
-                );
-                mixpanel.track(PAYMENT_CHECK_SUCCESS.value, {
-                  EVENT_ID: PAYMENT_CHECK_SUCCESS.value,
-                });
-                const originInput = fromNullable(origin).getOrElse(
-                  response.value.data.urlRedirectEc
-                );
-                sessionStorage.setItem(
-                  "originUrlRedirect",
-                  originInput === "payportal" ? "/" : originInput
-                );
-              } else {
-                window.location.replace("ko.html");
-                mixpanel.track(PAYMENT_CHECK_RESP_ERR.value, {
-                  EVENT_ID: PAYMENT_CHECK_RESP_ERR.value,
-                });
-              }
-            }
-          );
-        }
-      )
-      .run(),
-    () => undefined
-  );
 };

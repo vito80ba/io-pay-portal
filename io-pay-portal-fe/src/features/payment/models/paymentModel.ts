@@ -93,3 +93,31 @@ export interface PaymentCheckData {
   urlRedirectEc: string;
   detailsList: Array<PaymentCheckDetail>;
 }
+
+export interface Wallet {
+  creditCard: {
+    brand: string;
+    pan: string;
+    holder: string;
+    expireMonth: string;
+    expireYear: string;
+  };
+  idWallet: number;
+  psp: {
+    businessName: string;
+    directAcquire: false;
+    fixedCost: {
+      currency: string;
+      amount: number;
+      decimalDigits: number;
+    };
+    logoPSP: string;
+    serviceAvailability: string;
+  };
+  pspEditable: false;
+  type: string;
+}
+
+export interface SecurityCode {
+  securityCode: string;
+}

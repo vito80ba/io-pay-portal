@@ -17,7 +17,7 @@ function FieldContainer(props: {
     justifyContent: "space-between",
     alignItems: "center",
     borderBottom: "1px solid",
-    borderBottomColor: "#EFEFEF",
+    borderBottomColor: "divider",
     pt: 2,
     pb: 2,
   };

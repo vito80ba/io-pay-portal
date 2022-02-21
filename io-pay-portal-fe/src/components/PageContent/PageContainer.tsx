@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export default function PageContainer(props: {
-  title: string;
+  title?: string;
   description?: string;
   children?: React.ReactNode;
   link?: React.ReactNode;
@@ -12,9 +12,11 @@ export default function PageContainer(props: {
 
   return (
     <Box p={"3rem 0"}>
-      <Typography variant="h4" component={"div"}>
-        {t(props.title)}
-      </Typography>
+      {!!props.title && (
+        <Typography variant="h4" component={"div"}>
+          {t(props.title)}
+        </Typography>
+      )}
       {!!props.description && (
         <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
           {t(props.description)}
