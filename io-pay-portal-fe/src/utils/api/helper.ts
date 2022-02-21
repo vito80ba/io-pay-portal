@@ -7,12 +7,12 @@ import {
   tryCatch,
 } from "fp-ts/lib/TaskEither";
 import { Millisecond } from "italia-ts-commons/lib/units";
-import { CodiceContestoPagamento } from "../../../generated/CodiceContestoPagamento";
-import { ImportoEuroCents } from "../../../generated/ImportoEuroCents";
-import { PaymentActivationsGetResponse } from "../../../generated/PaymentActivationsGetResponse";
-import { PaymentActivationsPostResponse } from "../../../generated/PaymentActivationsPostResponse";
-import { PaymentRequestsGetResponse } from "../../../generated/PaymentRequestsGetResponse";
-import { RptId } from "../../../generated/RptId";
+import { CodiceContestoPagamento } from "../../../generated/definitions/payment-transactions-api/CodiceContestoPagamento";
+import { ImportoEuroCents } from "../../../generated/definitions/payment-transactions-api/ImportoEuroCents";
+import { PaymentActivationsGetResponse } from "../../../generated/definitions/payment-transactions-api/PaymentActivationsGetResponse";
+import { PaymentActivationsPostResponse } from "../../../generated/definitions/payment-transactions-api/PaymentActivationsPostResponse";
+import { PaymentRequestsGetResponse } from "../../../generated/definitions/payment-transactions-api/PaymentRequestsGetResponse";
+import { RptId } from "../../../generated/definitions/payment-transactions-api/RptId";
 import { getConfig } from "../config/config";
 import {
   mixpanel,

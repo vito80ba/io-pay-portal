@@ -15,7 +15,7 @@ import { left, right } from "fp-ts/lib/Either";
 
 import * as logger from "../../utils/logging";
 
-import { PaymentRequestsGetResponse } from "../../generated/definitions/PaymentRequestsGetResponse";
+import { PaymentRequestsGetResponse } from "../../generated/definitions/payment-transactions-api/definitions/PaymentRequestsGetResponse";
 
 import { RptIdFromString } from "italia-pagopa-commons/lib/pagopa";
 

@@ -7,7 +7,7 @@ import { secureExpressApp } from "io-functions-commons/dist/src/utils/express";
 import { AzureContextTransport } from "io-functions-commons/dist/src/utils/logging";
 import { setAppContext } from "io-functions-commons/dist/src/utils/middlewares/context_middleware";
 import createAzureFunctionHandler from "io-functions-express/dist/src/createAzureFunctionsHandler";
-import { BrowserInfoResponse } from "../generated/definitions/BrowserInfoResponse";
+import { BrowserInfoResponse } from "../generated/definitions/payment-transactions-api/definitions/BrowserInfoResponse";
 
 // tslint:disable-next-line: no-let
 let logger: Context["log"] | undefined;
