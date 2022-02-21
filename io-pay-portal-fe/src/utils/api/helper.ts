@@ -41,7 +41,7 @@ import {
   PAYMENT_CHECK_SVR_ERR,
 } from "../config/pmMixpanelHelperInit";
 import { PaymentSession } from "../sessionData/PaymentSession";
-import { apiClient, pmClient } from "./client";
+import { apiClient } from "./client";
 
 export const getPaymentInfoTask = (
   rptId: RptId,
@@ -216,7 +216,7 @@ export const getPaymentCheckData = async (idPayment: string) => {
     // If undefined
     await tryCatch(
       () =>
-        (pmClient as any).checkPaymentUsingGET({
+        apiClient.checkPaymentUsingGET({
           id: fromNullable(idPayment).getOrElse(""),
         }),
       // Error on call

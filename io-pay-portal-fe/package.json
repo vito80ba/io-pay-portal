@@ -5,6 +5,7 @@
     "type-check": "tsc",
     "generate": "npm-run-all generate:*",
     "generate:api": "rimraf generated && mkdir -p generated && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pagopa-functions-checkout/v1.1.2/openapi/index.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
+    "generate:pagopa-api-client": "rimraf generated/definitions/pagopa && mkdir -p generated/definitions/pagopa && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/io-pay/master/openapi/api.yml --no-strict --out-dir ./generated/definitions/pagopa --no-strict --request-types --response-decoders --client",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx",
     "lint-autofix": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "prebuild": "npm-run-all generate type-check",
