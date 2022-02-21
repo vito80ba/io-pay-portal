@@ -21,7 +21,7 @@ import {
 } from "../utils/responses";
 
 import { EmailString, NonEmptyString } from "italia-ts-commons/lib/strings";
-import { RecipientRequest } from "../generated/definitions/RecipientRequest";
+import { RecipientRequest } from "../generated/definitions/payment-transactions-api/definitions/RecipientRequest";
 
 import { fromNullable } from "fp-ts/lib/Option";
 import {
@@ -38,7 +38,7 @@ import { array } from "fp-ts/lib/Array";
 import { taskEither } from "fp-ts/lib/TaskEither";
 import { IRequestMiddleware } from "io-functions-commons/dist/src/utils/request_middleware";
 import { ResponseErrorFromValidationErrors } from "italia-ts-commons/lib/responses";
-import { RecipientResponse } from "../generated/definitions/RecipientResponse";
+import { RecipientResponse } from "../generated/definitions/payment-transactions-api/definitions/RecipientResponse";
 
 const logPrefix = "PostNewslettersRecipients";
 const config = getConfigOrThrow();

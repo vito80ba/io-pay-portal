@@ -1,4 +1,4 @@
-import { PaymentActivationsPostRequest } from "../generated/pagopa-proxy/PaymentActivationsPostRequest";
+import { PaymentActivationsPostRequest } from "../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentActivationsPostRequest";
 
 export const paymentInfo = {
   iuv13: "1234567890123",

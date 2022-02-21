@@ -1,7 +1,7 @@
 import { fromNullable } from "fp-ts/lib/Option";
 import Tingle from "tingle.js";
-import { PaymentRequestsGetResponse } from "../generated/PaymentRequestsGetResponse";
-import { RptId } from "../generated/RptId";
+import { PaymentRequestsGetResponse } from "../generated/definitions/payment-transactions-api/PaymentRequestsGetResponse";
+import { RptId } from "../generated/definitions/payment-transactions-api/RptId";
 import {
   activePaymentTask,
   getPaymentInfoTask,
