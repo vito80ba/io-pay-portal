@@ -2,7 +2,7 @@
 
 import { Context } from "@azure/functions";
 import { right } from "fp-ts/lib/Either";
-import { PaymentActivationsPostRequest } from "../../generated/pagopa-proxy/PaymentActivationsPostRequest";
+import { PaymentActivationsPostRequest } from "../../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentActivationsPostRequest";
 import { ActivatePaymentHandler } from "../handler";
 
 import {

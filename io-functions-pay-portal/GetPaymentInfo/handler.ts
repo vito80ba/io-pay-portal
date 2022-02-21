@@ -19,7 +19,7 @@ import {
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
 
-import { PaymentRequestsGetResponse } from "../generated/definitions/PaymentRequestsGetResponse";
+import { PaymentRequestsGetResponse } from "../generated/definitions/payment-transactions-api/definitions/PaymentRequestsGetResponse";
 import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
 import { ErrorResponses, ResponseErrorUnauthorized } from "../utils/responses";
@@ -33,8 +33,8 @@ import {
 import { RptIdFromString } from "italia-pagopa-commons/lib/pagopa";
 import { readableReport } from "italia-ts-commons/lib/reporters";
 import { fetchApi } from "../clients/fetchApi";
-import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
-import { ProblemJson } from "../generated/pagopa-proxy/ProblemJson";
+import { PaymentProblemJson } from "../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentProblemJson";
+import { ProblemJson } from "../generated/definitions/payment-transactions-api/pagopa-proxy/ProblemJson";
 import { toErrorPagopaProxyResponse } from "../utils/pagopaProxyUtil";
 
 type IGetPaymentInfoHandler = (

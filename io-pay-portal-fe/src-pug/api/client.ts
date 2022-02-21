@@ -5,7 +5,7 @@ import {
   toFetch,
 } from "italia-ts-commons/lib/fetch";
 import { Millisecond } from "italia-ts-commons/lib/units";
-import { createClient } from "../../generated/client";
+import { createClient } from "../../generated/definitions/payment-transactions-api/client";
 
 import { getConfig } from "../util/config";
 

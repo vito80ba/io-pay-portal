@@ -27,7 +27,7 @@ process.env = {
 
 import * as handlers from "../handler";
 
-import { RecipientRequest } from "../../generated/definitions/RecipientRequest";
+import { RecipientRequest } from "../../generated/definitions/payment-transactions-api/definitions/RecipientRequest";
 
 import { EmailString, NonEmptyString } from "italia-ts-commons/lib/strings";
 
