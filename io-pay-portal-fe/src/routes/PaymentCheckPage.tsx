@@ -2,8 +2,11 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import EditIcon from "@mui/icons-material/Edit";
+import InfoIcon from "@mui/icons-material/Info";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { Box, SvgIcon, Typography } from "@mui/material";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { Box, Button, SvgIcon, Typography } from "@mui/material";
 import { default as React } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -16,6 +19,7 @@ import ClickableFieldContainer from "../components/TextFormField/ClickableFieldC
 import FieldContainer from "../components/TextFormField/FieldContainer";
 import {
   PaymentCheckData,
+  PaymentEmailFormFields,
   Wallet,
 } from "../features/payment/models/paymentModel";
 import { moneyFormat } from "../utils/form/formatters";
@@ -76,7 +80,8 @@ export default function PaymentCheckPage() {
         },
         idWallet: data?.idWallet || 0,
         psp: {
-          businessName: data?.psp?.businessName || "",
+          businessName:
+            data?.psp?.businessName || "Banca Monte dei Paschi di Siena",
           directAcquire: data?.psp?.directAcquire || false,
           fixedCost: {
             currency: data?.psp?.fixedCost?.currency || "",
@@ -91,6 +96,17 @@ export default function PaymentCheckPage() {
       };
     }
     return state.wallet;
+  });
+
+  const email = useSelector((state: RootState) => {
+    if (!state.email.email) {
+      const data = loadState(SessionItems.email) as PaymentEmailFormFields;
+      return {
+        email: data?.email || "",
+        confirmEmail: data?.confirmEmail || "",
+      };
+    }
+    return state.email;
   });
 
   const onSubmit = React.useCallback(() => {}, []);
@@ -131,7 +147,7 @@ export default function PaymentCheckPage() {
         icon={<CreditCardIcon sx={{ color: "text.primary" }} />}
         clickable={false}
         sx={{ borderBottom: "", mt: 2 }}
-        itemSx={{ pl: 0, pr: 0 }}
+        itemSx={{ pl: 0, pr: 0, gap: 2 }}
       />
       <FieldContainer
         titleVariant="sidenav"
@@ -151,7 +167,10 @@ export default function PaymentCheckPage() {
         icon={<LocalOfferIcon sx={{ color: "text.primary" }} />}
         clickable={false}
         sx={{ borderBottom: "", mt: 2 }}
-        itemSx={{ pl: 0, pr: 0 }}
+        itemSx={{ pl: 0, pr: 0, gap: 2 }}
+        endAdornment={
+          <InfoIcon sx={{ color: "primary.main" }} fontSize="medium" />
+        }
       />
       <FieldContainer
         titleVariant="sidenav"
@@ -159,17 +178,32 @@ export default function PaymentCheckPage() {
         title={moneyFormat(
           checkData?.detailsList?.length ? checkData.detailsList[0].importo : 0
         )}
-        body={"paymentCheckPage.psp"}
+        body={`${t("paymentCheckPage.psp")} ${wallet.psp.businessName}`}
         sx={{
           border: "1px solid",
           borderColor: "divider",
           borderRadius: 2,
           pl: 3,
+          pr: 1,
         }}
+        endAdornment={
+          <Button variant="text" onClick={() => {}} startIcon={<EditIcon />}>
+            {t("clipboard.edit")}
+          </Button>
+        }
+      />
+      <ClickableFieldContainer
+        title={`${t("paymentCheckPage.email")} ${email.email}`}
+        icon={<MailOutlineIcon sx={{ color: "text.primary" }} />}
+        clickable={false}
+        sx={{ borderBottom: "", mt: 2 }}
+        itemSx={{ pl: 2, pr: 0, gap: 2 }}
       />
 
       <FormButtons
-        submitTitle="paymentCheckPage.buttons.submit"
+        submitTitle={`${t("paymentCheckPage.buttons.submit")} ${moneyFormat(
+          checkData.amount.amount
+        )}`}
         cancelTitle="paymentCheckPage.buttons.cancel"
         disabled={false}
         loading={false}

@@ -12,6 +12,7 @@ function FieldContainer(props: {
   titleVariant?: "body2" | "sidenav";
   bodyVariant?: "body2" | "sidenav";
   sx?: SxProps;
+  endAdornment?: React.ReactNode;
 }) {
   const { t } = useTranslation();
   const defaultStyle = {
@@ -25,29 +26,33 @@ function FieldContainer(props: {
   };
 
   return (
-    <Box
-      sx={{
-        ...defaultStyle,
-        justifyContent: "start",
-        gap: 3,
-        ...props.sx,
-      }}
-    >
-      {props.icon}
+    <Box sx={{ ...defaultStyle, ...props.sx }}>
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          flexDirection: props.flexDirection,
+          alignItems: "center",
+          justifyContent: "start",
+          gap: 3,
+          width: "100%",
         }}
       >
-        <Typography variant={props.titleVariant} component={"div"}>
-          {t(props.title)}
-        </Typography>
-        <Typography variant={props.bodyVariant} component={"div"}>
-          {props.body}
-        </Typography>
+        {props.icon}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: props.flexDirection,
+          }}
+        >
+          <Typography variant={props.titleVariant} component={"div"}>
+            {t(props.title)}
+          </Typography>
+          <Typography variant={props.bodyVariant} component={"div"}>
+            {props.body}
+          </Typography>
+        </Box>
       </Box>
+      {props.endAdornment}
     </Box>
   );
 }

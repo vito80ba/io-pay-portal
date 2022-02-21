@@ -159,6 +159,7 @@ export const TRANSLATIONS_IT = {
   clipboard: {
     copy: "Copia",
     copied: "Copiato",
+    edit: "Modifica",
   },
   GenericError: {
     title: "Spiacenti, si è verificato un errore imprevisto",
@@ -179,5 +180,16 @@ export const TRANSLATIONS_IT = {
     description:
       "Assicurati di avere una buona illuminazione. Se il codice non è a fuoco, prova ad allontanarlo leggermente dallo schermo.",
     navigate: "Non funziona? Inserisci manualmente",
+  },
+  paymentCheckPage: {
+    total: "Totale",
+    creditCard: "Paga con",
+    transaction: "Costo della transazione",
+    psp: "Gestita da",
+    email: "Invia esito a:",
+    buttons: {
+      cancel: "Indietro",
+      submit: "Paga",
+    },
   },
 };
