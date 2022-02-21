@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import EuroIcon from "@mui/icons-material/Euro";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import { Box, SvgIcon, Typography } from "@mui/material";
+import { default as React } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { RootState } from "../app/store";
+import sprite from "../assets/images/app.svg";
 import { FormButtons } from "../components/FormButtons/FormButtons";
 import PageContainer from "../components/PageContent/PageContainer";
 import ClickableFieldContainer from "../components/TextFormField/ClickableFieldContainer";
@@ -23,14 +25,12 @@ const defaultStyle = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  border: "1px solid",
-  borderRadius: "8px",
-  borderBottomColor: "divider",
-  pt: 2,
-  pb: 2,
+  borderColor: "divider",
+  pt: 1,
+  pb: 1,
 };
 
-export default function PaymentRecapPage() {
+export default function PaymentCheckPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,7 +54,11 @@ export default function PaymentRecapPage() {
         receiver: data?.receiver || "",
         subject: data?.subject || "",
         urlRedirectEc: data?.urlRedirectEc || "",
-        detailsList: data?.detailsList || [],
+        detailsList: data?.detailsList || [
+          {
+            importo: 100,
+          },
+        ],
       };
     }
     return state.checkData;
@@ -64,11 +68,11 @@ export default function PaymentRecapPage() {
       const data = loadState(SessionItems.wallet) as Wallet;
       return {
         creditCard: {
-          brand: data?.creditCard?.brand || "",
-          pan: data?.creditCard?.pan || "",
-          holder: data?.creditCard?.holder || "",
-          expireMonth: data?.creditCard?.expireMonth || "",
-          expireYear: data?.creditCard?.expireYear || "",
+          brand: data?.creditCard?.brand || "mastercard",
+          pan: data?.creditCard?.pan || "**********4242",
+          holder: data?.creditCard?.holder || "Mario Rossi",
+          expireMonth: data?.creditCard?.expireMonth || "09",
+          expireYear: data?.creditCard?.expireYear || "26",
         },
         idWallet: data?.idWallet || 0,
         psp: {
@@ -90,36 +94,83 @@ export default function PaymentRecapPage() {
   });
 
   const onSubmit = React.useCallback(() => {}, []);
+  const getWalletIcon = () => {
+    if (
+      !wallet.creditCard.brand ||
+      wallet.creditCard.brand.toLowerCase() === "other"
+    ) {
+      return <CreditCardIcon color="action" sx={{ ml: 3 }} />;
+    }
+    return (
+      <SvgIcon sx={{ ml: 3 }} color="action">
+        <use
+          href={sprite + `#icons-${wallet.creditCard.brand.toLowerCase()}-mini`}
+        />
+      </SvgIcon>
+    );
+  };
 
   return (
     <PageContainer>
-      <Box sx={{ ...defaultStyle }}>
+      <Box
+        sx={{
+          ...defaultStyle,
+          borderBottom: "1px solid",
+          borderBottomColor: "divider",
+        }}
+      >
         <Typography variant="h6" component={"div"} pr={2}>
-          {t("paymentRecapPage.total")}
+          {t("paymentCheckPage.total")}
         </Typography>
         <Typography variant="h6" component={"div"}>
           {moneyFormat(checkData.amount.amount)}
         </Typography>
       </Box>
       <ClickableFieldContainer
-        title="paymentRecapPage.creditor"
-        body={paymentInfo.enteBeneficiario.denominazioneBeneficiario}
-        icon={<AccountBalanceIcon color="primary" sx={{ ml: 3 }} />}
+        title="paymentCheckPage.creditCard"
+        icon={<CreditCardIcon sx={{ color: "text.primary" }} />}
+        clickable={false}
+        sx={{ borderBottom: "", mt: 2 }}
+        itemSx={{ pl: 0, pr: 0 }}
       />
       <FieldContainer
-        title="paymentRecapPage.causal"
-        body={paymentInfo.causaleVersamento}
-        icon={<ReceiptLongIcon color="primary" sx={{ ml: 3 }} />}
+        titleVariant="sidenav"
+        bodyVariant="body2"
+        title={`· · · · ${wallet.creditCard.pan.slice(-4)}`}
+        body={`${wallet.creditCard.expireMonth}/${wallet.creditCard.expireYear} · ${wallet.creditCard.holder}`}
+        icon={getWalletIcon()}
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 2,
+        }}
+      />
+
+      <ClickableFieldContainer
+        title="paymentCheckPage.transaction"
+        icon={<LocalOfferIcon sx={{ color: "text.primary" }} />}
+        clickable={false}
+        sx={{ borderBottom: "", mt: 2 }}
+        itemSx={{ pl: 0, pr: 0 }}
       />
       <FieldContainer
-        title="paymentRecapPage.amount"
-        body={moneyFormat(paymentInfo.importoSingoloVersamento)}
-        icon={<EuroIcon color="primary" sx={{ ml: 3 }} />}
+        titleVariant="sidenav"
+        bodyVariant="body2"
+        title={moneyFormat(
+          checkData?.detailsList?.length ? checkData.detailsList[0].importo : 0
+        )}
+        body={"paymentCheckPage.psp"}
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 2,
+          pl: 3,
+        }}
       />
 
       <FormButtons
-        submitTitle="paymentRecapPage.buttons.submit"
-        cancelTitle="paymentRecapPage.buttons.cancel"
+        submitTitle="paymentCheckPage.buttons.submit"
+        cancelTitle="paymentCheckPage.buttons.cancel"
         disabled={false}
         loading={false}
         handleSubmit={onSubmit}

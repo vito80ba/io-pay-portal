@@ -7,8 +7,10 @@ import { useTranslation } from "react-i18next";
 function FieldContainer(props: {
   title: string;
   body: string | number;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   flexDirection?: "row" | "column";
+  titleVariant?: "body2" | "sidenav";
+  bodyVariant?: "body2" | "sidenav";
   sx?: SxProps;
 }) {
   const { t } = useTranslation();
@@ -39,10 +41,10 @@ function FieldContainer(props: {
           flexDirection: props.flexDirection,
         }}
       >
-        <Typography variant="body2" component={"div"}>
+        <Typography variant={props.titleVariant} component={"div"}>
           {t(props.title)}
         </Typography>
-        <Typography variant="sidenav" component={"div"}>
+        <Typography variant={props.bodyVariant} component={"div"}>
           {props.body}
         </Typography>
       </Box>
@@ -52,6 +54,8 @@ function FieldContainer(props: {
 
 FieldContainer.defaultProps = {
   flexDirection: "column",
+  titleVariant: "body2",
+  bodyVariant: "sidenav",
 };
 
 export default FieldContainer;
