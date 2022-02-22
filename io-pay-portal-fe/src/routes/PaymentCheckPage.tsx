@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import EditIcon from "@mui/icons-material/Edit";
-import InfoIcon from "@mui/icons-material/Info";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { Box, Button, SvgIcon, Typography } from "@mui/material";
@@ -169,7 +169,7 @@ export default function PaymentCheckPage() {
         sx={{ borderBottom: "", mt: 2 }}
         itemSx={{ pl: 0, pr: 0, gap: 2 }}
         endAdornment={
-          <InfoIcon
+          <InfoOutlinedIcon
             sx={{ color: "primary.main", cursor: "pointer" }}
             fontSize="medium"
             onClick={() => {
