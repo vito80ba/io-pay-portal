@@ -15,6 +15,7 @@ import PaymentSummaryPage from "./routes/PaymentSummaryPage";
 import "./translations/i18n";
 import PaymentQrPage from "./routes/PaymentQrPage";
 import { SessionItems } from "./utils/storage/sessionStorage";
+import PaymentCheckPage from "./routes/PaymentCheckPage";
 
 const checkoutTheme = createTheme({
   ...theme,
@@ -83,6 +84,14 @@ export function App() {
                 element={
                   <Guard item={SessionItems.paymentId}>
                     <PaymentChoicePage />
+                  </Guard>
+                }
+              />
+              <Route
+                path="check"
+                element={
+                  <Guard item={SessionItems.paymentId}>
+                    <PaymentCheckPage />
                   </Guard>
                 }
               />

@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { RptId } from "../../generated/RptId";
+import { RptId } from "../../generated/definitions/payment-activations-api/RptId";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
 import { RootState } from "../app/store";
 import ErrorModal from "../components/modals/ErrorModal";

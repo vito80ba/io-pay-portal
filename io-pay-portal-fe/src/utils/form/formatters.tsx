@@ -14,7 +14,9 @@ export function cleanSpaces(text: string) {
 
 export function moneyFormat(amount: number) {
   return new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "EUR",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount / 100);
+  }).format(amount ? amount / 100 : 0);
 }

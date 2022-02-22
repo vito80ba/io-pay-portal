@@ -1,8 +1,11 @@
 import {
+  PaymentCheckData,
   PaymentEmailFormFields,
   PaymentFormFields,
   PaymentId,
   PaymentInfo,
+  SecurityCode,
+  Wallet,
 } from "../../features/payment/models/paymentModel";
 
 export enum SessionItems {
@@ -10,6 +13,9 @@ export enum SessionItems {
   noticeInfo = "rptId",
   email = "email",
   paymentId = "paymentId",
+  checkData = "checkData",
+  securityCode = "securityCode",
+  wallet = "wallet",
 }
 export const loadState = (item: string) => {
   try {
@@ -23,7 +29,10 @@ export const loadState = (item: string) => {
       | PaymentInfo
       | PaymentFormFields
       | PaymentEmailFormFields
-      | PaymentId;
+      | PaymentId
+      | PaymentCheckData
+      | Wallet
+      | SecurityCode;
   } catch (e) {
     return undefined;
   }

@@ -1,26 +1,30 @@
 /* eslint-disable functional/immutable-data */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Box, Grid, Typography } from "@mui/material";
+import { SxProps } from "@mui/system";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 function ClickableFieldContainer(props: {
   title: string;
   icon: React.ReactNode;
-  endAdornment: React.ReactNode;
+  endAdornment?: React.ReactNode;
   clickable?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
+  sx?: SxProps;
+  itemSx?: SxProps;
 }) {
   const { t } = useTranslation();
   const defaultStyle = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    cursor: props.clickable ? "auto" : "pointer",
+    cursor: props.clickable ? "pointer" : "auto",
     borderBottom: "1px solid",
-    borderBottomColor: "#EFEFEF",
+    borderBottomColor: "divider",
     pt: 3,
     pb: 3,
+    ...props.sx,
   };
 
   return (
@@ -33,6 +37,7 @@ function ClickableFieldContainer(props: {
             gap: 3,
             pl: 2,
             pr: 2,
+            ...props.itemSx,
           }}
         >
           {props.icon}
@@ -50,6 +55,7 @@ function ClickableFieldContainer(props: {
 
 ClickableFieldContainer.defaultProps = {
   flexDirection: "column",
+  clickable: true,
 };
 
 export default ClickableFieldContainer;
