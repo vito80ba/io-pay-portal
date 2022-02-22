@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 import { RootState } from "../app/store";
 import sprite from "../assets/images/app.svg";
 import { FormButtons } from "../components/FormButtons/FormButtons";
+import { CustomDrawer } from "../components/modals/Drawer";
 import InformationModal from "../components/modals/InformationModal";
 import PageContainer from "../components/PageContent/PageContainer";
 import ClickableFieldContainer from "../components/TextFormField/ClickableFieldContainer";
@@ -39,6 +40,8 @@ export default function PaymentCheckPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+
   const checkData = useSelector((state: RootState) => {
     if (!state.checkData.idPayment) {
       const data = loadState(SessionItems.checkData) as PaymentCheckData;
@@ -191,7 +194,11 @@ export default function PaymentCheckPage() {
           pr: 1,
         }}
         endAdornment={
-          <Button variant="text" onClick={() => {}} startIcon={<EditIcon />}>
+          <Button
+            variant="text"
+            onClick={() => setDrawerOpen(true)}
+            startIcon={<EditIcon />}
+          >
             {t("clipboard.edit")}
           </Button>
         }
@@ -233,6 +240,31 @@ export default function PaymentCheckPage() {
           {t("paymentCheckPage.modal.body")}
         </Typography>
       </InformationModal>
+
+      <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <FieldContainer
+          titleVariant="sidenav"
+          bodyVariant="body2"
+          title={moneyFormat(wallet.psp.fixedCost.amount)}
+          body={`${t("paymentCheckPage.psp")} ${wallet.psp.businessName}`}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 2,
+            pl: 3,
+            pr: 1,
+          }}
+          endAdornment={
+            <Button
+              variant="text"
+              onClick={() => setDrawerOpen(true)}
+              startIcon={<EditIcon />}
+            >
+              {t("clipboard.edit")}
+            </Button>
+          }
+        />
+      </CustomDrawer>
     </PageContainer>
   );
 }
