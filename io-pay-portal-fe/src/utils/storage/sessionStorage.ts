@@ -1,4 +1,5 @@
 import {
+  PaymentCheckData,
   PaymentEmailFormFields,
   PaymentFormFields,
   PaymentId,
@@ -10,6 +11,7 @@ export enum SessionItems {
   noticeInfo = "rptId",
   email = "email",
   paymentId = "paymentId",
+  checkData = "checkData",
 }
 export const loadState = (item: string) => {
   try {
@@ -23,7 +25,8 @@ export const loadState = (item: string) => {
       | PaymentInfo
       | PaymentFormFields
       | PaymentEmailFormFields
-      | PaymentId;
+      | PaymentId
+      | PaymentCheckData;
   } catch (e) {
     return undefined;
   }
