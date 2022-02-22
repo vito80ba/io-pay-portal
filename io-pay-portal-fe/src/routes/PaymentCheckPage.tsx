@@ -10,10 +10,11 @@ import { Box, Button, SvgIcon, Typography } from "@mui/material";
 import { default as React } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { RootState } from "../app/store";
 import sprite from "../assets/images/app.svg";
 import { FormButtons } from "../components/FormButtons/FormButtons";
+import InformationModal from "../components/modals/InformationModal";
 import PageContainer from "../components/PageContent/PageContainer";
 import ClickableFieldContainer from "../components/TextFormField/ClickableFieldContainer";
 import FieldContainer from "../components/TextFormField/FieldContainer";
@@ -37,7 +38,6 @@ const defaultStyle = {
 export default function PaymentCheckPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
   const [modalOpen, setModalOpen] = React.useState(false);
   const checkData = useSelector((state: RootState) => {
     if (!state.checkData.idPayment) {
@@ -84,9 +84,9 @@ export default function PaymentCheckPage() {
             data?.psp?.businessName || "Banca Monte dei Paschi di Siena",
           directAcquire: data?.psp?.directAcquire || false,
           fixedCost: {
-            currency: data?.psp?.fixedCost?.currency || "",
-            amount: data?.psp?.fixedCost?.amount || 0,
-            decimalDigits: data?.psp?.fixedCost?.decimalDigits || 0,
+            currency: data?.psp?.fixedCost?.currency || "EUR",
+            amount: data?.psp?.fixedCost?.amount || 100,
+            decimalDigits: data?.psp?.fixedCost?.decimalDigits || 2,
           },
           logoPSP: data?.psp?.logoPSP || "",
           serviceAvailability: data?.psp?.serviceAvailability || "",
@@ -169,15 +169,19 @@ export default function PaymentCheckPage() {
         sx={{ borderBottom: "", mt: 2 }}
         itemSx={{ pl: 0, pr: 0, gap: 2 }}
         endAdornment={
-          <InfoIcon sx={{ color: "primary.main" }} fontSize="medium" />
+          <InfoIcon
+            sx={{ color: "primary.main", cursor: "pointer" }}
+            fontSize="medium"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          />
         }
       />
       <FieldContainer
         titleVariant="sidenav"
         bodyVariant="body2"
-        title={moneyFormat(
-          checkData?.detailsList?.length ? checkData.detailsList[0].importo : 0
-        )}
+        title={moneyFormat(wallet.psp.fixedCost.amount)}
         body={`${t("paymentCheckPage.psp")} ${wallet.psp.businessName}`}
         sx={{
           border: "1px solid",
@@ -212,6 +216,23 @@ export default function PaymentCheckPage() {
           navigate(-1);
         }}
       />
+      <InformationModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        maxWidth="sm"
+        content="alternative"
+      >
+        <Typography variant="h6" component={"div"} sx={{ pb: 2 }}>
+          {t("paymentCheckPage.modal.title")}
+        </Typography>
+        <Typography
+          variant="body1"
+          component={"div"}
+          sx={{ whiteSpace: "pre-line" }}
+        >
+          {t("paymentCheckPage.modal.body")}
+        </Typography>
+      </InformationModal>
     </PageContainer>
   );
 }

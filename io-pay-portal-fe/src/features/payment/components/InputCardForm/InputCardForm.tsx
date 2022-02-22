@@ -12,7 +12,6 @@ import { Box, InputAdornment, SvgIcon } from "@mui/material";
 import cardValidator from "card-validator";
 import { Formik, FormikProps } from "formik";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import sprite from "../../../../assets/images/app.svg";
 import { FormButtons } from "../../../../components/FormButtons/FormButtons";
 import TextFormField from "../../../../components/TextFormField/TextFormField";
@@ -35,8 +34,10 @@ import {
   SecureCodeLabels,
 } from "../../models/paymentModel";
 
-export function InputCardForm() {
-  const navigate = useNavigate();
+export function InputCardForm(props: {
+  onCancel: () => void;
+  onSubmit: (emailInfo: InputCardFormFields) => void;
+}) {
   const formRef = React.useRef<FormikProps<InputCardFormFields>>(null);
   const [disabled, setDisabled] = React.useState(true);
   const [cvvLength, setCvvLength] = React.useState(SecureCodeDigits.cvv);
@@ -144,7 +145,7 @@ export function InputCardForm() {
           cvv: "",
         }}
         validate={validate}
-        onSubmit={() => {}}
+        onSubmit={props.onSubmit}
       >
         {({
           touched,
@@ -261,9 +262,7 @@ export function InputCardForm() {
               cancelTitle="paymentNoticePage.formButtons.cancel"
               disabled={disabled}
               handleSubmit={() => handleSubmit()}
-              handleCancel={() => {
-                navigate(-1);
-              }}
+              handleCancel={props.onCancel}
             />
           </form>
         )}
