@@ -17,6 +17,7 @@ import { FormButtons } from "../components/FormButtons/FormButtons";
 import { CustomDrawer } from "../components/modals/Drawer";
 import InformationModal from "../components/modals/InformationModal";
 import PageContainer from "../components/PageContent/PageContainer";
+import SkeletonFieldContainer from "../components/Skeletons/SkeletonFieldContainer";
 import ClickableFieldContainer from "../components/TextFormField/ClickableFieldContainer";
 import FieldContainer from "../components/TextFormField/FieldContainer";
 import {
@@ -41,6 +42,7 @@ export default function PaymentCheckPage() {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const checkData = useSelector((state: RootState) => {
     if (!state.checkData.idPayment) {
@@ -196,7 +198,10 @@ export default function PaymentCheckPage() {
         endAdornment={
           <Button
             variant="text"
-            onClick={() => setDrawerOpen(true)}
+            onClick={() => {
+              setDrawerOpen(true);
+              setLoading(!loading);
+            }}
             startIcon={<EditIcon />}
           >
             {t("clipboard.edit")}
@@ -242,28 +247,38 @@ export default function PaymentCheckPage() {
       </InformationModal>
 
       <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <FieldContainer
-          titleVariant="sidenav"
-          bodyVariant="body2"
-          title={moneyFormat(wallet.psp.fixedCost.amount)}
-          body={`${t("paymentCheckPage.psp")} ${wallet.psp.businessName}`}
-          sx={{
-            border: "1px solid",
-            borderColor: "divider",
-            borderRadius: 2,
-            pl: 3,
-            pr: 1,
-          }}
-          endAdornment={
-            <Button
-              variant="text"
-              onClick={() => setDrawerOpen(true)}
-              startIcon={<EditIcon />}
-            >
-              {t("clipboard.edit")}
-            </Button>
-          }
-        />
+        {loading ? (
+          <SkeletonFieldContainer
+            sx={{
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: 2,
+              pl: 3,
+              pr: 1,
+            }}
+          />
+        ) : (
+          <FieldContainer
+            titleVariant="sidenav"
+            bodyVariant="body2"
+            title={moneyFormat(wallet.psp.fixedCost.amount)}
+            body={`${t("ciccioooooo oooooooooooooooo oooooooooooooo")} ${
+              wallet.psp.businessName
+            }`}
+            sx={{
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: 2,
+              pl: 3,
+              pr: 1,
+            }}
+            endAdornment={
+              <Button variant="text">
+                {moneyFormat(wallet.psp.fixedCost.amount)}
+              </Button>
+            }
+          />
+        )}
       </CustomDrawer>
     </PageContainer>
   );

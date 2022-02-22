@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Drawer, Grid, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { Box, Container, Drawer, IconButton } from "@mui/material";
+import React from "react";
 
 export function CustomDrawer(props: {
   open: boolean;
@@ -9,32 +9,26 @@ export function CustomDrawer(props: {
   style?: React.CSSProperties;
 }) {
   return (
-    <Grid
-      sx={{
-        p: 3,
-      }}
-      justifyContent="center"
-      flexDirection="column"
-      alignItems="center"
-      container
-      spacing={2}
+    <Drawer
+      anchor="right"
+      open={props.open}
+      onClose={props.onClose}
+      sx={{ p: 3 }}
     >
-      <Grid xs={12} md={6} lg={3} item>
-        <Drawer anchor="right" open={props.open} onClose={props.onClose}>
-          <Box display="flex" justifyContent="end" alignItems="center">
-            <IconButton
-              aria-label="close"
-              onClick={() => props.onClose()}
-              sx={{
-                color: "action.active",
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          {props.children}
-        </Drawer>
-      </Grid>
-    </Grid>
+      <Container sx={{ p: 3 }} maxWidth="xs">
+        <Box display="flex" justifyContent="end" alignItems="center">
+          <IconButton
+            aria-label="close"
+            onClick={() => props.onClose()}
+            sx={{
+              color: "action.active",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        {props.children}
+      </Container>
+    </Drawer>
   );
 }
