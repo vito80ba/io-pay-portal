@@ -14,6 +14,7 @@ import { PaymentActivationsGetResponse } from "../../../generated/definitions/pa
 import { PaymentActivationsPostResponse } from "../../../generated/definitions/payment-transactions-api/PaymentActivationsPostResponse";
 import { PaymentRequestsGetResponse } from "../../../generated/definitions/payment-transactions-api/PaymentRequestsGetResponse";
 import { RptId } from "../../../generated/definitions/payment-transactions-api/RptId";
+import { ErrorsType } from "../errors/checkErrorsModel";
 import { PaymentCheckData } from "../../features/payment/models/paymentModel";
 import { getConfig } from "../config/config";
 import {
@@ -232,7 +233,7 @@ export const getPaymentCheckData = async ({
         }),
       // Error on call
       () => {
-        // errorHandler(ErrorsType.CONNECTION);
+        onError(ErrorsType.CONNECTION);
         mixpanel.track(PAYMENT_CHECK_NET_ERR.value, {
           EVENT_ID: PAYMENT_CHECK_NET_ERR.value,
         });
@@ -241,14 +242,14 @@ export const getPaymentCheckData = async ({
     )
       .fold(
         () => {
-          // errorHandler(ErrorsType.SERVER);
+          onError(ErrorsType.SERVER);
           mixpanel.track(PAYMENT_CHECK_SVR_ERR.value, {
             EVENT_ID: PAYMENT_CHECK_SVR_ERR.value,
           });
         },
         (myResExt: any) => {
           myResExt.fold(
-            onError,
+            onError(ErrorsType.GENERIC_ERROR),
             (response: {
               value: { data: { urlRedirectEc: string } };
               status: number;

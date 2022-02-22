@@ -8,8 +8,8 @@ import { Millisecond } from "italia-ts-commons/lib/units";
 import { createClient } from "../../../generated/definitions/payment-transactions-api/client";
 import { createClient as createPmClient } from "../../../generated/definitions/payment-manager-api/client";
 import { getConfig } from "../config/config";
-import { retryingFetch } from "../config/fetch";
 import { getConfigOrThrow } from "../config/pmConfig";
+import { retryingFetch } from "../config/fetch";
 
 // Must be an https endpoint so we use an https agent
 const abortableFetch = AbortableFetch(agent.getHttpFetch(process.env));
