@@ -25,8 +25,8 @@ import { left, right } from "fp-ts/lib/Either";
 
 import * as logger from "../../utils/logging";
 
-import { PaymentActivationsGetResponse } from "../../generated/definitions/PaymentActivationsGetResponse";
-import { CodiceContestoPagamento } from "../../generated/pagopa-proxy/CodiceContestoPagamento";
+import { PaymentActivationsGetResponse } from "../../generated/definitions/payment-transactions-api/definitions/PaymentActivationsGetResponse";
+import { CodiceContestoPagamento } from "../../generated/definitions/payment-transactions-api/pagopa-proxy/CodiceContestoPagamento";
 
 const context = ({
   bindings: {},

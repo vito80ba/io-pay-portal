@@ -6,7 +6,7 @@ import {
   ResponseErrorTooManyRequests,
   ResponseErrorValidation
 } from "italia-ts-commons/lib/responses";
-import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
+import { PaymentProblemJson } from "../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentProblemJson";
 import {
   ErrorResponses,
   ResponseErrorUnauthorized,

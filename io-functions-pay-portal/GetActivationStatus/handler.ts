@@ -16,15 +16,15 @@ import {
   ResponseSuccessJson
 } from "italia-ts-commons/lib/responses";
 
-import { PaymentActivationsGetResponse } from "../generated/definitions/PaymentActivationsGetResponse";
+import { PaymentActivationsGetResponse } from "../generated/definitions/payment-transactions-api/definitions/PaymentActivationsGetResponse";
 import { withApiRequestWrapper } from "../utils/api";
 import { getLogger, ILogger } from "../utils/logging";
 import { ErrorResponses } from "../utils/responses";
 
 import { TaskEither } from "fp-ts/lib/TaskEither";
-import { CodiceContestoPagamento } from "../generated/definitions/CodiceContestoPagamento";
-import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
-import { ProblemJson } from "../generated/pagopa-proxy/ProblemJson";
+import { CodiceContestoPagamento } from "../generated/definitions/payment-transactions-api/definitions/CodiceContestoPagamento";
+import { PaymentProblemJson } from "../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentProblemJson";
+import { ProblemJson } from "../generated/definitions/payment-transactions-api/pagopa-proxy/ProblemJson";
 import { toErrorPagopaProxyResponse } from "../utils/pagopaProxyUtil";
 
 type IGetActivationStatusHandler = (

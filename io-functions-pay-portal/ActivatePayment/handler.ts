@@ -22,10 +22,10 @@ import { getLogger, ILogger } from "../utils/logging";
 import { ErrorResponses } from "../utils/responses";
 
 import { TaskEither } from "fp-ts/lib/TaskEither";
-import { PaymentActivationsPostRequest } from "../generated/pagopa-proxy/PaymentActivationsPostRequest";
-import { PaymentActivationsPostResponse } from "../generated/pagopa-proxy/PaymentActivationsPostResponse";
-import { PaymentProblemJson } from "../generated/pagopa-proxy/PaymentProblemJson";
-import { ProblemJson } from "../generated/pagopa-proxy/ProblemJson";
+import { PaymentActivationsPostRequest } from "../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentActivationsPostRequest";
+import { PaymentActivationsPostResponse } from "../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentActivationsPostResponse";
+import { PaymentProblemJson } from "../generated/definitions/payment-transactions-api/pagopa-proxy/PaymentProblemJson";
+import { ProblemJson } from "../generated/definitions/payment-transactions-api/pagopa-proxy/ProblemJson";
 import { toErrorPagopaProxyResponse } from "../utils/pagopaProxyUtil";
 
 type IActivatePaymentHandler = (

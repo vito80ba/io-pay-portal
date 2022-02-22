@@ -5,8 +5,11 @@ import {
   toFetch,
 } from "italia-ts-commons/lib/fetch";
 import { Millisecond } from "italia-ts-commons/lib/units";
-import { createClient } from "../../../generated/client";
+import { createClient } from "../../../generated/definitions/payment-transactions-api/client";
+import { createClient as createPmClient } from "../../../generated/definitions/payment-manager-api/client";
 import { getConfig } from "../config/config";
+import { getConfigOrThrow } from "../config/pmConfig";
+import { retryingFetch } from "../config/fetch";
 
 // Must be an https endpoint so we use an https agent
 const abortableFetch = AbortableFetch(agent.getHttpFetch(process.env));
@@ -26,3 +29,10 @@ export const apiClient = createClient({
 });
 
 export type APIClient = typeof apiClient;
+
+const conf = getConfigOrThrow();
+// This instance on PM Client calls the  of PM
+export const pmClient = createPmClient({
+  baseUrl: conf.IO_PAY_PAYMENT_MANAGER_HOST,
+  fetchApi: retryingFetch(fetch, conf.IO_PAY_API_TIMEOUT as Millisecond, 3),
+});
