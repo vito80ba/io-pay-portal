@@ -14,6 +14,7 @@ import { PaymentActivationsGetResponse } from "../../../generated/definitions/pa
 import { PaymentActivationsPostResponse } from "../../../generated/definitions/payment-transactions-api/PaymentActivationsPostResponse";
 import { PaymentRequestsGetResponse } from "../../../generated/definitions/payment-transactions-api/PaymentRequestsGetResponse";
 import { RptId } from "../../../generated/definitions/payment-transactions-api/RptId";
+import { PaymentCheckData } from "../../features/payment/models/paymentModel";
 import { getConfig } from "../config/config";
 import {
   mixpanel,
@@ -208,7 +209,17 @@ export const pollingActivationStatus = async (
     .run();
 };
 
-export const getPaymentCheckData = async (idPayment: string) => {
+export const getPaymentCheckData = async ({
+  idPayment,
+  onError,
+  onResponse,
+  onNavigate,
+}: {
+  idPayment: string;
+  onError: (e: string) => void;
+  onResponse: (r: PaymentCheckData) => void;
+  onNavigate: () => void;
+}) => {
   mixpanel.track(PAYMENT_CHECK_INIT.value, {
     EVENT_ID: PAYMENT_CHECK_INIT.value,
   });
@@ -237,7 +248,7 @@ export const getPaymentCheckData = async (idPayment: string) => {
         },
         (myResExt: any) => {
           myResExt.fold(
-            () => {}, // TODO react error handler
+            onError,
             (response: {
               value: { data: { urlRedirectEc: string } };
               status: number;
@@ -249,6 +260,7 @@ export const getPaymentCheckData = async (idPayment: string) => {
                   "checkData",
                   JSON.stringify(maybePayment.value)
                 );
+                onResponse(maybePayment.value as PaymentCheckData);
                 mixpanel.track(PAYMENT_CHECK_SUCCESS.value, {
                   EVENT_ID: PAYMENT_CHECK_SUCCESS.value,
                 });
@@ -260,7 +272,7 @@ export const getPaymentCheckData = async (idPayment: string) => {
                   originInput === "payportal" ? "/" : originInput
                 );
               } else {
-                window.location.replace("ko.html");
+                onNavigate();
                 mixpanel.track(PAYMENT_CHECK_RESP_ERR.value, {
                   EVENT_ID: PAYMENT_CHECK_RESP_ERR.value,
                 });

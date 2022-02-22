@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable sonarjs/cognitive-complexity */
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import PageContainer from "../components/PageContent/PageContainer";
 import { PaymentChoice } from "../features/payment/components/PaymentChoice/PaymentChoice";
@@ -10,11 +11,13 @@ import {
   PaymentCheckData,
   PaymentId,
 } from "../features/payment/models/paymentModel";
+import { setCheckData } from "../features/payment/slices/checkDataSlice";
 import { getPaymentCheckData } from "../utils/api/helper";
 import { loadState, SessionItems } from "../utils/storage/sessionStorage";
 
 export default function PaymentChoicePage() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const paymentId = useSelector((state: RootState) => {
     if (!state.paymentId.paymentId) {
@@ -50,13 +53,24 @@ export default function PaymentChoicePage() {
     return state.checkData;
   });
 
-  if (!checkData.idPayment) {
-    void getPaymentCheckData(paymentId.paymentId);
-    // va passato callback su errore e su response
-    // adatta la funzione in helper
-  }
+  React.useEffect(() => {
+    if (!checkData.idPayment) {
+      setLoading(true);
+      void getPaymentCheckData({
+        idPayment: paymentId.paymentId,
+        onError: () => setLoading(false), // handle error on response,
+        onResponse: (r) => {
+          dispatch(setCheckData(r));
+          setLoading(false);
+        },
+        onNavigate: () => {}, // navigate to ko page,
+      });
+    }
+  }, [checkData.idPayment]);
 
-  return (
+  return loading ? (
+    <CircularProgress />
+  ) : (
     <PageContainer
       title="paymentChoicePage.title"
       description="paymentChoicePage.description"
