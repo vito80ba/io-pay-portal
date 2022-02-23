@@ -1,21 +1,24 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RptId } from "../../generated/definitions/payment-activations-api/RptId";
 import notification from "../../src-pug/assets/img/payment-notice-pagopa.png";
-import { RootState } from "../app/store";
 import ErrorModal from "../components/modals/ErrorModal";
 import InformationModal from "../components/modals/InformationModal";
 import PageContainer from "../components/PageContent/PageContainer";
 import { PaymentNoticeForm } from "../features/payment/components/PaymentNoticeForm/PaymentNoticeForm";
-import { PaymentFormFields } from "../features/payment/models/paymentModel";
-import { setNotice } from "../features/payment/slices/noticeSlice";
-import { setPayment } from "../features/payment/slices/paymentSlice";
+import {
+  PaymentFormFields,
+  PaymentInfo,
+} from "../features/payment/models/paymentModel";
 import { useSmallDevice } from "../hooks/useSmallDevice";
+import {
+  getNoticeInfo,
+  setPaymentInfo,
+  setRptId,
+} from "../utils/api/apiService";
 import { getPaymentInfoTask } from "../utils/api/helper";
-import { loadState, SessionItems } from "../utils/storage/sessionStorage";
 
 export default function PaymentNoticePage() {
   const { t } = useTranslation();
@@ -25,20 +28,8 @@ export default function PaymentNoticePage() {
   const [loading, setLoading] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const currentPath = location.pathname.split("/")[1];
-  const noticeInfo = useSelector((state: RootState) => {
-    if (!state.notice.cf) {
-      const noticeInfo = loadState(
-        SessionItems.noticeInfo
-      ) as PaymentFormFields;
-      return {
-        billCode: noticeInfo?.billCode || "",
-        cf: noticeInfo?.cf || "",
-      };
-    }
-    return state.notice;
-  });
+  const noticeInfo = getNoticeInfo();
 
   const onError = (m: string) => {
     setLoading(false);
@@ -52,25 +43,8 @@ export default function PaymentNoticePage() {
 
     void getPaymentInfoTask(rptId, "")
       .fold(onError, (paymentInfo) => {
-        dispatch(
-          setPayment({
-            importoSingoloVersamento:
-              paymentInfo?.importoSingoloVersamento || 0,
-            enteBeneficiario: {
-              denominazioneBeneficiario:
-                paymentInfo?.enteBeneficiario?.denominazioneBeneficiario || "",
-              identificativoUnivocoBeneficiario:
-                paymentInfo?.enteBeneficiario
-                  ?.identificativoUnivocoBeneficiario || "",
-            },
-            causaleVersamento: paymentInfo?.causaleVersamento || "",
-            codiceContestoPagamento: paymentInfo?.codiceContestoPagamento || "",
-            ibanAccredito: paymentInfo?.ibanAccredito || "",
-          })
-        );
-        dispatch(setNotice(notice));
-        sessionStorage.setItem("paymentInfo", JSON.stringify(paymentInfo));
-        sessionStorage.setItem("rptId", JSON.stringify(notice));
+        setPaymentInfo(paymentInfo as PaymentInfo);
+        setRptId(notice);
         setLoading(false);
         navigate(`/${currentPath}/summary`);
       })
