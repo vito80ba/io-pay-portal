@@ -1,23 +1,18 @@
-import { Grid, Box, Typography, List } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
-import Drawer from "@mui/material/Drawer";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { RootState } from "../../app/store";
 import pagopaLogo from "../../assets/images/pagopa-logo.svg";
 import { loadState, SessionItems } from "../../utils/storage/sessionStorage";
-import { PaymentInfo } from "../../features/payment/models/paymentModel";
+import { PaymentCheckData } from "../../features/payment/models/paymentModel";
 import { moneyFormat } from "../../utils/form/formatters";
+import DrawerDetail from "../Header/DrawerDetail";
 
 export default function Header() {
+  const PaymentCheckData = loadState(
+    SessionItems.checkData
+  ) as PaymentCheckData;
   const [drawstate, setDrawstate] = React.useState(false);
 
-  const paymentInfo = useSelector((state: RootState) => {
-    if (!state.payment.codiceContestoPagamento) {
-      return loadState(SessionItems.paymentInfo) as PaymentInfo;
-    }
-    return state.payment;
-  });
   const toggleDrawer = (open: boolean) => (
     event: React.KeyboardEvent | React.MouseEvent
   ) => {
@@ -48,9 +43,7 @@ export default function Header() {
             component="div"
             sx={{ textAlign: "center" }}
           >
-            {paymentInfo
-              ? paymentInfo.enteBeneficiario.denominazioneBeneficiario
-              : ""}
+            {PaymentCheckData ? PaymentCheckData.receiver : ""}
           </Typography>
           <Typography
             fontWeight={600}
@@ -58,7 +51,7 @@ export default function Header() {
             component="div"
             sx={{ textAlign: "center" }}
           >
-            {paymentInfo ? paymentInfo.causaleVersamento : ""}
+            {PaymentCheckData ? PaymentCheckData.subject : ""}
           </Typography>
           <Typography
             color="primary.main"
@@ -67,8 +60,8 @@ export default function Header() {
             fontWeight={600}
             sx={{ textAlign: "center" }}
           >
-            {paymentInfo
-              ? `€ ${moneyFormat(paymentInfo.importoSingoloVersamento)}`
+            {PaymentCheckData
+              ? `€ ${moneyFormat(PaymentCheckData.amount.amount)}`
               : ""}
           </Typography>
         </Grid>
@@ -88,8 +81,8 @@ export default function Header() {
             alignItems="center"
             justifyContent="end"
           >
-            {paymentInfo
-              ? `€ ${moneyFormat(paymentInfo.importoSingoloVersamento)}`
+            {PaymentCheckData
+              ? moneyFormat(PaymentCheckData.amount.amount)
               : ""}
             <InfoOutlinedIcon
               color="primary"
@@ -99,22 +92,11 @@ export default function Header() {
           </Typography>
         </Grid>
       </Grid>
-      <Drawer anchor="bottom" open={drawstate} onClose={toggleDrawer(false)}>
-        <Typography
-          variant="body2"
-          component="div"
-          sx={{ textAlign: "center" }}
-        >
-          <Box
-            sx={{ width: "auto" }}
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
-          >
-            <List></List>
-          </Box>
-        </Typography>
-      </Drawer>
+      <DrawerDetail
+        PaymentCheckData={PaymentCheckData}
+        drawstate={drawstate}
+        toggleDrawer={toggleDrawer}
+      />
     </Box>
   );
 }

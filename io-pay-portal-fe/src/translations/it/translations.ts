@@ -4,6 +4,10 @@ export const TRANSLATIONS_IT = {
       accessibility: "Accessibilità",
       help: "Aiuto",
     },
+    header: {
+      disclaimer:
+        "L’importo è aggiornato in automatico, così paghi sempre quanto dovuto ed eviti more o altri interessi.",
+    },
   },
   privacyInfo: {
     privacyDesc: "Proseguendo dichiari di aver letto e compreso l'",

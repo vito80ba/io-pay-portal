@@ -4,6 +4,9 @@ export const TRANSLATIONS_EN = {
       accessibility: "Accessibility",
       help: "Help",
     },
+    header: {
+      disclaimer: "",
+    },
   },
   privacyInfo: {
     privacyDesc:
