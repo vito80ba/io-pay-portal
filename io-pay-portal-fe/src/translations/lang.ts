@@ -26,9 +26,11 @@ export function getSortedLang(): Array<{
   label: string;
   lang: string;
 }> {
+  // eslint-disable-next-line functional/immutable-data
   return Object.keys(lang)
     .sort()
     .reduce((obj: Array<{ label: string; lang: string }>, key: string) => {
+      // eslint-disable-next-line functional/immutable-data
       obj.push(lang[key]);
       return obj;
     }, []);

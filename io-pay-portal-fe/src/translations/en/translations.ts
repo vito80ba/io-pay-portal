@@ -8,12 +8,12 @@ export const TRANSLATIONS_EN = {
       disclaimer: "",
       detail: {
         detail: {
-        detailTitle: "",
-        detailAmount: "",
-        detailSubject: "",
-        detailReceiver: "",
-        detailFC: "",
-        detailIUV: "",
+          detailTitle: "",
+          detailAmount: "",
+          detailSubject: "",
+          detailReceiver: "",
+          detailFC: "",
+          detailIUV: "",
         },
       },
     },

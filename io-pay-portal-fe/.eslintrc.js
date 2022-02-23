@@ -2,9 +2,9 @@ module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
     parserOptions: {
-      project: './tsconfig.json',
-      tsconfigRootDir: 'io-pay-portal-fe',
-      // sourceType: "module"
+      project: 'tsconfig.json',
+      tsconfigRootDir: __dirname,
+      sourceType: "module"
     },
     plugins: ['@typescript-eslint', 'react', 'import', 'functional', 'sonarjs'],
     extends: [
