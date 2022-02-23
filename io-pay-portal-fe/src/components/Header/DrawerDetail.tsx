@@ -94,13 +94,53 @@ export default function DrawerDetail(props: Props) {
                       fontWeight={600}
                       component="div"
                     >
-                      {moneyFormat(el.importo, 1)}
+                      {t("mainPage.header.detail.detailTitle")}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontWeight={300}
+                      component="div"
+                      color="GrayText"
+                    >
+                      {`IUV ${el.IUV}`}
                     </Typography>
                   </Box>
                 </AccordionSummary>
                 <Divider />
                 <AccordionDetails>
                   <Box sx={{ textAlign: "left" }}>
+                    <Typography
+                      variant="body2"
+                      fontWeight={300}
+                      component="div"
+                      color="GrayText"
+                      sx={{ mt: 1 }}
+                    >
+                      {t("mainPage.header.detail.detailAmount")}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      component="div"
+                    >
+                      {moneyFormat(el.importo, 1)}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontWeight={300}
+                      component="div"
+                      color="GrayText"
+                      sx={{ mt: 1 }}
+                    >
+                      {t("mainPage.header.detail.detailSubject")}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      component="div"
+                    >
+                      {props.PaymentCheckData.subject}
+                    </Typography>
                     <Typography
                       variant="body2"
                       fontWeight={300}
@@ -116,22 +156,6 @@ export default function DrawerDetail(props: Props) {
                       component="div"
                     >
                       {el.enteBeneficiario}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      fontWeight={300}
-                      component="div"
-                      color="GrayText"
-                      sx={{ mt: 1 }}
-                    >
-                      {t("mainPage.header.detail.detailIUV")}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      fontWeight={600}
-                      component="div"
-                    >
-                      {el.IUV}
                     </Typography>
                   </Box>
                 </AccordionDetails>
