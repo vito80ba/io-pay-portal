@@ -335,7 +335,7 @@ export const getPaymentPSPList = async ({
         language,
         idPayment,
       }),
-    (e) => {
+    (_e) => {
       onError(ErrorsType.CONNECTION);
       mixpanel.track(PAYMENT_PSPLIST_NET_ERR.value, {
         EVENT_ID: PAYMENT_PSPLIST_NET_ERR.value,
@@ -344,7 +344,7 @@ export const getPaymentPSPList = async ({
     }
   )
     .fold(
-      (r) => {
+      (_r) => {
         onError(ErrorsType.SERVER);
         mixpanel.track(PAYMENT_PSPLIST_SVR_ERR.value, {
           EVENT_ID: PAYMENT_PSPLIST_SVR_ERR.value,
