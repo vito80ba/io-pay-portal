@@ -2,7 +2,7 @@ import { Container, useTheme } from "@mui/material";
 import { Box, SxProps } from "@mui/system";
 import React from "react";
 import Footer from "./Footer";
-import { Header } from "./Header";
+import Header from "./Header";
 
 interface LayoutProps {
   sx?: SxProps;

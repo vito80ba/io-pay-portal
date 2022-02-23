@@ -4,6 +4,19 @@ export const TRANSLATIONS_EN = {
       accessibility: "Accessibility",
       help: "Help",
     },
+    header: {
+      disclaimer: "",
+      detail: {
+        detail: {
+        detailTitle: "",
+        detailAmount: "",
+        detailSubject: "",
+        detailReceiver: "",
+        detailFC: "",
+        detailIUV: "",
+        },
+      },
+    },
   },
   privacyInfo: {
     privacyDesc:
