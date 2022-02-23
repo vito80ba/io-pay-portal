@@ -6,7 +6,6 @@ import React from "react";
 function PspFieldContainer(props: {
   title: React.ReactNode;
   body: string | number | undefined;
-  icon?: React.ReactNode;
   flexDirection?: "row" | "column";
   titleVariant?: "body2" | "sidenav";
   bodyVariant?: "body2" | "sidenav";
@@ -35,7 +34,6 @@ function PspFieldContainer(props: {
           width: "100%",
         }}
       >
-        {props.icon}
         <Box
           sx={{
             display: "flex",
