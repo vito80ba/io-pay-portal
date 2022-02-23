@@ -121,3 +121,11 @@ export interface Wallet {
 export interface SecurityCode {
   securityCode: string;
 }
+
+export interface PspList {
+  name: string | undefined;
+  label: string | undefined;
+  image: string | undefined;
+  commission: number;
+  idPsp: number | undefined;
+}

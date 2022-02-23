@@ -12,8 +12,9 @@ function SkeletonFieldContainer(props: { sx?: SxProps }) {
     borderBottomColor: "divider",
     pt: 2,
     pb: 2,
-    width: "327px",
-    height: "88px",
+    width: "100%",
+    minWidth: { xs: "100%", sm: "327px" },
+    height: "106px",
   };
 
   return (
@@ -24,7 +25,6 @@ function SkeletonFieldContainer(props: { sx?: SxProps }) {
           alignItems: "center",
           justifyContent: "start",
           gap: 3,
-          width: "100%",
         }}
       >
         <Box
@@ -35,10 +35,10 @@ function SkeletonFieldContainer(props: { sx?: SxProps }) {
           }}
         >
           <Typography variant="sidenav" component={"div"}>
-            <Skeleton variant="text" width="144px" height="40px" />
+            <Skeleton variant="text" width="125px" height="40px" />
           </Typography>
           <Typography variant="body2" component={"div"}>
-            <Skeleton variant="text" width="188px" height="20px" />
+            <Skeleton variant="text" width="188px" height="24px" />
           </Typography>
         </Box>
       </Box>

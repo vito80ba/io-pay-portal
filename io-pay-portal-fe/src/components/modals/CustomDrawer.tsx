@@ -1,16 +1,19 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Container, Drawer, IconButton } from "@mui/material";
 import React from "react";
+import { useSmallDevice } from "../../hooks/useSmallDevice";
+import SkeletonFieldContainer from "../Skeletons/SkeletonFieldContainer";
 
 export function CustomDrawer(props: {
   open: boolean;
   onClose: () => void;
   children?: React.ReactNode;
   style?: React.CSSProperties;
+  loading?: boolean;
 }) {
   return (
     <Drawer
-      anchor="right"
+      anchor={useSmallDevice() ? "bottom" : "right"}
       open={props.open}
       onClose={props.onClose}
       sx={{ p: 3 }}
@@ -27,7 +30,19 @@ export function CustomDrawer(props: {
             <CloseIcon />
           </IconButton>
         </Box>
-        {props.children}
+        {props.loading ? (
+          <SkeletonFieldContainer
+            sx={{
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: 2,
+              pl: 3,
+              pr: 1,
+            }}
+          />
+        ) : (
+          props.children
+        )}
       </Container>
     </Drawer>
   );
