@@ -71,40 +71,72 @@ export default function DrawerDetail(props: Props) {
               {t("mainPage.header.disclaimer")}
             </Typography>
           </Box>
-          <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon color="primary" />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-              sx={{
-                flexDirection: "row-reverse",
-                borderTop: "1px solid",
-                borderTopColor: "divider",
-              }}
-            >
-              <Box sx={{ pl: 2, display: "block", textAlign: "left" }}>
-                <Typography variant="body2" fontWeight={600} component="div">
-                  Accordion 1
-                </Typography>
-                <Typography
-                  variant="body2"
-                  fontWeight={300}
-                  component="div"
-                  color="GrayText"
+          {props.PaymentCheckData &&
+            props.PaymentCheckData.detailsList.map((el, index) => (
+              <Accordion
+                sx={{ boxShadow: "none" }}
+                defaultExpanded={index === 0 ? true : false}
+                key={index}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon color="primary" />}
+                  aria-controls={`panel-content-${index}`}
+                  id={`panel-header-${index}`}
+                  sx={{
+                    flexDirection: "row-reverse",
+                    borderTop: "1px solid",
+                    borderTopColor: "divider",
+                  }}
                 >
-                  IUV
-                </Typography>
-              </Box>
-            </AccordionSummary>
-            <Divider />
-            <AccordionDetails>
-              <Box sx={{ textAlign: "left" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Box>
-            </AccordionDetails>
-          </Accordion>
+                  <Box sx={{ pl: 2, display: "block", textAlign: "left" }}>
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      component="div"
+                    >
+                      {moneyFormat(el.importo, 1)}
+                    </Typography>
+                  </Box>
+                </AccordionSummary>
+                <Divider />
+                <AccordionDetails>
+                  <Box sx={{ textAlign: "left" }}>
+                    <Typography
+                      variant="body2"
+                      fontWeight={300}
+                      component="div"
+                      color="GrayText"
+                      sx={{ mt: 1 }}
+                    >
+                      {t("mainPage.header.detail.detailReceiver")}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      component="div"
+                    >
+                      {el.enteBeneficiario}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontWeight={300}
+                      component="div"
+                      color="GrayText"
+                      sx={{ mt: 1 }}
+                    >
+                      {t("mainPage.header.detail.detailIUV")}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      fontWeight={600}
+                      component="div"
+                    >
+                      {el.IUV}
+                    </Typography>
+                  </Box>
+                </AccordionDetails>
+              </Accordion>
+            ))}
         </Box>
       </Typography>
     </Drawer>

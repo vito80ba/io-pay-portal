@@ -12,11 +12,11 @@ export function cleanSpaces(text: string) {
   return text.replace(/\s/g, "");
 }
 
-export function moneyFormat(amount: number) {
+export function moneyFormat(amount: number, dividing: number = 100) {
   return new Intl.NumberFormat("it-IT", {
     style: "currency",
     currency: "EUR",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount ? amount / 100 : 0);
+  }).format(amount ? amount / dividing : 0);
 }

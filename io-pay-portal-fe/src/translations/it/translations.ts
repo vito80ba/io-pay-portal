@@ -7,6 +7,14 @@ export const TRANSLATIONS_IT = {
     header: {
       disclaimer:
         "L’importo è aggiornato in automatico, così paghi sempre quanto dovuto ed eviti more o altri interessi.",
+      detail: {
+        detailTitle: "Dettaglio avviso",
+        detailAmount: "Importo",
+        detailSubject: "Oggetto del pagamento",
+        detailReceiver: "Ente Creditore",
+        detailFC: "Codice Fiscale Ente Creditore",
+        detailIUV: "Codice IUV",
+      },
     },
   },
   privacyInfo: {

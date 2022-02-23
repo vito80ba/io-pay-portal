@@ -6,6 +6,16 @@ export const TRANSLATIONS_EN = {
     },
     header: {
       disclaimer: "",
+      detail: {
+        detail: {
+        detailTitle: "",
+        detailAmount: "",
+        detailSubject: "",
+        detailReceiver: "",
+        detailFC: "",
+        detailIUV: "",
+        },
+      },
     },
   },
   privacyInfo: {
