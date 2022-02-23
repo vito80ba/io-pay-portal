@@ -1,31 +1,27 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EuroIcon from "@mui/icons-material/Euro";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { PaymentRequestsGetResponse } from "../../generated/definitions/payment-transactions-api/PaymentRequestsGetResponse";
 import { RptId } from "../../generated/definitions/payment-transactions-api/RptId";
-import { RootState } from "../app/store";
 import { FormButtons } from "../components/FormButtons/FormButtons";
 import ErrorModal from "../components/modals/ErrorModal";
 import PageContainer from "../components/PageContent/PageContainer";
 import FieldContainer from "../components/TextFormField/FieldContainer";
 import {
-  PaymentFormFields,
-  PaymentInfo,
-} from "../features/payment/models/paymentModel";
-import { setPaymentId } from "../features/payment/slices/paymentIdSlice";
+  getNoticeInfo,
+  getPaymentInfo,
+  setPaymentId,
+} from "../utils/api/apiService";
 import {
   activePaymentTask,
   pollingActivationStatus,
 } from "../utils/api/helper";
 import { getConfig } from "../utils/config/config";
 import { moneyFormat } from "../utils/form/formatters";
-import { loadState, SessionItems } from "../utils/storage/sessionStorage";
 
 const defaultStyle = {
   display: "flex",
@@ -41,42 +37,12 @@ export default function PaymentSummaryPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
   const currentPath = location.pathname.split("/")[1];
   const [errorModalOpen, setErrorModalOpen] = React.useState(false);
   const [error, setError] = React.useState("");
-  const paymentInfo = useSelector((state: RootState) => {
-    if (!state.payment.codiceContestoPagamento) {
-      const paymentInfo = loadState(SessionItems.paymentInfo) as PaymentInfo;
-      return {
-        importoSingoloVersamento: paymentInfo?.importoSingoloVersamento || 0,
-        enteBeneficiario: {
-          denominazioneBeneficiario:
-            paymentInfo?.enteBeneficiario?.denominazioneBeneficiario || "",
-          identificativoUnivocoBeneficiario:
-            paymentInfo?.enteBeneficiario?.identificativoUnivocoBeneficiario ||
-            "",
-        },
-        causaleVersamento: paymentInfo?.causaleVersamento || "",
-        codiceContestoPagamento: paymentInfo?.codiceContestoPagamento || "",
-        ibanAccredito: paymentInfo?.ibanAccredito || "",
-      };
-    }
-    return state.payment;
-  });
-  const noticeInfo = useSelector((state: RootState) => {
-    if (!state.notice.cf) {
-      const noticeInfo = loadState(
-        SessionItems.noticeInfo
-      ) as PaymentFormFields;
-      return {
-        billCode: noticeInfo?.billCode || "",
-        cf: noticeInfo?.cf || "",
-      };
-    }
-    return state.notice;
-  });
   const [loading, setLoading] = React.useState(false);
+  const paymentInfo = getPaymentInfo();
+  const noticeInfo = getNoticeInfo();
 
   const onError = (m: string) => {
     setLoading(false);
@@ -101,12 +67,7 @@ export default function PaymentSummaryPage() {
               paymentInfo.codiceContestoPagamento,
               getConfig("IO_PAY_PORTAL_PAY_WL_POLLING_ATTEMPTS") as number,
               (res) => {
-                dispatch(
-                  setPaymentId({
-                    paymentId: res.idPagamento,
-                  })
-                );
-                sessionStorage.setItem("paymentId", JSON.stringify(res));
+                setPaymentId(res);
                 setLoading(false);
                 navigate(`/${currentPath}/paymentchoice`);
               }

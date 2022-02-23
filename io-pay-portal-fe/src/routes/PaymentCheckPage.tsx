@@ -1,7 +1,6 @@
 /* eslint-disable functional/immutable-data */
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -10,10 +9,9 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { Box, Button, SvgIcon, Typography } from "@mui/material";
 import { default as React } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { RootState } from "../app/store";
 import sprite from "../assets/images/app.svg";
+import pagopaLogo from "../assets/images/pagopa-logo.svg";
 import { FormButtons } from "../components/FormButtons/FormButtons";
 import { CustomDrawer } from "../components/modals/CustomDrawer";
 import InformationModal from "../components/modals/InformationModal";
@@ -22,15 +20,13 @@ import SkeletonFieldContainer from "../components/Skeletons/SkeletonFieldContain
 import ClickableFieldContainer from "../components/TextFormField/ClickableFieldContainer";
 import FieldContainer from "../components/TextFormField/FieldContainer";
 import PspFieldContainer from "../components/TextFormField/PspFieldContainer";
+import { PspList } from "../features/payment/models/paymentModel";
 import {
-  PaymentCheckData,
-  PaymentEmailFormFields,
-  PspList,
-  Wallet,
-} from "../features/payment/models/paymentModel";
+  getCheckData,
+  getEmailInfo,
+  getMockedWallet,
+} from "../utils/api/apiService";
 import { moneyFormat } from "../utils/form/formatters";
-import { loadState, SessionItems } from "../utils/storage/sessionStorage";
-import pagopaLogo from "../assets/images/pagopa-logo.svg";
 
 const defaultStyle = {
   display: "flex",
@@ -58,71 +54,9 @@ export default function PaymentCheckPage() {
   const [loading, setLoading] = React.useState(false);
   const [pspList, setPspList] = React.useState<Array<PspList>>([]);
 
-  const checkData = useSelector((state: RootState) => {
-    if (!state.checkData.idPayment) {
-      const data = loadState(SessionItems.checkData) as PaymentCheckData;
-      return {
-        amount: {
-          currency: data?.amount?.currency || "",
-          amount: data?.amount?.amount || 0,
-          decimalDigits: data?.amount?.decimalDigits || 0,
-        },
-        bolloDigitale: data?.bolloDigitale || false,
-        fiscalCode: data?.fiscalCode || "",
-        iban: data?.iban || "",
-        id: data?.id || 0,
-        idPayment: data?.idPayment || "",
-        isCancelled: data?.isCancelled || false,
-        origin: data?.origin || "",
-        receiver: data?.receiver || "",
-        subject: data?.subject || "",
-        urlRedirectEc: data?.urlRedirectEc || "",
-        detailsList: data?.detailsList || [],
-      };
-    }
-    return state.checkData;
-  });
-  const wallet = useSelector((state: RootState) => {
-    if (!state.wallet.idWallet) {
-      const data = loadState(SessionItems.wallet) as Wallet;
-      return {
-        creditCard: {
-          brand: data?.creditCard?.brand || "mastercard",
-          pan: data?.creditCard?.pan || "**********4242",
-          holder: data?.creditCard?.holder || "Mario Rossi",
-          expireMonth: data?.creditCard?.expireMonth || "09",
-          expireYear: data?.creditCard?.expireYear || "26",
-        },
-        idWallet: data?.idWallet || 0,
-        psp: {
-          businessName:
-            data?.psp?.businessName || "Banca Monte dei Paschi di Siena",
-          directAcquire: data?.psp?.directAcquire || false,
-          fixedCost: {
-            currency: data?.psp?.fixedCost?.currency || "EUR",
-            amount: data?.psp?.fixedCost?.amount || 100,
-            decimalDigits: data?.psp?.fixedCost?.decimalDigits || 2,
-          },
-          logoPSP: data?.psp?.logoPSP || "",
-          serviceAvailability: data?.psp?.serviceAvailability || "",
-        },
-        pspEditable: data?.pspEditable || false,
-        type: data?.type || "",
-      };
-    }
-    return state.wallet;
-  });
-
-  const email = useSelector((state: RootState) => {
-    if (!state.email.email) {
-      const data = loadState(SessionItems.email) as PaymentEmailFormFields;
-      return {
-        email: data?.email || "",
-        confirmEmail: data?.confirmEmail || "",
-      };
-    }
-    return state.email;
-  });
+  const checkData = getCheckData();
+  const wallet = getMockedWallet();
+  const email = getEmailInfo();
 
   const onSubmit = React.useCallback(() => {}, []);
   const getWalletIcon = () => {
