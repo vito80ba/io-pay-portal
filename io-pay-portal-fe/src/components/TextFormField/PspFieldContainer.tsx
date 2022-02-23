@@ -4,10 +4,9 @@ import { Box, SxProps, Typography } from "@mui/material";
 import React from "react";
 
 function PspFieldContainer(props: {
-  title: React.ReactNode;
+  image: string | undefined;
   body: string | number | undefined;
   flexDirection?: "row" | "column";
-  titleVariant?: "body2" | "sidenav";
   bodyVariant?: "body2" | "sidenav";
   sx?: SxProps;
   endAdornment?: React.ReactNode;
@@ -41,7 +40,11 @@ function PspFieldContainer(props: {
             flexDirection: props.flexDirection,
           }}
         >
-          {props.title}
+          <img
+            src={props.image}
+            alt="Logo gestore"
+            style={{ width: "125px", height: "40px" }}
+          />
           <Typography
             variant={props.bodyVariant}
             component={"div"}

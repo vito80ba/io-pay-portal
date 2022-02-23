@@ -338,13 +338,7 @@ export default function PaymentCheckPage() {
                 key={index}
                 titleVariant="sidenav"
                 bodyVariant="body2"
-                title={
-                  <img
-                    src={psp.image}
-                    alt="Logo gestore"
-                    style={{ width: "125px", height: "40px" }}
-                  />
-                }
+                image={psp.image}
                 body={psp.name}
                 sx={{ ...pspContainerStyle, cursor: "pointer" }}
                 endAdornment={
