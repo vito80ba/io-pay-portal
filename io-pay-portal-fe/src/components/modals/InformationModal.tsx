@@ -39,7 +39,7 @@ function InformationModal(props: {
               position: "absolute",
               right: 8,
               top: 8,
-              color: (theme) => theme.palette.grey[500],
+              color: "action.active",
             }}
           >
             <CloseIcon />

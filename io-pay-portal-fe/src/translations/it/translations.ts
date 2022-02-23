@@ -193,8 +193,17 @@ export const TRANSLATIONS_IT = {
         "Qualsiasi operazione di trasferimento di denaro (in contanti o in moneta elettronica) ha un costo, che serve a garantirti che quel pagamento sia sicuro e arrivi a buon fine.\n\nOgni gestore(o PSP, Prestatore di Servizi di Pagamento), propone un costo di transazione, a seconda delle proprie politiche commerciali e condizioni contrattuali.\n\nCon pagoPA, questi costi sono trasparenti e il cittadino può scegliere liberamente l'opzione più comoda e conveniente. Verifica l'importo applicato dal PSP che hai scelto, prima di procedere al pagamento.",
     },
     buttons: {
-      cancel: "Indietro",
+      cancel: "Annulla",
       submit: "Paga",
+    },
+    drawer: {
+      title: "Con quale gestore vuoi pagare?",
+      body:
+        "In questa lista trovi tutti i gestori compatibili con il tuo metodo, anche se non sei loro cliente.",
+      header: {
+        name: "Gestore",
+        amount: "Costo transazione",
+      },
     },
   },
 };

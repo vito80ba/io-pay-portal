@@ -1,3 +1,4 @@
+/* eslint-disable functional/immutable-data */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -14,17 +15,22 @@ import { useNavigate } from "react-router";
 import { RootState } from "../app/store";
 import sprite from "../assets/images/app.svg";
 import { FormButtons } from "../components/FormButtons/FormButtons";
+import { CustomDrawer } from "../components/modals/CustomDrawer";
 import InformationModal from "../components/modals/InformationModal";
 import PageContainer from "../components/PageContent/PageContainer";
+import SkeletonFieldContainer from "../components/Skeletons/SkeletonFieldContainer";
 import ClickableFieldContainer from "../components/TextFormField/ClickableFieldContainer";
 import FieldContainer from "../components/TextFormField/FieldContainer";
+import PspFieldContainer from "../components/TextFormField/PspFieldContainer";
 import {
   PaymentCheckData,
   PaymentEmailFormFields,
+  PspList,
   Wallet,
 } from "../features/payment/models/paymentModel";
 import { moneyFormat } from "../utils/form/formatters";
 import { loadState, SessionItems } from "../utils/storage/sessionStorage";
+import pagopaLogo from "../assets/images/pagopa-logo.svg";
 
 const defaultStyle = {
   display: "flex",
@@ -35,18 +41,31 @@ const defaultStyle = {
   pb: 1,
 };
 
+const pspContainerStyle = {
+  border: "1px solid",
+  borderColor: "divider",
+  borderRadius: 2,
+  pl: 3,
+  pr: 3,
+  mb: 2,
+};
+
 export default function PaymentCheckPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [pspList, setPspList] = React.useState<Array<PspList>>([]);
+
   const checkData = useSelector((state: RootState) => {
     if (!state.checkData.idPayment) {
       const data = loadState(SessionItems.checkData) as PaymentCheckData;
       return {
         amount: {
-          currency: data?.amount?.currency || "EUR",
-          amount: data?.amount?.amount || 17300,
-          decimalDigits: data?.amount?.decimalDigits || 2,
+          currency: data?.amount?.currency || "",
+          amount: data?.amount?.amount || 0,
+          decimalDigits: data?.amount?.decimalDigits || 0,
         },
         bolloDigitale: data?.bolloDigitale || false,
         fiscalCode: data?.fiscalCode || "",
@@ -58,11 +77,7 @@ export default function PaymentCheckPage() {
         receiver: data?.receiver || "",
         subject: data?.subject || "",
         urlRedirectEc: data?.urlRedirectEc || "",
-        detailsList: data?.detailsList || [
-          {
-            importo: 100,
-          },
-        ],
+        detailsList: data?.detailsList || [],
       };
     }
     return state.checkData;
@@ -115,15 +130,49 @@ export default function PaymentCheckPage() {
       !wallet.creditCard.brand ||
       wallet.creditCard.brand.toLowerCase() === "other"
     ) {
-      return <CreditCardIcon color="action" sx={{ ml: 3 }} />;
+      return <CreditCardIcon color="action" />;
     }
     return (
-      <SvgIcon sx={{ ml: 3 }} color="action">
+      <SvgIcon color="action">
         <use
           href={sprite + `#icons-${wallet.creditCard.brand.toLowerCase()}-mini`}
         />
       </SvgIcon>
     );
+  };
+
+  const onPspEditClick = () => {
+    setDrawerOpen(true);
+    setLoading(true);
+    // change settimeout with api binding
+    setTimeout(() => {
+      setPspList(
+        [
+          {
+            name: "Poste Italiane",
+            image: pagopaLogo,
+            commission: 500,
+            label: "",
+            idPsp: 1,
+          },
+          {
+            name: "Unicredit SPA",
+            image: pagopaLogo,
+            commission: 200,
+            label: "",
+            idPsp: 1,
+          },
+          {
+            name: "Intesa Sanpaolo spa",
+            image: pagopaLogo,
+            commission: 300,
+            label: "",
+            idPsp: 1,
+          },
+        ].sort((a, b) => (a.commission > b.commission ? 1 : -1))
+      );
+      setLoading(false);
+    }, 3000);
   };
 
   return (
@@ -159,7 +208,18 @@ export default function PaymentCheckPage() {
           border: "1px solid",
           borderColor: "divider",
           borderRadius: 2,
+          pl: 3,
+          pr: 1,
         }}
+        endAdornment={
+          <Button
+            variant="text"
+            onClick={() => navigate(-1)}
+            startIcon={<EditIcon />}
+          >
+            {t("clipboard.edit")}
+          </Button>
+        }
       />
 
       <ClickableFieldContainer
@@ -191,7 +251,11 @@ export default function PaymentCheckPage() {
           pr: 1,
         }}
         endAdornment={
-          <Button variant="text" onClick={() => {}} startIcon={<EditIcon />}>
+          <Button
+            variant="text"
+            onClick={onPspEditClick}
+            startIcon={<EditIcon />}
+          >
             {t("clipboard.edit")}
           </Button>
         }
@@ -212,9 +276,7 @@ export default function PaymentCheckPage() {
         disabled={false}
         loading={false}
         handleSubmit={onSubmit}
-        handleCancel={() => {
-          navigate(-1);
-        }}
+        handleCancel={() => {}}
       />
       <InformationModal
         open={modalOpen}
@@ -233,6 +295,67 @@ export default function PaymentCheckPage() {
           {t("paymentCheckPage.modal.body")}
         </Typography>
       </InformationModal>
+
+      <CustomDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <Box
+          sx={{
+            pt: 1,
+            pb: 1,
+            mb: 2,
+          }}
+        >
+          <Typography variant="h6" component={"div"}>
+            {t("paymentCheckPage.drawer.title")}
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
+            {t("paymentCheckPage.drawer.body")}
+          </Typography>
+          <Box
+            sx={{
+              ...defaultStyle,
+              borderBottom: "1px solid",
+              borderBottomColor: "divider",
+              pt: 3,
+              pb: 2,
+            }}
+          >
+            <Typography variant={"caption-semibold"} component={"div"}>
+              {t("paymentCheckPage.drawer.header.name")}
+            </Typography>
+            <Typography variant={"caption-semibold"} component={"div"}>
+              {t("paymentCheckPage.drawer.header.amount")}
+            </Typography>
+          </Box>
+        </Box>
+        {loading
+          ? Array(3)
+              .fill(1)
+              .map((_, index) => (
+                <SkeletonFieldContainer key={index} sx={pspContainerStyle} />
+              ))
+          : pspList.map((psp, index) => (
+              <PspFieldContainer
+                key={index}
+                titleVariant="sidenav"
+                bodyVariant="body2"
+                image={psp.image}
+                body={psp.name}
+                sx={{ ...pspContainerStyle, cursor: "pointer" }}
+                endAdornment={
+                  <Typography
+                    variant={"button"}
+                    color="primary"
+                    component={"div"}
+                  >
+                    {moneyFormat(psp.commission)}
+                  </Typography>
+                }
+                onClick={() => {
+                  // call change psp api
+                }}
+              />
+            ))}
+      </CustomDrawer>
     </PageContainer>
   );
 }

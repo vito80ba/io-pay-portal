@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { toError } from "fp-ts/lib/Either";
+import * as TE from "fp-ts/lib/TaskEither";
 import { fromNullable } from "fp-ts/lib/Option";
 import {
   fromLeft,
@@ -41,6 +42,11 @@ import {
   PAYMENT_CHECK_RESP_ERR,
   PAYMENT_CHECK_SUCCESS,
   PAYMENT_CHECK_SVR_ERR,
+  PAYMENT_PSPLIST_INIT,
+  PAYMENT_PSPLIST_NET_ERR,
+  PAYMENT_PSPLIST_RESP_ERR,
+  PAYMENT_PSPLIST_SUCCESS,
+  PAYMENT_PSPLIST_SVR_ERR,
 } from "../config/pmMixpanelHelperInit";
 import { PaymentSession } from "../sessionData/PaymentSession";
 import { apiClient, pmClient } from "./client";
@@ -285,4 +291,97 @@ export const getPaymentCheckData = async ({
       .run(),
     () => undefined
   );
+};
+
+export const getPaymentPSPList = async ({
+  onError,
+  onResponse,
+}: {
+  onError: (e: string) => void;
+  onResponse: (
+    r: Array<{
+      name: string | undefined;
+      label: string | undefined;
+      image: string | undefined;
+      commission: number;
+      idPsp: number | undefined;
+    }>
+  ) => void;
+}) => {
+  const walletStored = sessionStorage.getItem("wallet") || "";
+  const checkDataStored = sessionStorage.getItem("checkData") || "";
+  const sessionToken = sessionStorage.getItem("sessionToken") || "";
+
+  const checkData = JSON.parse(checkDataStored);
+  const wallet = JSON.parse(walletStored);
+
+  const idPayment = checkData.idPayment;
+  const Bearer = `Bearer ${sessionToken}`;
+  const paymentType = wallet.type;
+  const isList = true;
+  const language = "it";
+  const idWallet = wallet.idWallet;
+
+  mixpanel.track(PAYMENT_PSPLIST_INIT.value, {
+    EVENT_ID: PAYMENT_PSPLIST_INIT.value,
+  });
+  const pspL = await TE.tryCatch(
+    () =>
+      pmClient.getPspListUsingGET({
+        Bearer,
+        paymentType,
+        isList,
+        idWallet,
+        language,
+        idPayment,
+      }),
+    (e) => {
+      onError(ErrorsType.CONNECTION);
+      mixpanel.track(PAYMENT_PSPLIST_NET_ERR.value, {
+        EVENT_ID: PAYMENT_PSPLIST_NET_ERR.value,
+      });
+      return toError;
+    }
+  )
+    .fold(
+      (r) => {
+        onError(ErrorsType.SERVER);
+        mixpanel.track(PAYMENT_PSPLIST_SVR_ERR.value, {
+          EVENT_ID: PAYMENT_PSPLIST_SVR_ERR.value,
+        });
+        return undefined;
+      },
+      (myResExt) =>
+        myResExt.fold(
+          () => [],
+          (myRes) => {
+            if (myRes?.status === 200) {
+              mixpanel.track(PAYMENT_PSPLIST_SUCCESS.value, {
+                EVENT_ID: PAYMENT_PSPLIST_SUCCESS.value,
+              });
+              return myRes?.value?.data?.pspList;
+            } else {
+              onError(ErrorsType.GENERIC_ERROR);
+              mixpanel.track(PAYMENT_PSPLIST_RESP_ERR.value, {
+                EVENT_ID: PAYMENT_PSPLIST_RESP_ERR.value,
+              });
+              return [];
+            }
+          }
+        )
+    )
+    .run();
+
+  const psp = pspL?.map((e) => ({
+    name: e?.businessName,
+    label: e?.businessName,
+    image: e?.logoPSP,
+    commission:
+      e?.fixedCost?.amount && e?.fixedCost?.decimalDigits
+        ? e?.fixedCost?.amount / Math.pow(10, e?.fixedCost?.decimalDigits)
+        : 0,
+    idPsp: e?.id,
+  }));
+
+  onResponse(psp || []);
 };
